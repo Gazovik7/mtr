@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
-import { GoogleGenAI } from "@google/genai";
 
 // --- Icons (SVG) ---
 const CheckCircleIcon = () => (
@@ -467,11 +466,18 @@ const SolutionSection = () => {
                         ))}
                       </ul>
                    </div>
-                   <div className="flex flex-col justify-center items-center text-center p-8 bg-slate-50 rounded-3xl border border-slate-100">
-                      <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-royal-600 shadow-md mb-6"><GlobeIcon /></div>
-                      <h4 className="font-serif font-bold text-slate-900 mb-2 text-xl">Who is this for?</h4>
-                      <p className="text-slate-600 mb-8 leading-relaxed">Citizens of 47 countries who value traditional principles over neoliberal ideology.</p>
-                      <button className="text-royal-700 font-bold text-sm uppercase tracking-wide border-b-2 border-royal-200 hover:border-royal-700 transition-all pb-1 hover:pb-2">Check if your country is on the list</button>
+                   
+                   {/* Enhanced Image Card */}
+                   <div className="relative flex flex-col justify-end items-start p-8 rounded-3xl border border-slate-200 overflow-hidden min-h-[300px] group">
+                      <img src="https://images.unsplash.com/photo-1569949381156-d5dada3168f0?q=80&w=800&auto=format&fit=crop" alt="People in Russia" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-royal-900/95 via-royal-900/50 to-royal-900/10"></div>
+                      
+                      <div className="relative z-10 text-white text-left">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white shadow-md mb-4 border border-white/20"><GlobeIcon /></div>
+                        <h4 className="font-serif font-bold mb-2 text-xl">Who is this for?</h4>
+                        <p className="text-blue-100 mb-6 text-sm leading-relaxed">Citizens of 47 countries who value traditional principles over neoliberal ideology.</p>
+                        <button className="text-gold-400 font-bold text-xs uppercase tracking-widest border-b border-gold-400/50 hover:border-gold-400 transition-all pb-1">Check Eligibility List</button>
+                      </div>
                    </div>
                 </div>
               </div>
@@ -532,6 +538,103 @@ const SolutionSection = () => {
     </section>
   );
 };
+
+const GallerySection = () => (
+  <section className="py-24 bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 tracking-tight">Life in Russia</h2>
+        <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">
+          A blend of rich history, modern comfort, and traditional beauty.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 min-h-[600px]">
+        {/* Large Left Item */}
+        <div className="md:col-span-2 relative group overflow-hidden rounded-3xl cursor-pointer min-h-[400px]">
+           <img 
+             src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=1600&auto=format&fit=crop" 
+             alt="Red Square" 
+             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+           />
+           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
+           <div className="absolute bottom-8 left-8 text-white">
+             <div className="text-xs font-bold uppercase tracking-widest text-gold-400 mb-2">Moscow</div>
+             <h3 className="text-2xl font-serif font-bold">The Heart of Tradition</h3>
+           </div>
+        </div>
+
+        {/* Right Column Stack */}
+        <div className="flex flex-col gap-4 md:gap-8 h-full">
+           {/* Top Right */}
+           <div className="flex-1 relative group overflow-hidden rounded-3xl cursor-pointer min-h-[250px]">
+             <img 
+               src="https://images.unsplash.com/photo-1512495039889-52a3b799c9bc?q=80&w=800&auto=format&fit=crop" 
+               alt="Moscow City" 
+               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+             <div className="absolute bottom-6 left-6 text-white">
+               <div className="text-[10px] font-bold uppercase tracking-widest text-gold-400 mb-1">Modernity</div>
+               <h3 className="text-lg font-serif font-bold">World-Class Infrastructure</h3>
+             </div>
+           </div>
+           
+           {/* Bottom Right */}
+           <div className="flex-1 relative group overflow-hidden rounded-3xl cursor-pointer min-h-[250px]">
+             <img 
+               src="https://images.unsplash.com/photo-1559103980-fe6f0260408d?q=80&w=800&auto=format&fit=crop" 
+               alt="Moscow Metro" 
+               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+             <div className="absolute bottom-6 left-6 text-white">
+               <div className="text-[10px] font-bold uppercase tracking-widest text-gold-400 mb-1">Culture</div>
+               <h3 className="text-lg font-serif font-bold">Art in Every Corner</h3>
+             </div>
+           </div>
+        </div>
+      </div>
+
+      {/* Second Row of Gallery */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mt-4 md:mt-8">
+          <div className="relative group overflow-hidden rounded-3xl cursor-pointer h-[300px]">
+             <img 
+               src="https://images.unsplash.com/photo-1547448415-e9f5b28e570d?q=80&w=800&auto=format&fit=crop" 
+               alt="Winter" 
+               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+             <div className="absolute bottom-6 left-6 text-white">
+               <h3 className="text-lg font-serif font-bold">Real Seasons</h3>
+             </div>
+          </div>
+          <div className="relative group overflow-hidden rounded-3xl cursor-pointer h-[300px]">
+             <img 
+               src="https://images.unsplash.com/photo-1524316023223-95655761899e?q=80&w=800&auto=format&fit=crop" 
+               alt="Theatre" 
+               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+             <div className="absolute bottom-6 left-6 text-white">
+               <h3 className="text-lg font-serif font-bold">High Culture</h3>
+             </div>
+          </div>
+          <div className="relative group overflow-hidden rounded-3xl cursor-pointer h-[300px]">
+             <img 
+               src="https://images.unsplash.com/photo-1613329150772-73c64c5d3151?q=80&w=800&auto=format&fit=crop" 
+               alt="Nature" 
+               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+             <div className="absolute bottom-6 left-6 text-white">
+               <h3 className="text-lg font-serif font-bold">Safe Streets</h3>
+             </div>
+          </div>
+      </div>
+    </div>
+  </section>
+);
 
 const ApplicationProcessSection = () => {
     const steps = [
@@ -2210,6 +2313,7 @@ const App = () => {
       <ApplicationProcessSection />
       <RequirementsSection />
       <BenefitsSection />
+      <GallerySection />
       <TestimonialsSection />
       <EligibilitySection />
       <FaqSection />
