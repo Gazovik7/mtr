@@ -16,7 +16,7 @@ async function prerender() {
     return handler(request, response, { public: BUILD_DIR });
   });
 
-  await new Promise((resolve) => server.listen(PORT, () => resolve()));
+  await new Promise((resolve) => server.listen(PORT, () => resolve(null)));
 
   try {
     const browser = await puppeteer.launch({ 

@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "postbuild": "node prerender.mjs",
+    "build": "tsc && vite build && node prerender.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
