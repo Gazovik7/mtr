@@ -9,6 +9,9 @@ const FAQS_LIST = [
   { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up your passport to get a TRP." }
 ];
 
+const PLACEHOLDER_IMAGE = "/images/placeholder.jpg";
+const PLACEHOLDER_IMAGE_ABS = "https://sharedvaluesvisa.com/images/placeholder.jpg";
+
 // --- Icons (SVG) ---
 const CheckCircleIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -103,7 +106,7 @@ const SchemaMarkup = () => {
         "url": "https://sharedvaluesvisa.com",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://images.unsplash.com/photo-1513326738677-b964603b136d"
+          "url": PLACEHOLDER_IMAGE_ABS
         },
         "description": "Helping families and individuals find stability and tradition in Russia through the Shared Values Visa program."
       },
@@ -132,7 +135,7 @@ const SchemaMarkup = () => {
         "@type": "Product",
         "name": "Shared Values Visa Guide",
         "description": "Complete step-by-step handbook for applying to Russian residency via Decree No. 702.",
-        "image": "https://images.unsplash.com/photo-1513326738677-b964603b136d",
+        "image": PLACEHOLDER_IMAGE_ABS,
         "sku": "SVV-GUIDE-2025",
         "offers": {
           "@type": "Offer",
@@ -273,7 +276,7 @@ const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
     {/* Photo Background with Overlay */}
     <div className="absolute inset-0 z-0">
         <img 
-            src="https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&q=80&w=2500" 
+            src={PLACEHOLDER_IMAGE} 
             alt="Moscow St Basil's Cathedral" 
             className="w-full h-full object-cover"
         />
@@ -724,7 +727,7 @@ const SolutionSection = () => {
                    
                    {/* Enhanced Image Card */}
                    <div className="relative flex flex-col justify-end items-start p-8 rounded-3xl border border-slate-200 overflow-hidden min-h-[300px] group">
-                      <img src="https://images.unsplash.com/photo-1569949381156-d5dada3168f0?q=80&w=800&auto=format&fit=crop" alt="People in Russia" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <img src={PLACEHOLDER_IMAGE} alt="People in Russia" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-royal-900/95 via-royal-900/50 to-royal-900/10"></div>
                       
                       <div className="relative z-10 text-white text-left">
@@ -1009,7 +1012,7 @@ const TestimonialsSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
       {/* Background decoration with Photo */}
       <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1512495039889-52a3b799c9bc?q=80&w=2838&auto=format&fit=crop" 
+            src={PLACEHOLDER_IMAGE} 
             alt="Moscow City Skyline" 
             className="w-full h-full object-cover opacity-10"
           />
@@ -1511,25 +1514,25 @@ const GallerySection = () => (
             <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-12 text-center">See Your Future</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 h-96 md:h-[600px]">
                 <div className="col-span-2 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group">
-                    <img src="https://images.unsplash.com/photo-1547448415-e9f5b28e570d?q=80&w=2070&auto=format&fit=crop" alt="Moscow Red Square" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={PLACEHOLDER_IMAGE} alt="Moscow Red Square" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
                         <span className="text-white font-bold text-lg">Moscow</span>
                     </div>
                 </div>
                 <div className="relative rounded-3xl overflow-hidden group">
-                     <img src="https://images.unsplash.com/photo-1558642084-fd1ba918f3a4?q=80&w=2070&auto=format&fit=crop" alt="St Petersburg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                     <img src={PLACEHOLDER_IMAGE} alt="St Petersburg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                         <span className="text-white font-bold text-sm">St. Petersburg</span>
                     </div>
                 </div>
                 <div className="relative rounded-3xl overflow-hidden group">
-                    <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=2070&auto=format&fit=crop" alt="Nature" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={PLACEHOLDER_IMAGE} alt="Nature" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                         <span className="text-white font-bold text-sm">Nature</span>
                     </div>
                 </div>
                 <div className="col-span-2 relative rounded-3xl overflow-hidden group">
-                    <img src="https://images.unsplash.com/photo-1622312685785-559d81d2f831?q=80&w=2070&auto=format&fit=crop" alt="Orthodox Church" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={PLACEHOLDER_IMAGE} alt="Orthodox Church" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                         <span className="text-white font-bold text-sm">Spiritual Heritage</span>
                     </div>
