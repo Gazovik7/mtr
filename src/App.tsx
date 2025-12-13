@@ -13,6 +13,10 @@ const PLACEHOLDER_IMAGE = "/images/placeholder.jpg";
 const PLACEHOLDER_IMAGE_ABS = "https://sharedvaluesvisa.com/images/placeholder.jpg";
 const HERO_IMAGE = "/images/moscow.jpeg";
 const PEOPLE_IMAGE = "/images/people-in-russia.jpeg";
+const MOSCOW_2_IMAGE = "/images/moscow_2.jpeg";
+const SPB_IMAGE = "/images/spb.png";
+const NATURE_IMAGE = "/images/nature.png";
+const CHURCH_IMAGE = "/images/church.png";
 
 // --- Icons (SVG) ---
 const CheckCircleIcon = () => (
@@ -1516,25 +1520,25 @@ const GallerySection = () => (
             <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-12 text-center">See Your Future</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 h-96 md:h-[600px]">
                 <div className="col-span-2 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group">
-                    <img src={PLACEHOLDER_IMAGE} alt="Moscow Red Square" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={MOSCOW_2_IMAGE} alt="Moscow Red Square" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
                         <span className="text-white font-bold text-lg">Moscow</span>
                     </div>
                 </div>
                 <div className="relative rounded-3xl overflow-hidden group">
-                     <img src={PLACEHOLDER_IMAGE} alt="St Petersburg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                     <img src={SPB_IMAGE} alt="St Petersburg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                         <span className="text-white font-bold text-sm">St. Petersburg</span>
                     </div>
                 </div>
                 <div className="relative rounded-3xl overflow-hidden group">
-                    <img src={PLACEHOLDER_IMAGE} alt="Nature" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={NATURE_IMAGE} alt="Nature" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                         <span className="text-white font-bold text-sm">Nature</span>
                     </div>
                 </div>
                 <div className="col-span-2 relative rounded-3xl overflow-hidden group">
-                    <img src={PLACEHOLDER_IMAGE} alt="Orthodox Church" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={CHURCH_IMAGE} alt="Orthodox Church" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                         <span className="text-white font-bold text-sm">Spiritual Heritage</span>
                     </div>
