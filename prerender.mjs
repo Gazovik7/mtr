@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { format } from 'prettier';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.join(__dirname, 'dist');
@@ -25,7 +26,13 @@ async function prerender() {
     throw new Error('Failed to inject prerendered HTML into index.html');
   }
 
-  await writeFile(INDEX_HTML_PATH, rendered, 'utf8');
+  const pretty = await format(rendered, {
+    parser: 'html',
+    printWidth: 100,
+    htmlWhitespaceSensitivity: 'css',
+  });
+
+  await writeFile(INDEX_HTML_PATH, pretty, 'utf8');
 
   console.log('[prerender] Done: `dist/index.html` now contains real content.');
 }
