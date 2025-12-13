@@ -12,6 +12,7 @@ const FAQS_LIST = [
 const PLACEHOLDER_IMAGE = "/images/placeholder.jpg";
 const PLACEHOLDER_IMAGE_ABS = "https://sharedvaluesvisa.com/images/placeholder.jpg";
 const HERO_IMAGE = "/images/moscow.jpeg";
+const PEOPLE_IMAGE = "/images/people-in-russia.jpeg";
 
 // --- Icons (SVG) ---
 const CheckCircleIcon = () => (
@@ -728,7 +729,7 @@ const SolutionSection = () => {
                    
                    {/* Enhanced Image Card */}
                    <div className="relative flex flex-col justify-end items-start p-8 rounded-3xl border border-slate-200 overflow-hidden min-h-[300px] group">
-                      <img src={PLACEHOLDER_IMAGE} alt="People in Russia" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <img src={PEOPLE_IMAGE} alt="People in Russia" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-royal-900/95 via-royal-900/50 to-royal-900/10"></div>
                       
                       <div className="relative z-10 text-white text-left">
