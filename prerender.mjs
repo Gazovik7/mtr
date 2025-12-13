@@ -11,34 +11,37 @@ const PORT = 4173;
 
 async function prerender() {
   console.log('⚡ Starting pre-rendering...');
-
-  // 1. Serve the production build
+  
   const server = http.createServer((request, response) => {
     return handler(request, response, { public: BUILD_DIR });
   });
 
-  await new Promise((resolve) => server.listen(PORT, resolve));
+  await new Promise((resolve) => server.listen(PORT, () => resolve()));
 
-  // 2. Launch headless browser
-  const browser = await puppeteer.launch({ headless: "new" });
-  const page = await browser.newPage();
+  try {
+    const browser = await puppeteer.launch({ 
+      headless: true,
+      args: ['--no-sandbox'] // Safer for CI/Docker environments
+    });
+    const page = await browser.newPage();
 
-  // 3. Load the page and wait for JS to execute
-  await page.goto(`http://localhost:${PORT}`, { waitUntil: 'networkidle0' });
-  
-  // Wait for the root element to be populated
-  await page.waitForSelector('#root div');
+    // 'domcontentloaded' is faster than 'networkidle0' for pages with external images
+    await page.goto(`http://localhost:${PORT}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    
+    // Ensure the React app has actually mounted
+    await page.waitForSelector('#root div', { timeout: 10000 });
 
-  // 4. Get the full HTML
-  const html = await page.content();
-
-  // 5. Save the prerendered HTML over the index.html
-  fs.writeFileSync(path.join(BUILD_DIR, 'index.html'), html);
-  console.log('✅ HTML generated and saved to dist/index.html');
-
-  // 6. Cleanup
-  await browser.close();
-  server.close();
+    const html = await page.content();
+    fs.writeFileSync(path.join(BUILD_DIR, 'index.html'), html);
+    
+    console.log('✅ SSG Complete: dist/index.html now contains full SEO content.');
+    await browser.close();
+  } catch (error) {
+    console.error('❌ Prerender failed:', error);
+    process.exit(1);
+  } finally {
+    server.close();
+  }
 }
 
 prerender();
