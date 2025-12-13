@@ -1139,7 +1139,7 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
   };
 
   return (
-    <section className="py-24 bg-slate-50 border-t border-slate-200" id="eligibility">
+    <section className="py-20 bg-slate-50 border-t border-slate-200" id="eligibility">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center mb-10">
@@ -1298,10 +1298,10 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                 </div>
 
              </div>
-             <p className="text-center text-xs text-slate-400 mt-10 max-w-3xl mx-auto leading-relaxed">
+             <p className="text-center text-xs text-slate-400 mt-6 max-w-3xl mx-auto leading-relaxed">
                  IMPORTANT NOTE: The list of eligible countries is determined by Russian authorities (Decree No. 702) and coincides with the list of foreign states implementing unfriendly policies. This list may change. Eligibility must always be confirmed with your nearest Russian consulate.
              </p>
-             <div className="text-center mt-8">
+             <div className="text-center mt-4">
                  <button 
                    onClick={onOpenModal}
                    className="text-royal-600 font-bold text-xs uppercase border-b-2 border-royal-200 hover:border-royal-600 transition-all pb-1 hover:text-royal-800 tracking-wider"
