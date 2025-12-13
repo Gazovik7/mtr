@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node prerender.mjs",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -18,7 +18,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "puppeteer": "^22.6.0",
+    "puppeteer": "^22.6.8",
     "serve-handler": "^6.1.5"
   }
 }
