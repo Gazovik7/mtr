@@ -11,6 +11,7 @@ const FAQS_LIST = [
 
 const PLACEHOLDER_IMAGE = "/images/placeholder.jpg";
 const PLACEHOLDER_IMAGE_ABS = "https://sharedvaluesvisa.com/images/placeholder.jpg";
+const HERO_IMAGE = "/images/moscow.jpeg";
 
 // --- Icons (SVG) ---
 const CheckCircleIcon = () => (
@@ -276,7 +277,7 @@ const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
     {/* Photo Background with Overlay */}
     <div className="absolute inset-0 z-0">
         <img 
-            src={PLACEHOLDER_IMAGE} 
+            src={HERO_IMAGE} 
             alt="Moscow St Basil's Cathedral" 
             className="w-full h-full object-cover"
         />
