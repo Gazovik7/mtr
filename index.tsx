@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 
+// --- Data Constants ---
+const FAQS_LIST = [
+  { q: "Do I need to speak Russian?", a: "Not for the Shared Values Visa application itself. You can learn it after you arrive. There is no language exam required for the initial visa." },
+  { q: "Can I work in Russia?", a: "Yes. Once you receive your Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit." },
+  { q: "How long does the process take?", a: "Typically 3-6 months from starting your application to receiving your residency permit." },
+  { q: "Is my family eligible?", a: "Yes, your spouse and minor children can be included in the process to move with you." },
+  { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up your passport to get a TRP." }
+];
+
 // --- Icons (SVG) ---
 const CheckCircleIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -83,6 +92,72 @@ const scrollToSection = (e: React.MouseEvent, id: string) => {
 };
 
 // --- Components ---
+
+const SchemaMarkup = () => {
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://sharedvaluesvisa.com/#organization",
+        "name": "Shared Values Visa Assistance",
+        "url": "https://sharedvaluesvisa.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://images.unsplash.com/photo-1513326738677-b964603b136d"
+        },
+        "description": "Helping families and individuals find stability and tradition in Russia through the Shared Values Visa program."
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://sharedvaluesvisa.com/#website",
+        "url": "https://sharedvaluesvisa.com",
+        "name": "Shared Values Visa",
+        "publisher": {
+          "@id": "https://sharedvaluesvisa.com/#organization"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://sharedvaluesvisa.com/#faq",
+        "mainEntity": FAQS_LIST.map(item => ({
+          "@type": "Question",
+          "name": item.q,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": item.a
+          }
+        }))
+      },
+      {
+        "@type": "Product",
+        "name": "Shared Values Visa Guide",
+        "description": "Complete step-by-step handbook for applying to Russian residency via Decree No. 702.",
+        "image": "https://images.unsplash.com/photo-1513326738677-b964603b136d",
+        "sku": "SVV-GUIDE-2025",
+        "offers": {
+          "@type": "Offer",
+          "price": "99.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "url": "https://movetorussia.com/get-access/"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "3500"
+        }
+      }
+    ]
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+    />
+  );
+};
 
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
@@ -1468,14 +1543,6 @@ const GallerySection = () => (
 const FaqSection = () => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-    const faqs = [
-        { q: "Do I need to speak Russian?", a: "Not for the Shared Values Visa application itself. You can learn it after you arrive. There is no language exam required for the initial visa." },
-        { q: "Can I work in Russia?", a: "Yes. Once you receive your Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit." },
-        { q: "How long does the process take?", a: "Typically 3-6 months from starting your application to receiving your residency permit." },
-        { q: "Is my family eligible?", a: "Yes, your spouse and minor children can be included in the process to move with you." },
-        { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up your passport to get a TRP." }
-    ];
-
     return (
         <section className="py-24 bg-slate-50" id="faq">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1483,7 +1550,7 @@ const FaqSection = () => {
                      <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
                 </div>
                 <div className="space-y-4">
-                    {faqs.map((item, i) => (
+                    {FAQS_LIST.map((item, i) => (
                         <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                             <button 
                                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
@@ -1608,6 +1675,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-gold-200 selection:text-royal-900">
+      <SchemaMarkup />
       <Navbar onOpenModal={() => setIsModalOpen(true)} />
       <Hero onOpenModal={() => setIsModalOpen(true)} />
       <TrustSection />
