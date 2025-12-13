@@ -344,13 +344,46 @@ const TrustSection = () => (
 
 const ProblemSection = () => {
   const [email, setEmail] = useState('');
-  const [quizStarted, setQuizStarted] = useState(false);
+  const [viewState, setViewState] = useState<'email' | 'quiz' | 'analyzing' | 'result'>('email');
+  const [currentQuestion, setCurrentQuestion] = useState(0);
 
-  const handleQuizSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      setQuizStarted(true);
+  const questions = [
+    {
+      q: "What is your primary motivation?",
+      options: ["Seeking Traditional Values", "Better Future for Children", "Economic Opportunities", "Safety & Security"]
+    },
+    {
+      q: "Who are you planning to move with?",
+      options: ["Just myself", "With Spouse", "Whole Family (with kids)", "Retiring Couple"]
+    },
+    {
+      q: "What is your timeline?",
+      options: ["Immediately (ASAP)", "In 3-6 Months", "Next Year", "Just Researching"]
+    },
+    {
+      q: "Do you hold a passport from:",
+      options: ["USA / UK / Canada", "EU Country", "Australia / NZ", "Other"]
     }
+  ];
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) setViewState('quiz');
+  };
+
+  const handleOptionClick = () => {
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setViewState('analyzing');
+      setTimeout(() => setViewState('result'), 2000);
+    }
+  };
+
+  const restart = () => {
+    setViewState('email');
+    setCurrentQuestion(0);
+    setEmail('');
   };
 
   const painPoints = [
@@ -407,66 +440,130 @@ const ProblemSection = () => {
 
           {/* Right Column - Interactive Quiz */}
           <div className="lg:sticky lg:top-32">
-             <div className="bg-royal-900 rounded-[2rem] p-10 shadow-2xl shadow-royal-900/40 text-white relative overflow-hidden border border-royal-800">
+             <div className="bg-royal-900 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-royal-900/40 text-white relative overflow-hidden border border-royal-800 min-h-[500px] flex flex-col transition-all duration-500">
                 {/* Decorative blobs */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full mix-blend-overlay filter blur-[80px] opacity-40 animate-pulse"></div>
                 <div className="absolute -bottom-8 -left-8 w-64 h-64 bg-purple-600 rounded-full mix-blend-overlay filter blur-[80px] opacity-40"></div>
 
-                <div className="relative z-10">
-                  <div className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full text-[10px] font-bold mb-6 uppercase tracking-widest shadow-lg">
-                    Interactive Assessment
-                  </div>
-                  <h3 className="text-3xl font-serif font-bold mb-4 leading-tight">
-                    Take our 2-minute Quiz: <br/><span className="text-gold-400">Is Russia Right for You?</span>
-                  </h3>
+                <div className="relative z-10 flex-grow flex flex-col">
                   
-                  {!quizStarted ? (
-                    <form onSubmit={handleQuizSubmit} className="space-y-5">
-                      <p className="text-blue-100 font-light text-sm">
-                        Answer 7 simple questions to receive your personalized eligibility report and relocation roadmap.
-                      </p>
-                      
-                      <div>
-                        <label className="block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">Enter your email to start</label>
-                        <input 
-                          type="email" 
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="name@example.com"
-                          className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-300/50 focus:ring-2 focus:ring-gold-500 focus:bg-white/10 outline-none transition-all backdrop-blur-sm"
-                        />
+                  {/* Header Badge */}
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+                        Interactive Assessment
+                    </div>
+                    {viewState === 'quiz' && (
+                        <div className="text-xs font-bold text-blue-300">
+                            {currentQuestion + 1} / {questions.length}
+                        </div>
+                    )}
+                  </div>
+
+                  {/* VIEW: EMAIL INPUT */}
+                  {viewState === 'email' && (
+                    <div className="animate-fade-in my-auto">
+                        <h3 className="text-3xl font-serif font-bold mb-4 leading-tight">
+                            Take our 2-minute Quiz: <br/><span className="text-gold-400">Is Russia Right for You?</span>
+                        </h3>
+                        <form onSubmit={handleEmailSubmit} className="space-y-5">
+                            <p className="text-blue-100 font-light text-sm">
+                                Answer 4 simple questions to receive your personalized eligibility report and relocation roadmap.
+                            </p>
+                            <div>
+                                <label className="block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">Enter your email to start</label>
+                                <input 
+                                type="email" 
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="name@example.com"
+                                className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-300/50 focus:ring-2 focus:ring-gold-500 focus:bg-white/10 outline-none transition-all backdrop-blur-sm"
+                                />
+                            </div>
+                            <button 
+                                type="submit" 
+                                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 border border-white/10"
+                            >
+                                Start Assessment <ArrowRightIcon />
+                            </button>
+                            <p className="text-[10px] text-blue-300/60 text-center uppercase tracking-wider">
+                                Your privacy is protected. No spam.
+                            </p>
+                        </form>
+                    </div>
+                  )}
+
+                  {/* VIEW: QUIZ QUESTIONS */}
+                  {viewState === 'quiz' && (
+                     <div className="animate-fade-in my-auto">
+                        <div className="mb-8">
+                            <div className="w-full bg-white/10 h-1.5 rounded-full mb-6">
+                                <div 
+                                    className="bg-gold-400 h-1.5 rounded-full transition-all duration-500 ease-out" 
+                                    style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+                                ></div>
+                            </div>
+                            <h3 className="text-2xl font-serif font-bold mb-2 leading-tight min-h-[3.5rem]">
+                                {questions[currentQuestion].q}
+                            </h3>
+                        </div>
+                        <div className="space-y-3">
+                            {questions[currentQuestion].options.map((option, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={handleOptionClick}
+                                    className="w-full text-left px-6 py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/20 hover:border-white/30 text-white font-medium transition-all flex justify-between items-center group"
+                                >
+                                    {option}
+                                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-gold-400"><ArrowRightIcon /></span>
+                                </button>
+                            ))}
+                        </div>
+                     </div>
+                  )}
+
+                  {/* VIEW: ANALYZING */}
+                  {viewState === 'analyzing' && (
+                      <div className="animate-fade-in my-auto text-center">
+                          <div className="w-16 h-16 border-4 border-white/10 border-t-gold-400 rounded-full animate-spin mx-auto mb-6"></div>
+                          <h3 className="text-xl font-bold mb-2">Analyzing your profile...</h3>
+                          <p className="text-blue-200 text-sm">Comparing your answers with Decree No. 702 requirements.</p>
                       </div>
-                      
-                      <button 
-                        type="submit" 
-                        className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 border border-white/10"
-                      >
-                        Start Assessment
-                        <ArrowRightIcon />
-                      </button>
-                      
-                      <p className="text-[10px] text-blue-300/60 text-center uppercase tracking-wider">
-                        Your privacy is protected. No spam.
-                      </p>
-                    </form>
-                  ) : (
-                    <div className="text-center py-10 animate-fade-in">
-                       <div className="w-20 h-20 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/30">
+                  )}
+
+                  {/* VIEW: RESULT */}
+                  {viewState === 'result' && (
+                    <div className="text-center animate-fade-in my-auto">
+                       <div className="w-20 h-20 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-green-400/30 shadow-lg animate-[bounce_1s_ease-in-out_1]">
                          <CheckCircleIcon />
                        </div>
-                       <h4 className="text-xl font-serif font-bold mb-2">Profile Initialized</h4>
-                       <p className="text-blue-100 mb-8 font-light">
-                         We've sent a secure link to <span className="text-white font-semibold">{email}</span>. Click it to begin your assessment.
-                       </p>
-                       <button 
-                         onClick={() => setQuizStarted(false)}
-                         className="text-sm text-blue-300 hover:text-white transition-colors underline decoration-blue-300/50 underline-offset-4"
+                       <h4 className="text-2xl font-serif font-bold mb-2">Excellent Match!</h4>
+                       <div className="bg-white/10 rounded-xl p-4 mb-6 border border-white/10 backdrop-blur-sm text-left">
+                           <p className="text-blue-100 text-sm mb-3">
+                             Based on your answers, you appear to be a <strong className="text-white">High Potential Candidate</strong> for the Shared Values Visa program.
+                           </p>
+                           <p className="text-blue-100 text-sm">
+                             We've sent your personalized report and next steps to <span className="text-white font-semibold border-b border-white/20">{email}</span>.
+                           </p>
+                       </div>
+                       
+                       <a 
+                         href="https://movetorussia.com/get-access/" 
+                         target="_blank"
+                         className="block w-full py-4 bg-gold-400 text-royal-900 font-bold rounded-xl hover:bg-gold-300 transition-all shadow-lg mb-4"
                        >
-                         Start over with a different email
+                         Get Your Visa Guide Now
+                       </a>
+
+                       <button 
+                         onClick={restart}
+                         className="text-xs text-blue-300 hover:text-white transition-colors underline decoration-blue-300/50 underline-offset-4"
+                       >
+                         Start over
                        </button>
                     </div>
                   )}
+
                 </div>
              </div>
 
@@ -479,7 +576,7 @@ const ProblemSection = () => {
                     </div>
                   ))}
                 </div>
-                <p><span className="font-bold text-slate-900">124 people</span> started the quiz today</p>
+                <p><span className="font-bold text-slate-900">124 people</span> took the assessment today</p>
              </div>
           </div>
 
