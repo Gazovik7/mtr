@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
 
 // --- Data Constants ---
 const FAQS_LIST = [
@@ -1697,5 +1696,4 @@ const App = () => {
   );
 };
 
-const root = createRoot(document.getElementById('root')!);
-root.render(<App />);
+export default App;

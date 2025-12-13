@@ -6,19 +6,20 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && node prerender.mjs",
-    "preview": "vite preview"
+    "postinstall": "playwright install chromium",
+    "preview": "vite preview --port 4173 --strictPort"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@types/node": "^20.11.30",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.2.1",
+    "playwright": "^1.55.0",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0",
-    "puppeteer": "^22.6.0",
-    "serve-handler": "^6.1.5"
+    "vite": "^5.2.0"
   }
 }
