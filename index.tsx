@@ -72,13 +72,106 @@ const MinusIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/></svg>
 );
 
+// --- Utils ---
+
+const scrollToSection = (e: React.MouseEvent, id: string) => {
+  e.preventDefault();
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+// --- Components ---
+
+const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert("Thank you for your inquiry. A specialist will contact you shortly.");
+    setFormData({ name: '', email: '', phone: '', message: '' });
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
+      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-fade-in-up">
+        <div className="absolute top-4 right-4 z-10">
+          <button onClick={onClose} className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors text-slate-500">
+            <XIcon />
+          </button>
+        </div>
+        
+        <div className="bg-royal-900 p-8 text-white">
+          <h3 className="text-2xl font-serif font-bold mb-2">Schedule Consultation</h3>
+          <p className="text-blue-200 text-sm font-light">Fill out the form below and our team will get back to you within 24 hours.</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-8 space-y-4">
+          <div>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Full Name</label>
+            <input 
+              required
+              type="text" 
+              className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-royal-500 focus:bg-white outline-none transition-all"
+              placeholder="John Doe"
+              value={formData.name}
+              onChange={e => setFormData({...formData, name: e.target.value})}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Email Address</label>
+            <input 
+              required
+              type="email" 
+              className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-royal-500 focus:bg-white outline-none transition-all"
+              placeholder="john@example.com"
+              value={formData.email}
+              onChange={e => setFormData({...formData, email: e.target.value})}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Phone Number</label>
+            <input 
+              type="tel" 
+              className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-royal-500 focus:bg-white outline-none transition-all"
+              placeholder="+1 (555) 000-0000"
+              value={formData.phone}
+              onChange={e => setFormData({...formData, phone: e.target.value})}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">How can we help?</label>
+            <textarea 
+              className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-royal-500 focus:bg-white outline-none transition-all h-24 resize-none"
+              placeholder="I have questions about..."
+              value={formData.message}
+              onChange={e => setFormData({...formData, message: e.target.value})}
+            ></textarea>
+          </div>
+          <button type="submit" className="w-full py-4 bg-royal-800 text-white font-bold rounded-xl hover:bg-royal-900 transition-all shadow-lg hover:shadow-royal-900/20 uppercase tracking-widest text-sm flex items-center justify-center gap-2">
+            Request Consultation <ArrowRightIcon />
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 // --- Landing Page Sections ---
 
-const Navbar = () => (
+const Navbar = ({ onOpenModal }: { onOpenModal: () => void }) => (
   <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-slate-200/60 shadow-sm transition-all duration-300 supports-[backdrop-filter]:bg-white/60">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between h-20 items-center">
-        <div className="flex items-center gap-3 cursor-pointer group">
+        <div 
+          className="flex items-center gap-3 cursor-pointer group"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
           <div className="w-10 h-10 bg-royal-900 rounded-lg flex items-center justify-center text-gold-400 font-serif font-bold text-lg shadow-lg shadow-royal-900/20 group-hover:scale-105 transition-transform">SV</div>
           <div className="flex flex-col">
               <span className="font-serif font-bold text-slate-900 tracking-tight leading-none text-lg">Shared Values Visa</span>
@@ -86,20 +179,22 @@ const Navbar = () => (
           </div>
         </div>
         <div className="hidden md:flex space-x-10 text-sm font-semibold text-slate-600">
-          <a href="#" className="hover:text-royal-800 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-royal-800 after:transition-all hover:after:w-full">Mission</a>
-          <a href="#" className="hover:text-royal-800 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-royal-800 after:transition-all hover:after:w-full">Trust</a>
-          <a href="#" className="hover:text-royal-800 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-royal-800 after:transition-all hover:after:w-full">Eligibility</a>
-          <a href="#" className="hover:text-royal-800 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-royal-800 after:transition-all hover:after:w-full">FAQ</a>
+          <a href="#trust" onClick={(e) => scrollToSection(e, 'trust')} className="hover:text-royal-800 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-royal-800 after:transition-all hover:after:w-full">Trust</a>
+          <a href="#eligibility" onClick={(e) => scrollToSection(e, 'eligibility')} className="hover:text-royal-800 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-royal-800 after:transition-all hover:after:w-full">Eligibility</a>
+          <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')} className="hover:text-royal-800 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-royal-800 after:transition-all hover:after:w-full">FAQ</a>
         </div>
-        <button className="bg-royal-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-royal-800 transition-all shadow-lg hover:shadow-royal-900/30 hover:-translate-y-0.5 border border-transparent hover:border-royal-700">
-          Portal Login
+        <button 
+          onClick={onOpenModal}
+          className="bg-royal-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-royal-800 transition-all shadow-lg hover:shadow-royal-900/30 hover:-translate-y-0.5 border border-transparent hover:border-royal-700"
+        >
+          Contact Us
         </button>
       </div>
     </div>
   </nav>
 );
 
-const Hero = () => (
+const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
   <section className="relative pt-24 pb-40 overflow-hidden bg-slate-50 min-h-[90vh] flex flex-col justify-center">
     {/* Photo Background with Overlay */}
     <div className="absolute inset-0 z-0">
@@ -142,11 +237,14 @@ const Hero = () => (
       </div>
       
       <div className="flex flex-col sm:flex-row justify-center gap-5 mb-14">
-        <button className="px-10 py-4 bg-royal-900 text-white rounded-full font-bold hover:bg-royal-800 transition-all flex items-center justify-center gap-3 shadow-xl shadow-royal-900/20 hover:shadow-royal-900/30 hover:-translate-y-1 text-sm md:text-base tracking-wide group">
+        <a href="https://movetorussia.com/get-access/" className="px-10 py-4 bg-royal-900 text-white rounded-full font-bold hover:bg-royal-800 transition-all flex items-center justify-center gap-3 shadow-xl shadow-royal-900/20 hover:shadow-royal-900/30 hover:-translate-y-1 text-sm md:text-base tracking-wide group">
           Get Your Visa Guide Now
           <span className="group-hover:translate-x-1 transition-transform"><ArrowRightIcon /></span>
-        </button>
-        <button className="px-10 py-4 bg-white text-royal-900 border border-slate-200 rounded-full font-bold hover:bg-slate-50 transition-all shadow-md hover:shadow-lg hover:-translate-y-1 text-sm md:text-base">
+        </a>
+        <button 
+          onClick={onOpenModal}
+          className="px-10 py-4 bg-white text-royal-900 border border-slate-200 rounded-full font-bold hover:bg-slate-50 transition-all shadow-md hover:shadow-lg hover:-translate-y-1 text-sm md:text-base"
+        >
           Schedule Free Consultation
         </button>
       </div>
@@ -172,7 +270,7 @@ const Hero = () => (
 );
 
 const TrustSection = () => (
-  <section className="py-24 bg-white relative z-20 -mt-10 rounded-t-[40px] shadow-[0_-20px_40px_-15px_rgba(0,0,0,0.05)]">
+  <section className="py-24 bg-white relative z-20 -mt-10 rounded-t-[40px] shadow-[0_-20px_40px_-15px_rgba(0,0,0,0.05)]" id="trust">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-900">Why Trust Us with Your Most Important Decision?</h2>
@@ -192,9 +290,6 @@ const TrustSection = () => (
                <li className="flex items-start gap-2"><span className="text-gold-500 mt-0.5">•</span> Completely legal and official</li>
                <li className="flex items-start gap-2"><span className="text-gold-500 mt-0.5">•</span> Active and enforced today</li>
             </ul>
-            <a href="#" className="text-royal-700 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto group-hover:text-royal-900">
-              Learn more <span className="transition-transform"><SmallArrowIcon /></span>
-            </a>
          </div>
 
          {/* Block 2 */}
@@ -208,7 +303,7 @@ const TrustSection = () => (
                <li className="flex items-start gap-2"><span className="text-gold-500 mt-0.5">•</span> Families, retirees, freelancers</li>
                <li className="flex items-start gap-2"><span className="text-gold-500 mt-0.5">•</span> Highest satisfaction ratings</li>
             </ul>
-            <a href="#" className="text-royal-700 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto group-hover:text-royal-900">
+            <a href="#testimonials" onClick={(e) => scrollToSection(e, 'testimonials')} className="text-royal-700 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto group-hover:text-royal-900">
               View testimonials <span className="transition-transform"><SmallArrowIcon /></span>
             </a>
          </div>
@@ -225,9 +320,6 @@ const TrustSection = () => (
                <li className="flex items-start gap-2"><span className="text-gold-500 mt-0.5">•</span> Years of experience</li>
                <li className="flex items-start gap-2"><span className="text-gold-500 mt-0.5">•</span> Consulate trained experts</li>
             </ul>
-            <a href="#" className="text-royal-700 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto group-hover:text-royal-900">
-              Meet our team <span className="transition-transform"><SmallArrowIcon /></span>
-            </a>
          </div>
 
          {/* Block 4 */}
@@ -241,7 +333,7 @@ const TrustSection = () => (
                <li className="flex items-start gap-2"><span className="text-gold-500 mt-0.5">•</span> Zero hidden fees or surprises</li>
                <li className="flex items-start gap-2"><span className="text-gold-500 mt-0.5">•</span> 30-day money-back guarantee</li>
             </ul>
-            <a href="#" className="text-royal-700 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto group-hover:text-royal-900">
+            <a href="#pricing" onClick={(e) => scrollToSection(e, 'pricing')} className="text-royal-700 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto group-hover:text-royal-900">
               View pricing <span className="transition-transform"><SmallArrowIcon /></span>
             </a>
          </div>
@@ -400,14 +492,6 @@ const ProblemSection = () => {
 const SolutionSection = () => {
   const [activeTab, setActiveTab] = useState('basics');
 
-  const timelineSteps = [
-    { title: "Months 1-2: Prepare Documents", desc: "Gather certificates, passport, background check documents.", details: "Time: 2-4 weeks | Cost: $50-200" },
-    { title: "Month 2: Apply for Visa", desc: "Fill out form on visa.kdmid.ru & submit at Russian consulate.", details: "Time: 1-2 weeks | Cost: $80-200" },
-    { title: "Month 3: Fly to Russia", desc: "Arrive with your visa and register at migration center.", details: "Time: 1-2 weeks | Cost: $900-2,500" },
-    { title: "Months 3-4: Apply for TRP", desc: "Submit documents, pass medical exam and provide photos.", details: "Time: 2-4 weeks | Cost: $100-350" },
-    { title: "Months 4-6: Wait for Approval", desc: "Process application. You can work during this period. Collect your TRP card.", details: "Processing: ~4.5 months" },
-  ];
-
   return (
     <section className="py-24 bg-slate-50 border-t border-slate-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -476,7 +560,7 @@ const SolutionSection = () => {
                         <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white shadow-md mb-4 border border-white/20"><GlobeIcon /></div>
                         <h4 className="font-serif font-bold mb-2 text-xl">Who is this for?</h4>
                         <p className="text-blue-100 mb-6 text-sm leading-relaxed">Citizens of 47 countries who value traditional principles over neoliberal ideology.</p>
-                        <button className="text-gold-400 font-bold text-xs uppercase tracking-widest border-b border-gold-400/50 hover:border-gold-400 transition-all pb-1">Check Eligibility List</button>
+                        <a href="#eligibility" onClick={(e) => scrollToSection(e, 'eligibility')} className="text-gold-400 font-bold text-xs uppercase tracking-widest border-b border-gold-400/50 hover:border-gold-400 transition-all pb-1">Check Eligibility List</a>
                       </div>
                    </div>
                 </div>
@@ -539,103 +623,6 @@ const SolutionSection = () => {
   );
 };
 
-const GallerySection = () => (
-  <section className="py-24 bg-white">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 tracking-tight">Life in Russia</h2>
-        <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">
-          A blend of rich history, modern comfort, and traditional beauty.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 min-h-[600px]">
-        {/* Large Left Item */}
-        <div className="md:col-span-2 relative group overflow-hidden rounded-3xl cursor-pointer min-h-[400px]">
-           <img 
-             src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=1600&auto=format&fit=crop" 
-             alt="Red Square" 
-             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-           />
-           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-90"></div>
-           <div className="absolute bottom-8 left-8 text-white">
-             <div className="text-xs font-bold uppercase tracking-widest text-gold-400 mb-2">Moscow</div>
-             <h3 className="text-2xl font-serif font-bold">The Heart of Tradition</h3>
-           </div>
-        </div>
-
-        {/* Right Column Stack */}
-        <div className="flex flex-col gap-4 md:gap-8 h-full">
-           {/* Top Right */}
-           <div className="flex-1 relative group overflow-hidden rounded-3xl cursor-pointer min-h-[250px]">
-             <img 
-               src="https://images.unsplash.com/photo-1512495039889-52a3b799c9bc?q=80&w=800&auto=format&fit=crop" 
-               alt="Moscow City" 
-               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-             />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-             <div className="absolute bottom-6 left-6 text-white">
-               <div className="text-[10px] font-bold uppercase tracking-widest text-gold-400 mb-1">Modernity</div>
-               <h3 className="text-lg font-serif font-bold">World-Class Infrastructure</h3>
-             </div>
-           </div>
-           
-           {/* Bottom Right */}
-           <div className="flex-1 relative group overflow-hidden rounded-3xl cursor-pointer min-h-[250px]">
-             <img 
-               src="https://images.unsplash.com/photo-1559103980-fe6f0260408d?q=80&w=800&auto=format&fit=crop" 
-               alt="Moscow Metro" 
-               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-             />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-             <div className="absolute bottom-6 left-6 text-white">
-               <div className="text-[10px] font-bold uppercase tracking-widest text-gold-400 mb-1">Culture</div>
-               <h3 className="text-lg font-serif font-bold">Art in Every Corner</h3>
-             </div>
-           </div>
-        </div>
-      </div>
-
-      {/* Second Row of Gallery */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mt-4 md:mt-8">
-          <div className="relative group overflow-hidden rounded-3xl cursor-pointer h-[300px]">
-             <img 
-               src="https://images.unsplash.com/photo-1547448415-e9f5b28e570d?q=80&w=800&auto=format&fit=crop" 
-               alt="Winter" 
-               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-             />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-             <div className="absolute bottom-6 left-6 text-white">
-               <h3 className="text-lg font-serif font-bold">Real Seasons</h3>
-             </div>
-          </div>
-          <div className="relative group overflow-hidden rounded-3xl cursor-pointer h-[300px]">
-             <img 
-               src="https://images.unsplash.com/photo-1524316023223-95655761899e?q=80&w=800&auto=format&fit=crop" 
-               alt="Theatre" 
-               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-             />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-             <div className="absolute bottom-6 left-6 text-white">
-               <h3 className="text-lg font-serif font-bold">High Culture</h3>
-             </div>
-          </div>
-          <div className="relative group overflow-hidden rounded-3xl cursor-pointer h-[300px]">
-             <img 
-               src="https://images.unsplash.com/photo-1613329150772-73c64c5d3151?q=80&w=800&auto=format&fit=crop" 
-               alt="Nature" 
-               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-             />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-             <div className="absolute bottom-6 left-6 text-white">
-               <h3 className="text-lg font-serif font-bold">Safe Streets</h3>
-             </div>
-          </div>
-      </div>
-    </div>
-  </section>
-);
-
 const ApplicationProcessSection = () => {
     const steps = [
         {
@@ -654,8 +641,7 @@ const ApplicationProcessSection = () => {
                         <li className="flex gap-2 items-start"><span className="text-green-500 mt-0.5">✓</span> Photographs (3.5×4.5 cm, 4-5 copies)</li>
                     </ul>
                 </>
-            ),
-            cta: []
+            )
         },
         {
             title: "Visa Application",
@@ -674,11 +660,7 @@ const ApplicationProcessSection = () => {
                         <strong>NOTE:</strong> Any non-transit visa type is acceptable, though we recommend a 3+ month visa.
                     </div>
                 </div>
-            ),
-            cta: [
-                { text: "Find Your Consulate", icon: <ExternalLinkIcon />, primary: false },
-                { text: "Book Appointment", icon: <ExternalLinkIcon />, primary: true }
-            ]
+            )
         },
         {
             title: "Travel to Russia",
@@ -693,11 +675,7 @@ const ApplicationProcessSection = () => {
                          <li className="flex gap-3 items-start bg-slate-50 p-2 rounded"><span className="text-royal-500 font-bold">3.</span> <span><strong>Arrival Tasks:</strong> Register address, get Russian SIM, open bank account, get medical exam.</span></li>
                     </ul>
                 </div>
-            ),
-            cta: [
-                { text: "Book Accommodation", icon: <ExternalLinkIcon />, primary: true },
-                { text: "Get Hospital List", icon: <FileTextIcon />, primary: false }
-            ]
+            )
         },
         {
             title: "TRP Application",
@@ -713,10 +691,7 @@ const ApplicationProcessSection = () => {
                         <li><strong>Pay Fee:</strong> 1,920 RUB (~$20).</li>
                     </ol>
                 </div>
-            ),
-            cta: [
-                { text: "Find Migration Center", icon: <ExternalLinkIcon />, primary: false }
-            ]
+            )
         },
         {
             title: "Wait & Approval",
@@ -734,11 +709,7 @@ const ApplicationProcessSection = () => {
                         </div>
                     </div>
                 </div>
-            ),
-             cta: [
-                { text: "Check Status Online", icon: <ExternalLinkIcon />, primary: true },
-                { text: "Schedule Pickup", icon: <ClockIcon />, primary: false }
-            ]
+            )
         }
     ];
 
@@ -797,21 +768,8 @@ const ApplicationProcessSection = () => {
                                             {step.icon}
                                         </div>
                                         
-                                        <div className="mb-8 leading-relaxed">
+                                        <div className="leading-relaxed">
                                             {step.content}
-                                        </div>
-
-                                        <div className="flex flex-wrap gap-3">
-                                            {step.cta.map((btn, i) => (
-                                                <button key={i} className={`px-5 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-all ${
-                                                    btn.primary 
-                                                    ? 'bg-royal-900 text-white hover:bg-royal-800 shadow-lg shadow-royal-900/10 hover:shadow-royal-900/20' 
-                                                    : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
-                                                }`}>
-                                                    {btn.text}
-                                                    {btn.icon}
-                                                </button>
-                                            ))}
                                         </div>
                                     </div>
                                 </div>
@@ -844,283 +802,7 @@ const ApplicationProcessSection = () => {
     );
 };
 
-const RequirementsSection = () => {
-  return (
-    <section className="py-24 bg-slate-50 border-t border-slate-200" id="requirements">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Headline */}
-        <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-900 uppercase tracking-tight">Complete Document Requirements & Checklist</h2>
-            <p className="mt-4 text-slate-600 max-w-2xl mx-auto font-light text-lg">Preparation is key. Ensure you have every document ready to avoid delays.</p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
-            {/* Passport Card */}
-            <div className="bg-white p-10 rounded-3xl shadow-sm border border-slate-200 hover:shadow-lg transition-all">
-                <div className="flex items-center gap-5 mb-8">
-                    <div className="w-14 h-14 bg-royal-50 text-royal-600 rounded-2xl flex items-center justify-center shadow-sm">
-                        <FileTextIcon />
-                    </div>
-                    <h3 className="text-2xl font-serif font-bold text-slate-900">Passport Requirements</h3>
-                </div>
-                <ul className="space-y-6">
-                    <li className="flex items-start gap-4">
-                        <div className="mt-1 text-green-500 bg-green-50 rounded-full p-0.5"><CheckCircleIcon /></div>
-                        <div>
-                            <span className="font-bold text-slate-900 text-lg">Valid for minimum 4 years</span>
-                            <p className="text-sm text-slate-600 mt-1 leading-relaxed">Check expiration carefully. If expiring sooner, renew first. Renewal cost: $130-160.</p>
-                        </div>
-                    </li>
-                    <li className="flex items-start gap-4">
-                        <div className="mt-1 text-green-500 bg-green-50 rounded-full p-0.5"><CheckCircleIcon /></div>
-                        <div>
-                            <span className="font-bold text-slate-900 text-lg">Minimum 5 blank pages</span>
-                            <p className="text-sm text-slate-600 mt-1 leading-relaxed">Needed for visas and stamps. Not enough pages—renew your passport.</p>
-                        </div>
-                    </li>
-                    <li className="flex items-start gap-4">
-                        <div className="mt-1 text-green-500 bg-green-50 rounded-full p-0.5"><CheckCircleIcon /></div>
-                        <div>
-                            <span className="font-bold text-slate-900 text-lg">No damage or marks</span>
-                            <p className="text-sm text-slate-600 mt-1 leading-relaxed">Passport should be in good condition.</p>
-                        </div>
-                    </li>
-                    <li className="flex items-start gap-4 pt-2 border-t border-slate-100 mt-2">
-                         <div className="mt-1 text-royal-500"><ClockIcon /></div>
-                         <div className="text-xs font-bold text-royal-700 bg-royal-50 px-3 py-1.5 rounded-full uppercase tracking-wide">
-                            Renewal Timeline: 2-8 weeks
-                         </div>
-                    </li>
-                </ul>
-            </div>
-
-            {/* Criminal Background Card - Highlighted */}
-            <div className="bg-gold-50/50 p-10 rounded-3xl shadow-lg border-2 border-gold-200 relative overflow-hidden">
-                <div className="absolute top-0 right-0 bg-gold-400 text-white text-[10px] font-bold px-4 py-1.5 rounded-bl-xl uppercase tracking-widest shadow-md">CRITICAL DOCUMENT</div>
-                <div className="flex items-center gap-5 mb-8">
-                    <div className="w-14 h-14 bg-gold-100 text-gold-700 rounded-2xl flex items-center justify-center shadow-sm">
-                        <ShieldCheckIcon />
-                    </div>
-                    <h3 className="text-2xl font-serif font-bold text-slate-900">Criminal Background Check</h3>
-                </div>
-                <div className="mb-8 bg-white p-5 rounded-xl border border-gold-200 text-sm text-amber-900 font-bold flex items-start gap-3 shadow-sm">
-                    <div className="mt-0.5"><AlertTriangleIcon /></div>
-                    <span className="leading-relaxed">MUST have an apostille (NOT just a notary seal). Must be current (&lt;3 months).</span>
-                </div>
-                
-                <div className="space-y-6 text-sm">
-                    {/* Country specific details condensed */}
-                    <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="bg-white p-5 rounded-xl border border-gold-100 shadow-sm hover:border-gold-300 transition-colors">
-                            <strong className="block text-slate-900 mb-2 flex items-center gap-2">🇺🇸 United States</strong>
-                            <p className="text-slate-600 leading-snug">FBI National Crime Check ($18). Apostille from State Dept. 8-12 weeks.</p>
-                        </div>
-                        <div className="bg-white p-5 rounded-xl border border-gold-100 shadow-sm hover:border-gold-300 transition-colors">
-                            <strong className="block text-slate-900 mb-2 flex items-center gap-2">🇬🇧 United Kingdom</strong>
-                            <p className="text-slate-600 leading-snug">ACRO Certificate (£13). NOT DBS. Apostille from Crown Court. 4-6 weeks.</p>
-                        </div>
-                        <div className="bg-white p-5 rounded-xl border border-gold-100 shadow-sm hover:border-gold-300 transition-colors">
-                            <strong className="block text-slate-900 mb-2 flex items-center gap-2">🇨🇦 Canada</strong>
-                            <p className="text-slate-600 leading-snug">Certified Criminal Record Check. Apostille from Ministry of Attorney General.</p>
-                        </div>
-                        <div className="bg-white p-5 rounded-xl border border-gold-100 shadow-sm hover:border-gold-300 transition-colors">
-                            <strong className="block text-slate-900 mb-2 flex items-center gap-2">🇪🇺 EU</strong>
-                            <p className="text-slate-600 leading-snug">Local police department. Apostille at local court. 2-6 weeks.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {/* 3 Column Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Family */}
-            <div className="bg-white p-8 rounded-3xl shadow-soft border border-slate-100 hover:shadow-lg transition-all">
-                <div className="flex items-center gap-4 mb-6">
-                     <div className="p-3 bg-royal-50 text-royal-600 rounded-xl"><UsersIcon /></div>
-                     <h3 className="font-serif font-bold text-slate-900 text-lg">Family Documents</h3>
-                </div>
-                <div className="space-y-4 text-sm text-slate-600 leading-relaxed">
-                    <p><strong className="text-slate-900">Married:</strong> Marriage certificate (original + copy) + Apostille. Name must match passport EXACTLY.</p>
-                    <p><strong className="text-slate-900">Divorced:</strong> Divorce decree (original + copy) + Apostille + Original Marriage Cert.</p>
-                    <p><strong className="text-slate-900">Children:</strong> Birth certificates (original + copy) + Apostille. In Russian language (certified translation).</p>
-                </div>
-            </div>
-
-            {/* Medical */}
-            <div className="bg-white p-8 rounded-3xl shadow-soft border border-slate-100 hover:shadow-lg transition-all">
-                <div className="flex items-center gap-4 mb-6">
-                     <div className="p-3 bg-royal-50 text-royal-600 rounded-xl"><ActivityIcon /></div>
-                     <h3 className="font-serif font-bold text-slate-900 text-lg">Medical Docs</h3>
-                </div>
-                 <div className="space-y-5 text-sm text-slate-600 leading-relaxed">
-                    <div>
-                        <strong className="block text-slate-900 text-[10px] uppercase tracking-widest mb-2 bg-slate-100 w-fit px-2 py-1 rounded">Before Visa Application</strong>
-                        <p>Medical insurance ($30,000+ coverage) valid in Russia during visa period.</p>
-                    </div>
-                    <div>
-                        <strong className="block text-slate-900 text-[10px] uppercase tracking-widest mb-2 bg-slate-100 w-fit px-2 py-1 rounded">After Arrival (Before TRP)</strong>
-                        <p>Full medical examination (X-ray, blood tests, urinalysis, physical) at state or private clinics in Russia ($160-320).</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Photos */}
-            <div className="bg-white p-8 rounded-3xl shadow-soft border border-slate-100 hover:shadow-lg transition-all">
-                <div className="flex items-center gap-4 mb-6">
-                     <div className="p-3 bg-royal-50 text-royal-600 rounded-xl"><CameraIcon /></div>
-                     <h3 className="font-serif font-bold text-slate-900 text-lg">Photographs</h3>
-                </div>
-                 <div className="space-y-3 text-sm text-slate-600 leading-relaxed">
-                    <p><strong>Size:</strong> 3.5 × 4.5 cm (critical requirement)</p>
-                    <p><strong>Specs:</strong> White background, face clearly visible, looking at camera. No sunglasses, hats, or heavy makeup.</p>
-                    <p><strong>Color:</strong> Color or black-and-white.</p>
-                    <p><strong>Quantity:</strong> 3-4 minimum.</p>
-                    <p className="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 italic border border-slate-200 mt-4">Photography studios available in any Russian city (~$5-15).</p>
-                </div>
-            </div>
-        </div>
-
-        {/* Translation Process */}
-        <div className="bg-royal-900 rounded-3xl p-10 text-white mb-16 relative overflow-hidden shadow-2xl">
-             <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-40"></div>
-             <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-30"></div>
-             
-             <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-10">
-                    <div className="bg-white/10 p-3 rounded-xl backdrop-blur-md"><GlobeIcon /></div>
-                    <h3 className="text-2xl font-serif font-bold">Translations & Apostilles: How It Works</h3>
-                </div>
-                
-                <div className="grid md:grid-cols-5 gap-6 items-center text-center md:text-left mb-10">
-                    <div className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 h-full flex flex-col justify-center hover:bg-white/10 transition-colors">
-                        <div className="text-gold-400 font-bold mb-2 text-xs uppercase tracking-widest">Step 1</div>
-                        <div className="font-semibold text-lg">Get Apostille in your country</div>
-                    </div>
-                    <div className="hidden md:flex justify-center text-white/30"><ArrowRightIcon /></div>
-                    <div className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 h-full flex flex-col justify-center hover:bg-white/10 transition-colors">
-                        <div className="text-gold-400 font-bold mb-2 text-xs uppercase tracking-widest">Step 2</div>
-                        <div className="font-semibold text-lg">Fly to Russia with originals</div>
-                    </div>
-                    <div className="hidden md:flex justify-center text-white/30"><ArrowRightIcon /></div>
-                    <div className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10 h-full flex flex-col justify-center hover:bg-white/10 transition-colors">
-                        <div className="text-gold-400 font-bold mb-2 text-xs uppercase tracking-widest">Step 3</div>
-                        <div className="font-semibold text-lg">Get Certified Translation in Russia</div>
-                    </div>
-                </div>
-                
-                <div className="bg-red-900/40 border border-red-500/30 p-6 rounded-xl text-sm text-red-100 flex gap-4 items-start backdrop-blur-md">
-                    <div className="mt-0.5 text-red-400"><AlertTriangleIcon /></div>
-                    <p><strong className="text-white uppercase tracking-wide text-xs block mb-1">Common Mistake:</strong> DO NOT translate documents before coming to Russia. FMIV (Migration) will only accept translations from certified translators registered in Russia with a local stamp. Translations from your home country will be rejected.</p>
-                </div>
-             </div>
-        </div>
-
-        {/* Common Mistakes */}
-        <div className="border border-red-100 bg-red-50/50 rounded-[2.5rem] p-10 md:p-14 text-center md:text-left">
-            <h3 className="text-2xl md:text-3xl font-serif font-bold text-slate-900 mb-8 flex items-center gap-3 justify-center md:justify-start">
-                <span className="text-red-500"><AlertTriangleIcon /></span> 5 Common Mistakes That Cause Rejection
-            </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                 {[
-                    { t: "Name Discrepancies", d: "Spelling must match exactly across ALL documents (Passport vs Certs)." },
-                    { t: "Apostille vs Notary", d: "Regular notary stamps are NOT accepted. Must be an Official Apostille." },
-                    { t: "Wrong Background Check", d: "e.g., UK applicants getting DBS instead of ACRO. Check specific requirements." },
-                    { t: "Expired Passport", d: "Must be valid for 4+ years. Renew before applying if needed." },
-                    { t: "Old Medical Docs", d: "Exams expire in 30 days. Schedule immediately before TRP submission." }
-                 ].map((m, i) => (
-                    <div key={i} className="flex gap-4 items-start p-5 bg-white rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-all">
-                        <div className="bg-red-100 text-red-600 rounded-full w-8 h-8 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">X</div>
-                        <div>
-                            <strong className="block text-slate-900 text-base mb-2">{m.t}</strong>
-                            <span className="text-slate-600 text-sm leading-relaxed">{m.d}</span>
-                        </div>
-                    </div>
-                 ))}
-            </div>
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-const BenefitsSection = () => {
-  const benefits = [
-    {
-      icon: <ActivityIcon />,
-      title: "No Migration Quota Required",
-      why: "Russia has a strict annual quota (10.5k/year). People wait years.",
-      result: "SVV completely bypasses this. No queue. No competition."
-    },
-    {
-      icon: <BookOpenIcon />,
-      title: "No Language Exam (Initially)",
-      why: "Traditional residency requires passing history, law, and language exams.",
-      result: "Exempt for the first 3 years. Start life without exam stress."
-    },
-    {
-      icon: <BriefcaseIcon />,
-      title: "Immediate Work & Business Rights",
-      why: "Typically, foreigners need complex permits to work legally.",
-      result: "Work as an employee, freelancer, or start a business immediately."
-    },
-    {
-      icon: <UsersIcon />,
-      title: "Family Reunification Included",
-      why: "Moving alone is hard. You want your family with you.",
-      result: "Spouse, children, and stepchildren get full rights and benefits."
-    },
-    {
-      icon: <ClockIcon />,
-      title: "Path to Permanent Residency",
-      why: "TRP is just a stepping stone, not the final destination.",
-      result: "Apply for permanent residency after 3 years. Path to citizenship."
-    },
-    {
-      icon: <HeartIcon />,
-      title: "Access to Healthcare & Education",
-      why: "You need to know your family is safe and cared for.",
-      result: "Access to state healthcare, schools, and universities."
-    }
-  ];
-
-  return (
-    <section className="py-32 bg-white">
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 tracking-tight">6 Major Benefits of the Shared Values Visa</h2>
-            <div className="w-24 h-1 bg-royal-200 mx-auto mt-6 rounded-full"></div>
-            <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">Designed specifically to make your transition as smooth as possible.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-             {benefits.map((benefit, idx) => (
-               <div key={idx} className="bg-white rounded-[2rem] border border-slate-100 p-0 shadow-soft hover:shadow-2xl hover:shadow-royal-900/10 transition-all duration-300 hover:-translate-y-2 group flex flex-col h-full overflow-hidden">
-                  <div className="p-10 pb-6 flex-1">
-                     <div className="w-16 h-16 bg-royal-50 text-royal-700 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-royal-600 group-hover:text-white transition-colors duration-300 shadow-sm group-hover:shadow-md group-hover:scale-110 transform">
-                        {benefit.icon}
-                     </div>
-                     <h3 className="font-serif font-bold text-xl text-slate-900 mb-4 group-hover:text-royal-800 transition-colors">{benefit.title}</h3>
-                     <p className="text-slate-600 text-sm leading-relaxed mb-6">
-                       <span className="font-bold text-slate-900 uppercase text-xs tracking-wide block mb-2">Why it matters:</span> {benefit.why}
-                     </p>
-                  </div>
-                  <div className="bg-slate-50 p-8 border-t border-slate-100 mt-auto group-hover:bg-royal-50/50 transition-colors">
-                     <p className="text-sm font-bold text-royal-800 flex items-start gap-3">
-                       <span className="mt-0.5 text-green-500"><CheckCircleIcon /></span>
-                       {benefit.result}
-                     </p>
-                  </div>
-               </div>
-             ))}
-          </div>
-       </div>
-    </section>
-  );
-};
-
-const TestimonialsSection = () => {
+const TestimonialsSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
   const testimonials = [
     {
       name: "Michael T.",
@@ -1223,9 +905,6 @@ const TestimonialsSection = () => {
                       <li className="flex items-center gap-4 font-medium"><span className="text-green-400 bg-green-500/20 p-1 rounded-full"><CheckCircleIcon /></span> Thousands of satisfied clients</li>
                       <li className="flex items-center gap-4 font-medium"><span className="text-green-400 bg-green-500/20 p-1 rounded-full"><CheckCircleIcon /></span> Families, retirees, professionals approved</li>
                    </ul>
-                   <button className="text-gold-400 font-bold text-sm uppercase flex items-center gap-2 hover:text-white transition-colors tracking-widest border-b border-transparent hover:border-white pb-1 w-fit">
-                      View Detailed Statistics <ArrowRightIcon />
-                   </button>
                 </div>
              </div>
 
@@ -1237,7 +916,10 @@ const TestimonialsSection = () => {
                  <div className="relative z-10">
                    <h3 className="text-3xl font-serif font-bold mb-4">Share Your Story</h3>
                    <p className="text-blue-100 mb-8 font-light text-lg">If you've been approved, inspire others! You'll receive a 10% discount on future services.</p>
-                   <button className="px-8 py-4 bg-white text-blue-700 font-bold rounded-xl shadow-lg hover:bg-blue-50 transition-colors flex items-center justify-center w-fit uppercase tracking-wide text-sm transform hover:-translate-y-1">
+                   <button 
+                     onClick={onOpenModal}
+                     className="px-8 py-4 bg-white text-blue-700 font-bold rounded-xl shadow-lg hover:bg-blue-50 transition-colors flex items-center justify-center w-fit uppercase tracking-wide text-sm transform hover:-translate-y-1"
+                   >
                       Submit Your Story
                    </button>
                 </div>
@@ -1248,718 +930,7 @@ const TestimonialsSection = () => {
   );
 };
 
-// --- Refactored Eligibility & New Sections ---
-
-const FaqSection = () => {
-    const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-    const toggleFaq = (index: number) => {
-        setOpenFaq(openFaq === index ? null : index);
-    };
-
-    const faqData = [
-        {
-        q: "How many countries are eligible?",
-        a: <>
-            <p>The list of eligible countries is significant and includes most EU nations, USA, Canada, Australia, Japan, New Zealand, South Korea, and others.</p>
-            <p className="mt-2">The exact list is determined by Russian authorities and subject to change. Always confirm your country's current eligibility with your nearest Russian consulate or official sources.</p>
-            <p className="mt-2 font-bold text-royal-700">[CHECK CONSULATE WEBSITE FOR CURRENT LIST]</p>
-        </>
-        },
-        {
-        q: "What if my country isn't currently eligible?",
-        a: <>
-            <p>Requirements may change. We recommend:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Contact your nearest Russian consulate for official information</li>
-                <li>Subscribe for updates</li>
-                <li>Follow official government announcements</li>
-            </ul>
-            <p className="mt-2">Your country could be added in the future.</p>
-        </>
-        },
-        {
-        q: "How long does the entire process take?",
-        a: <>
-            <p>Typically approximately 6 months from start to approval:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Document preparation: 2-4 weeks</li>
-                <li>Visa application: 1-2 weeks</li>
-                <li>Visa processing: Varies by consulate</li>
-                <li>Travel to Russia: 1-2 weeks</li>
-                <li>TRP application: 2-4 weeks</li>
-                <li>TRP processing: Typically up to 4-4.5 months</li>
-            </ul>
-            <p className="mt-2 font-bold text-royal-700">Important: Timelines can vary based on individual circumstances, consulate workload, and completeness of documentation.</p>
-        </>
-        },
-        {
-        q: "Can I bring my family with me?",
-        a: <>
-            <p>Yes! Your spouse and children can apply for TRP through the same pathway.</p>
-            <p className="mt-2">Each family member receives:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Their own entry visa</li>
-                <li>Their own 3-year TRP</li>
-                <li>The same work rights and privileges</li>
-            </ul>
-            <p className="mt-2">Children automatically get access to schools and healthcare.</p>
-        </>
-        },
-        {
-        q: "Do I need to speak Russian?",
-        a: <>
-            <p>No, not required for the initial TRP application!</p>
-            <p className="mt-2">This is one of the major advantages—you do NOT need to pass the Russian language exam for your first TRP.</p>
-            <p className="mt-2">What's recommended:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Start learning basic Russian BEFORE you arrive</li>
-                <li>Continue studying in Russia (very affordable!)</li>
-                <li>You have 3 years before language is needed for permanent residency</li>
-            </ul>
-            <p className="mt-2">Russian is manageable to learn with motivation and available resources.</p>
-        </>
-        },
-        {
-        q: "How much does everything cost?",
-        a: <>
-            <p>Approximate cost breakdown:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Documents and apostilles: $50-200</li>
-                <li>Consular visa fee: $80-200</li>
-                <li>Flight to Russia: $900-2,500</li>
-                <li>Accommodation (initial stay): $200-500</li>
-                <li>Medical exam: $160-320</li>
-                <li>Document translations: $50-150</li>
-                <li>State fee (TRP): $20</li>
-                <li>Miscellaneous: $100-250</li>
-            </ul>
-            <p className="mt-2 font-bold text-royal-700">TOTAL: $1,560-4,140 (approximate)</p>
-            <p className="mt-1">Plus our guide: $99 (one-time, lifetime access with updates)</p>
-            <p className="mt-1">For complex cases, consulting services available.</p>
-            <p className="mt-2 text-xs italic">Note: Actual costs vary by country of residence, personal circumstances, and choices made.</p>
-        </>
-        },
-        {
-        q: "What's your approval rate?",
-        a: <>
-            <p>High approval rates occur when documentation is complete and correct.</p>
-            <p className="mt-2">Common reasons for complications:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Incomplete documents</li>
-                <li>Name mismatches across documents</li>
-                <li>Medical examination issues</li>
-                <li>Issues with background checks</li>
-            </ul>
-            <p className="mt-2">Our guide helps prevent most common documentation mistakes.</p>
-        </>
-        },
-        {
-        q: "Can I work in Russia with TRP?",
-        a: <>
-            <p>Yes! This is a major advantage.</p>
-            <p className="mt-2">You can:</p>
-            <ul className="list-none mt-2 space-y-1">
-                <li>✓ Work as an employee (no extra work permits needed)</li>
-                <li>✓ Start a business (as individual entrepreneur/IP)</li>
-                <li>✓ Freelance (remote work for international clients)</li>
-                <li>✓ Hire employees</li>
-                <li>✓ Transfer income (within legal limits)</li>
-            </ul>
-            <p className="mt-2">No additional permits or labor contracts with migration required (beyond standard employment requirements).</p>
-        </>
-        },
-        {
-        q: "What happens after 3 years of TRP?",
-        a: <>
-            <p>You have several options:</p>
-            <div className="mt-3 space-y-3">
-                <div>
-                    <strong className="block text-slate-800">Option 1: Apply for permanent residency</strong>
-                    <ul className="list-disc pl-5 text-xs text-slate-500 mt-1">
-                    <li>Extended duration</li>
-                    <li>Pathway to citizenship</li>
-                    <li>More rights than TRP</li>
-                    </ul>
-                </div>
-                <div>
-                    <strong className="block text-slate-800">Option 2: Renew TRP for another 3 years</strong>
-                    <ul className="list-disc pl-5 text-xs text-slate-500 mt-1">
-                    <li>Standard process available</li>
-                    <li>Stay in Russia another 3 years</li>
-                    </ul>
-                </div>
-                <div>
-                    <strong className="block text-slate-800">Option 3: Apply for citizenship</strong>
-                    <ul className="list-disc pl-5 text-xs text-slate-500 mt-1">
-                    <li>Typically requires meeting residency requirements</li>
-                    <li>Full rights of Russian citizen</li>
-                    </ul>
-                </div>
-            </div>
-            <p className="mt-3">Consult with local authorities about specific requirements and timelines for your situation.</p>
-        </>
-        },
-        {
-        q: "Is this related to politics?",
-        a: <>
-            <p>The decree is designed for individuals who share traditional values and who seek an alternative to their current country.</p>
-            <p className="mt-2">Requirements focus on:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Sharing traditional values</li>
-                <li>Honest about your motivations</li>
-                <li>Meeting documentation requirements</li>
-            </ul>
-            <p className="mt-2">It does NOT require political activism or involvement in Russia. Simply residency based on shared values and eligibility.</p>
-        </>
-        },
-        {
-        q: "Will I lose my original citizenship?",
-        a: <>
-            <p>No! Obtaining Russian residency does not automatically affect your original citizenship.</p>
-            <p className="mt-2">However:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Some countries have specific dual citizenship policies (check yours)</li>
-                <li>If you later apply for Russian citizenship, you may face dual citizenship questions</li>
-                <li>Consult your home consulate for specific rules</li>
-            </ul>
-            <p className="mt-2">Russian TRP and permanent residency do NOT require renouncing your original citizenship.</p>
-        </>
-        },
-        {
-        q: "What job opportunities are available?",
-        a: <>
-            <p>Many options for foreign residents:</p>
-            <div className="mt-3 space-y-3">
-                <div>
-                    <div className="flex justify-between items-baseline font-bold text-slate-800">
-                        <span>English teaching</span>
-                        <span className="text-sm text-green-600">$450-900/month</span>
-                    </div>
-                    <p className="text-xs text-slate-500">High demand. Schools, private lessons, online. TEFL sometimes required.</p>
-                </div>
-                <div>
-                    <div className="flex justify-between items-baseline font-bold text-slate-800">
-                        <span>IT/Programming</span>
-                        <span className="text-sm text-green-600">$1,100-3,300+/month</span>
-                    </div>
-                    <p className="text-xs text-slate-500">Russian companies, startups. Remote for international companies (USD!). Python, JavaScript, Go, etc.</p>
-                </div>
-                <div>
-                    <div className="flex justify-between items-baseline font-bold text-slate-800">
-                        <span>Translation & writing</span>
-                        <span className="text-sm text-green-600">$650-1,650/month</span>
-                    </div>
-                    <p className="text-xs text-slate-500">Translation bureaus, Copywriting, English editing.</p>
-                </div>
-                <div>
-                    <div className="flex justify-between items-baseline font-bold text-slate-800">
-                        <span>Consulting</span>
-                        <span className="text-sm text-green-600">$55-165/hour</span>
-                    </div>
-                    <p className="text-xs text-slate-500">Business, marketing, finance consulting. Expert services.</p>
-                </div>
-                <div>
-                    <div className="flex justify-between items-baseline font-bold text-slate-800">
-                        <span>Remote work</span>
-                        <span className="text-sm text-green-600">Paid in home currency</span>
-                    </div>
-                    <p className="text-xs text-slate-500">Continue with your current employer. Earn strong currency, spend weak rubles. Cost of living 50-70% lower than West.</p>
-                </div>
-                <div>
-                    <div className="flex justify-between items-baseline font-bold text-slate-800">
-                        <span>Content creation</span>
-                        <span className="text-sm text-green-600">$350-1,100+/month</span>
-                    </div>
-                    <p className="text-xs text-slate-500">YouTube, blogs, podcasts. Online teaching. Consulting.</p>
-                </div>
-            </div>
-        </>
-        },
-        {
-        q: "What's the monthly cost of living?",
-        a: <>
-            <p>Depends on city and lifestyle:</p>
-            <div className="mt-3 grid sm:grid-cols-3 gap-4">
-                <div className="bg-slate-50 p-3 rounded">
-                    <strong className="block text-slate-800 mb-1">Moscow</strong>
-                    <ul className="text-xs text-slate-600 space-y-1">
-                        <li>1-bed apt: $330-550</li>
-                        <li>Groceries: $165-220</li>
-                        <li>Transport: $6</li>
-                        <li>Entertainment: $110-220</li>
-                        <li className="font-bold border-t border-slate-200 pt-1 mt-1">TOTAL: $611-996</li>
-                    </ul>
-                </div>
-                <div className="bg-slate-50 p-3 rounded">
-                    <strong className="block text-slate-800 mb-1">St. Petersburg</strong>
-                    <ul className="text-xs text-slate-600 space-y-1">
-                        <li>1-bed apt: $220-385</li>
-                        <li>Groceries: $130-200</li>
-                        <li>Transport: $6</li>
-                        <li>Entertainment: $90-165</li>
-                        <li className="font-bold border-t border-slate-200 pt-1 mt-1">TOTAL: $446-756</li>
-                    </ul>
-                </div>
-                <div className="bg-slate-50 p-3 rounded">
-                    <strong className="block text-slate-800 mb-1">Kazan/Novosibirsk</strong>
-                    <ul className="text-xs text-slate-600 space-y-1">
-                        <li>1-bed apt: $110-220</li>
-                        <li>Groceries: $110-165</li>
-                        <li>Transport: $4</li>
-                        <li>Entertainment: $55-110</li>
-                        <li className="font-bold border-t border-slate-200 pt-1 mt-1">TOTAL: $279-499</li>
-                    </ul>
-                </div>
-            </div>
-            <p className="mt-3 font-medium">Conclusion: Comfortable living on $650-1,100/month is very achievable, especially with remote work in foreign currency.</p>
-        </>
-        },
-        {
-        q: "Is Russia safe for foreigners?",
-        a: <>
-            <p>Major cities are generally safe:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li><strong>Moscow:</strong> Urban environment like London or New York</li>
-                <li><strong>St. Petersburg:</strong> Safe, international</li>
-                <li><strong>Kazan, Yekaterinburg:</strong> Safe and welcoming</li>
-            </ul>
-            <p className="mt-3 font-bold">Practical tips:</p>
-            <ul className="list-disc pl-5 mt-1 space-y-1">
-                <li>Avoid political disputes/arguments</li>
-                <li>Normal urban safety practices apply</li>
-                <li>Watch for pickpockets in crowded areas</li>
-                <li>Learn basic Russian for communication</li>
-                <li>Choose established neighborhoods</li>
-            </ul>
-            <p className="mt-2">Our guide includes detailed city information and neighborhood recommendations.</p>
-        </>
-        },
-        {
-        q: "Can I buy property in Russia?",
-        a: <>
-            <p>Property ownership depends on your residency status:</p>
-            <div className="mt-3 space-y-3">
-                <div>
-                    <strong className="block text-slate-800">With TRP:</strong>
-                    <ul className="list-none mt-1 space-y-1 text-sm">
-                    <li>✓ Rent apartments and houses</li>
-                    <li>✗ Buy real estate (generally restricted)</li>
-                    <li>✗ Own land (generally restricted)</li>
-                    </ul>
-                </div>
-                <div>
-                    <strong className="block text-slate-800">With permanent residency:</strong>
-                    <ul className="list-none mt-1 space-y-1 text-sm">
-                    <li>✓ Can buy 1 house/apartment</li>
-                    <li>✓ Can own a land plot (limited size)</li>
-                    <li>✓ More rights but still with restrictions</li>
-                    </ul>
-                </div>
-                <div>
-                    <strong className="block text-slate-800">With Russian citizenship:</strong>
-                    <ul className="list-none mt-1 space-y-1 text-sm">
-                    <li>✓ Full ownership rights like any citizen</li>
-                    </ul>
-                </div>
-            </div>
-            <p className="mt-3">Recommendation: Rent initially with your TRP, explore permanent residency pathway after 3 years if you want to buy.</p>
-        </>
-        },
-        {
-        q: "How is healthcare?",
-        a: <>
-            <p>Two-system approach:</p>
-            <div className="mt-3 grid sm:grid-cols-2 gap-4">
-                <div>
-                    <strong className="block text-slate-800">State healthcare</strong>
-                    <ul className="list-disc pl-5 mt-1 text-sm text-slate-600">
-                        <li>Polyclinics (outpatient care)</li>
-                        <li>Hospitals</li>
-                        <li>Emergency services</li>
-                        <li>Free or minimal cost</li>
-                        <li>Quality varies</li>
-                        <li>May have wait times</li>
-                    </ul>
-                </div>
-                <div>
-                    <strong className="block text-slate-800">Private healthcare</strong>
-                    <ul className="list-disc pl-5 mt-1 text-sm text-slate-600">
-                        <li>Clinics in major cities</li>
-                        <li>$55-220 for consultation</li>
-                        <li>Generally modern and professional</li>
-                        <li>Faster service</li>
-                    </ul>
-                </div>
-            </div>
-            <p className="mt-3 font-bold">Our advice:</p>
-            <ul className="list-disc pl-5 mt-1 space-y-1">
-                <li>Use state system for emergencies and basic care</li>
-                <li>Private system for regular care (very affordable)</li>
-                <li>Our guide includes clinic recommendations by city</li>
-            </ul>
-        </>
-        },
-        {
-        q: "What's included in the $99 guide?",
-        a: <>
-            <p>Complete package includes:</p>
-            <ul className="list-none mt-2 space-y-1 font-medium">
-                <li>✓ Step-by-step handbook (PDF)</li>
-                <li>✓ Downloadable checklists (documents, visa, TRP)</li>
-                <li>✓ Sample letters and forms (ready to use)</li>
-                <li>✓ Country-specific instructions</li>
-                <li>✓ Video tutorials</li>
-                <li>✓ Consulate database (contact info)</li>
-                <li>✓ Translator and lawyer directory</li>
-                <li>✓ Housing resources</li>
-                <li>✓ Email support</li>
-                <li>✓ LIFETIME updates (FREE)</li>
-            </ul>
-            <p className="mt-2 text-green-700 font-bold">One purchase—lifetime access with regular updates.</p>
-        </>
-        },
-        {
-        q: "Do you offer additional paid services?",
-        a: <>
-            <p>Yes, for those who need personalized help:</p>
-            <div className="mt-3 space-y-3">
-                <div>
-                    <strong className="block text-slate-800">1. One-on-one consultation ($199)</strong>
-                    <p className="text-sm text-slate-600">60-minute session. Answer your specific questions. Review your documents. Personalized guidance.</p>
-                </div>
-                <div>
-                    <strong className="block text-slate-800">2. Document preparation ($500)</strong>
-                    <p className="text-sm text-slate-600">Professional document preparation. Translation coordination. Apostille assistance. FMIV formatting.</p>
-                </div>
-                <div>
-                    <strong className="block text-slate-800">3. Full-service management ($2,000-3,000)</strong>
-                    <p className="text-sm text-slate-600">Complete process management. Application submission. Status tracking. Email support throughout.</p>
-                </div>
-            </div>
-            <p className="mt-3">Are they needed? Most people succeed with the guide. Additional services for complex cases or to save time.</p>
-        </>
-        },
-        {
-        q: "What about annual compliance and follow-ups?",
-        a: <>
-            <p className="font-bold">Important: After receiving your TRP, you'll need to:</p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Maintain your legal residency status</li>
-                <li>Follow local registration requirements</li>
-                <li>Comply with income reporting (if applicable)</li>
-                <li>Keep your documentation current</li>
-                <li>Follow any annual compliance procedures</li>
-            </ul>
-            <p className="mt-2">Our guide and updated materials cover these requirements. It's important to stay informed about current regulations through official channels.</p>
-        </>
-        }
-    ];
-
-    return (
-        <section className="py-32 bg-white" id="faq">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl font-serif font-bold text-slate-900 uppercase tracking-tight">FREQUENTLY ASKED QUESTIONS</h2>
-                    <div className="w-24 h-1 bg-royal-200 mx-auto mt-6 rounded-full"></div>
-                </div>
-                <div className="space-y-4">
-                    {faqData.map((item, i) => (
-                        <div key={i} className="border border-slate-200 rounded-2xl bg-white overflow-hidden shadow-soft transition-all hover:shadow-md">
-                            <button
-                                onClick={() => toggleFaq(i)}
-                                className="w-full flex items-center justify-between p-6 text-left bg-white hover:bg-slate-50 transition-colors focus:outline-none"
-                            >
-                                <span className="font-bold text-slate-900 pr-8 text-base md:text-lg font-serif">{item.q}</span>
-                                <span className="text-royal-400 flex-shrink-0">
-                                    {openFaq === i ? <MinusIcon /> : <PlusIcon />}
-                                </span>
-                            </button>
-                            {openFaq === i && (
-                                <div className="p-6 pt-0 text-slate-600 text-sm leading-relaxed border-t border-slate-100 mt-0 bg-slate-50/50">
-                                    <div className="pt-4">{item.a}</div>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-};
-
-interface ComparisonRow {
-  criteria: string;
-  svv: string | boolean;
-  other: string | boolean;
-}
-
-interface ComparisonTableProps {
-  title: string;
-  otherName: string;
-  rows: ComparisonRow[];
-  verdict: string;
-}
-
-const ComparisonTable: React.FC<ComparisonTableProps> = ({ title, otherName, rows, verdict }) => (
-  <div className="mb-16 last:mb-0 bg-white rounded-[2rem] shadow-soft border border-slate-100 overflow-hidden">
-    <div className="p-8 border-b border-slate-100 bg-slate-50/50">
-        <h3 className="text-2xl font-serif font-bold text-slate-800 flex items-center gap-3">
-            <span className="w-1.5 h-8 bg-royal-600 rounded-full"></span>
-            {title}
-        </h3>
-    </div>
-    <div className="overflow-x-auto p-4 md:p-8">
-      <table className="w-full text-sm text-left border-collapse min-w-[600px] rounded-xl overflow-hidden">
-        <thead>
-          <tr className="bg-slate-100 text-slate-700">
-            <th className="p-5 font-bold w-1/3 text-xs uppercase tracking-widest">Criteria</th>
-            <th className="p-5 font-bold bg-royal-50 text-royal-900 w-1/3 text-xs uppercase tracking-widest border-l border-r border-royal-100">Shared Values Visa</th>
-            <th className="p-5 font-bold text-slate-500 w-1/3 text-xs uppercase tracking-widest">{otherName}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, idx) => (
-            <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-              <td className="p-5 font-bold text-slate-900">{row.criteria}</td>
-              <td className="p-5 bg-royal-50/30 text-slate-800 font-medium border-l border-r border-slate-100">
-                 {typeof row.svv === 'boolean' ? (row.svv ? <span className="text-green-600 font-bold bg-green-50 px-2 py-1 rounded">✓ YES</span> : <span className="text-red-500 font-bold bg-red-50 px-2 py-1 rounded">✗ NO</span>) : 
-                 (row.svv.startsWith('✓') ? <span className="text-green-600 font-bold">{row.svv}</span> : row.svv)}
-              </td>
-              <td className="p-5 text-slate-500">
-                 {typeof row.other === 'boolean' ? (row.other ? <span className="text-green-600 font-bold bg-green-50 px-2 py-1 rounded">✓ YES</span> : <span className="text-red-500 font-bold bg-red-50 px-2 py-1 rounded">✗ NO</span>) : 
-                 (row.other.startsWith('✗') ? <span className="text-red-500 font-bold">{row.other}</span> : (row.other.startsWith('✓') ? <span className="text-green-600 font-bold">{row.other}</span> : row.other))}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    <div className="p-6 bg-royal-900 text-white flex items-start md:items-center gap-4 mx-4 md:mx-8 mb-8 rounded-2xl shadow-lg">
-      <div className="p-2 bg-white/10 rounded-lg"><StarIcon /></div>
-      <div>
-         <strong className="block text-gold-400 uppercase text-xs tracking-widest mb-1">Expert Verdict</strong> 
-         <span className="text-slate-100 font-light leading-snug">{verdict}</span>
-      </div>
-    </div>
-  </div>
-);
-
-const ComparisonSection = () => {
-    const comparisons: ComparisonTableProps[] = [
-      {
-        title: "VS. Traditional TRP (Quota-Based)",
-        otherName: "Traditional TRP",
-        rows: [
-          { criteria: "Quota required?", svv: "✓ NO", other: "✗ YES (10.5k/yr)" },
-          { criteria: "Language exam?", svv: "✓ NO (initially)", other: "✗ YES (required)" },
-          { criteria: "Application process", svv: "✓ STREAMLINED", other: "✗ COMPLEX" },
-          { criteria: "Timeline", svv: "✓ ~6 months", other: "✗ 8-12+ months" },
-          { criteria: "Entry path", svv: "✓ DIRECT", other: "✗ Needs invitation" },
-          { criteria: "Success rate", svv: "✓ High (w/complete docs)", other: "? Variable" },
-          { criteria: "Cost", svv: "✓ $1.1-2.7k", other: "✗ $1.6-4.4k" },
-          { criteria: "Work rights", svv: "✓ YES", other: "✓ YES" },
-          { criteria: "Family access", svv: "✓ Available", other: "✓ Available" },
-          { criteria: "Path to citizenship", svv: "✓ YES", other: "✓ YES" },
-          { criteria: "Values requirement", svv: "✓ YES", other: "✗ No" },
-        ],
-        verdict: "If you meet eligibility and share traditional values, Shared Values pathway is more efficient than traditional TRP."
-      },
-      {
-          title: "VS. Student Visa",
-          otherName: "Student Visa",
-          rows: [
-              { criteria: "Duration", svv: "3 years (TRP)", other: "1 year (typical)" },
-              { criteria: "Cost", svv: "$1.1-2.7k", other: "$550-1.6k + university" },
-              { criteria: "Work rights", svv: "✓ YES (full)", other: "✗ LIMITED (20h/week)" },
-              { criteria: "Requires school?", svv: "NO", other: "YES (expensive!)" },
-              { criteria: "Bring family?", svv: "YES", other: "NO" },
-              { criteria: "Direct path to residency", svv: "✓ YES (3 yrs)", other: "✗ INDIRECT" },
-              { criteria: "Permanent residency", svv: "✓ After 3 yrs", other: "✗ Need new path" },
-              { criteria: "Renewal", svv: "SIMPLE", other: "COMPLEX" },
-          ],
-          verdict: "If you don't want to study and pay tuition, Shared Values is the better residency path."
-      },
-      {
-          title: "VS. Golden Visa",
-          otherName: "Golden Visa",
-          rows: [
-              { criteria: "Initial cost", svv: "$1.1-2.7k", other: "$220k+ investment" },
-              { criteria: "Duration", svv: "3 years (TRP)", other: "1-3 years" },
-              { criteria: "Investment required?", svv: "NO", other: "YES (required)" },
-              { criteria: "Work rights", svv: "✓ YES", other: "✓ YES" },
-              { criteria: "Bring family?", svv: "YES", other: "YES" },
-              { criteria: "Path to citizenship", svv: "✓ YES", other: "✓ YES" },
-              { criteria: "If rejected", svv: "✓ Minimal loss", other: "✗ Investment at risk" },
-              { criteria: "Accessibility", svv: "✓ For most people", other: "✗ Wealthy only" },
-          ],
-          verdict: "If you don't have $220k+ to invest, Shared Values is your accessible residency path. If you have capital, compare ROI carefully."
-      }
-    ];
-  
-    return (
-      <section className="py-32 bg-slate-50/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">HOW SHARED VALUES VISA COMPARES</h2>
-            <div className="w-24 h-1 bg-royal-200 mx-auto mt-6 rounded-full"></div>
-          </div>
-          <div className="max-w-4xl mx-auto">
-              {comparisons.map((c, i) => (
-                <ComparisonTable 
-                  key={i} 
-                  title={c.title}
-                  otherName={c.otherName}
-                  rows={c.rows}
-                  verdict={c.verdict}
-                />
-              ))}
-          </div>
-        </div>
-      </section>
-    );
-};
-  
-const PricingSection = () => {
-    return (
-        <section className="py-32 bg-white border-t border-slate-100">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-20">
-                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">START YOUR TRANSFORMATION TODAY</h2>
-                    <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">Small investment, life-changing return.</p>
-                </div>
-
-                <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
-                    {/* Main Offer */}
-                    <div className="lg:col-span-2 bg-white rounded-[2.5rem] shadow-2xl shadow-royal-900/10 border-2 border-royal-600 overflow-hidden relative transform md:-translate-y-4">
-                        <div className="absolute top-0 right-0 bg-gradient-to-l from-royal-600 to-royal-500 text-white text-xs font-bold px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-md">MOST POPULAR</div>
-                        <div className="p-10 md:p-12">
-                            <div className="flex items-center gap-6 mb-8">
-                                <div className="w-20 h-20 bg-royal-50 text-royal-700 rounded-2xl flex items-center justify-center shrink-0 border border-royal-100">
-                                    <BookOpenIcon />
-                                </div>
-                                <div>
-                                    <h3 className="text-3xl font-serif font-bold text-slate-900">SHARED VALUES VISA GUIDE</h3>
-                                    <p className="text-slate-600 mt-1 font-light text-lg">Complete step-by-step handbook for applying to Russian residency.</p>
-                                </div>
-                            </div>
-                            
-                            <div className="grid md:grid-cols-2 gap-10 mb-10">
-                                <div>
-                                    <h4 className="font-bold text-xs text-royal-900 uppercase tracking-widest mb-6 border-b border-royal-100 pb-2">What's Included:</h4>
-                                    <ul className="space-y-4 text-sm text-slate-700">
-                                        {[
-                                            "Step-by-step handbook (PDF)",
-                                            "Downloadable checklists (documents, visa, TRP)",
-                                            "Sample letters and forms (ready to use)",
-                                            "Country-specific instructions",
-                                            "Video tutorials",
-                                            "Consulate database (contact info)",
-                                            "Translator/lawyer directory",
-                                            "Housing resources and marketplace",
-                                            "Email support (priority)",
-                                            "LIFETIME updates (FREE)"
-                                        ].map((item, i) => (
-                                            <li key={i} className="flex items-start gap-3">
-                                                <span className="text-green-500 font-bold bg-green-50 rounded-full p-0.5 mt-0.5 text-xs">✓</span> <span className="leading-snug">{item}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <div className="bg-gradient-to-b from-royal-50 to-white p-8 rounded-3xl border border-royal-100 flex flex-col justify-center text-center shadow-inner">
-                                    <div className="text-slate-400 text-sm font-semibold mb-2 line-through">Consultant Fee: $500+</div>
-                                    <div className="text-6xl font-serif font-bold text-royal-900 mb-2">$99</div>
-                                    <div className="text-green-700 font-bold text-xs mb-8 bg-green-100 py-1.5 px-4 rounded-full mx-auto w-fit border border-green-200 uppercase tracking-wide">YOU SAVE 80%+</div>
-                                    
-                                    <button className="w-full py-5 bg-royal-700 text-white font-bold rounded-xl hover:bg-royal-800 transition-all shadow-lg hover:shadow-royal-700/30 flex items-center justify-center gap-3 uppercase tracking-wider text-sm mb-4 transform hover:-translate-y-1">
-                                        Buy Now - Instant Access
-                                    </button>
-                                    <button className="text-slate-500 text-xs hover:text-royal-600 underline decoration-slate-300 underline-offset-4">Or pay monthly: 3 × $39</button>
-                                </div>
-                            </div>
-
-                            <div className="bg-gold-50/50 rounded-2xl p-6 border border-gold-200 mb-8">
-                                <h4 className="font-bold text-gold-800 text-sm mb-4 uppercase tracking-wide flex items-center gap-2">🎁 Bonus Offers (Included Free):</h4>
-                                <div className="grid sm:grid-cols-2 gap-3 text-sm text-slate-700">
-                                    <div className="flex items-center gap-2"><span className="text-gold-500 font-bold">+</span> Budget Planning Template</div>
-                                    <div className="flex items-center gap-2"><span className="text-gold-500 font-bold">+</span> Email Template Library</div>
-                                    <div className="flex items-center gap-2"><span className="text-gold-500 font-bold">+</span> Housing Marketplace Access</div>
-                                    <div className="flex items-center gap-2"><span className="text-gold-500 font-bold">+</span> 3-month Priority Support</div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400 pt-6 border-t border-slate-100">
-                                <div className="flex items-center gap-2 font-medium">
-                                    <ShieldCheckIcon /> 
-                                    <span>30-Day Money-Back Guarantee. No questions asked.</span>
-                                </div>
-                                <div className="flex items-center gap-4 opacity-70 font-serif font-bold tracking-widest">
-                                    <span>VISA</span><span>MASTERCARD</span><span>PAYPAL</span><span>CRYPTO</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Alternatives */}
-                    <div className="space-y-6 lg:mt-8">
-                        <div className="bg-royal-900 text-white rounded-[2rem] p-8 shadow-2xl relative overflow-hidden border border-white/10">
-                             <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500 rounded-full mix-blend-overlay filter blur-[60px] opacity-30"></div>
-                             <div className="relative z-10">
-                                <div className="flex items-center gap-2 mb-4 text-gold-400 font-bold text-[10px] uppercase tracking-widest border border-gold-400/30 rounded-full px-3 py-1 w-fit">
-                                    <ClockIcon /> Limited Time Offer
-                                </div>
-                                <h3 className="text-2xl font-serif font-bold mb-3">Special Pricing</h3>
-                                <p className="text-blue-200 text-sm mb-6 font-light">Reduced pricing available until December 31, 2025.</p>
-                                <div className="text-xs space-y-2 text-blue-300 border-t border-white/10 pt-4">
-                                    <p className="uppercase tracking-widest font-bold text-[10px]">Why act now?</p>
-                                    <ul className="list-disc pl-4 space-y-1">
-                                        <li>Fees may change</li>
-                                        <li>Avoid processing delays</li>
-                                    </ul>
-                                </div>
-                             </div>
-                        </div>
-
-                        <div className="bg-white rounded-[2rem] shadow-soft border border-slate-100 p-8 hover:shadow-lg transition-all">
-                            <h3 className="font-serif font-bold text-slate-900 flex items-center gap-3 mb-6 text-lg">
-                                <div className="p-2 bg-royal-50 rounded-lg text-royal-600"><BriefcaseIcon /></div>
-                                Premium Consulting
-                            </h3>
-                            <div className="space-y-6">
-                                <div>
-                                    <div className="flex justify-between items-baseline mb-1">
-                                        <strong className="text-sm text-slate-800">One-on-One Consultation</strong>
-                                        <span className="font-bold text-royal-800 font-serif">$199</span>
-                                    </div>
-                                    <p className="text-xs text-slate-500">60-min video call. Document review. Personalized guidance.</p>
-                                </div>
-                                <div className="border-t border-slate-100 pt-4">
-                                    <div className="flex justify-between items-baseline mb-1">
-                                        <strong className="text-sm text-slate-800">Document Preparation</strong>
-                                        <span className="font-bold text-royal-800 font-serif">$500</span>
-                                    </div>
-                                    <p className="text-xs text-slate-500">Professional prep, translation coordination, apostille help.</p>
-                                </div>
-                                <div className="border-t border-slate-100 pt-4">
-                                    <div className="flex justify-between items-baseline mb-1">
-                                        <strong className="text-sm text-slate-800">Full Management</strong>
-                                        <span className="font-bold text-royal-800 font-serif">$2k+</span>
-                                    </div>
-                                    <p className="text-xs text-slate-500">Complete process handling. We do everything for you.</p>
-                                </div>
-                                <button className="w-full py-4 border border-royal-200 text-royal-700 font-bold rounded-xl hover:bg-royal-50 hover:border-royal-300 transition-all text-sm uppercase tracking-wide">
-                                    Schedule Consultation
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-};
-
-const EligibilitySection = () => {
+const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
   const [country, setCountry] = useState('');
   const [sharesValues, setSharesValues] = useState<string | null>(null);
   const [validPassport, setValidPassport] = useState<string | null>(null);
@@ -2077,9 +1048,9 @@ const EligibilitySection = () => {
                                     </div>
                                     <h3 className="text-3xl font-serif font-bold text-green-800 mb-4">YOU QUALIFY!</h3>
                                     <p className="text-green-700 mb-10 max-w-md mx-auto text-lg leading-relaxed">Great news! You are likely eligible for the Shared Values Visa based on your responses. We recommend confirming with your local consulate.</p>
-                                    <button className="px-10 py-5 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/20 w-full md:w-auto uppercase tracking-wide hover:-translate-y-1">
+                                    <a href="https://movetorussia.com/get-access/" className="px-10 py-5 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/20 w-full md:w-auto uppercase tracking-wide hover:-translate-y-1 inline-block">
                                         GET YOUR FULL GUIDE ($99)
-                                    </button>
+                                    </a>
                                     <button onClick={() => setResult(null)} className="block mt-6 text-sm text-green-600 hover:text-green-800 hover:underline w-full font-medium">Check again</button>
                                 </div>
                             ) : (
@@ -2089,8 +1060,11 @@ const EligibilitySection = () => {
                                     </div>
                                     <h3 className="text-3xl font-serif font-bold text-amber-800 mb-4">CHECK WITH CONSULATE</h3>
                                     <p className="text-amber-700 mb-10 max-w-md mx-auto text-lg leading-relaxed">Your situation requires official verification. Your country might have specific requirements or exceptions.</p>
-                                    <button className="px-10 py-5 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition-all shadow-lg w-full md:w-auto uppercase tracking-wide hover:-translate-y-1">
-                                        FIND YOUR NEAREST CONSULATE
+                                    <button 
+                                      onClick={onOpenModal}
+                                      className="px-10 py-5 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition-all shadow-lg w-full md:w-auto uppercase tracking-wide hover:-translate-y-1"
+                                    >
+                                        SCHEDULE FREE CONSULTATION
                                     </button>
                                     <button onClick={() => setResult(null)} className="block mt-6 text-sm text-amber-700 hover:text-amber-900 hover:underline w-full font-medium">Check again</button>
                                 </div>
@@ -2148,7 +1122,12 @@ const EligibilitySection = () => {
                  IMPORTANT NOTE: The list of eligible countries is determined by Russian authorities (Decree No. 702) and coincides with the list of foreign states implementing unfriendly policies. This list may change. Eligibility must always be confirmed with your nearest Russian consulate.
              </p>
              <div className="text-center mt-8">
-                 <button className="text-royal-600 font-bold text-xs uppercase border-b-2 border-royal-200 hover:border-royal-600 transition-all pb-1 hover:text-royal-800 tracking-wider">Contact Your Consulate For Official List</button>
+                 <button 
+                   onClick={onOpenModal}
+                   className="text-royal-600 font-bold text-xs uppercase border-b-2 border-royal-200 hover:border-royal-600 transition-all pb-1 hover:text-royal-800 tracking-wider"
+                 >
+                   Ask Us About Your Country
+                 </button>
              </div>
         </div>
       </div>
@@ -2156,157 +1135,384 @@ const EligibilitySection = () => {
   );
 };
 
-const FinalCTASection = () => {
-  const [email, setEmail] = useState('');
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if(email) {
-       alert("Thank you! You've been subscribed to updates.");
-       setEmail('');
-    }
-  };
-
-  return (
-    <section className="py-32 bg-white border-t border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">
-            Ready to Take Control of Your Future?
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-20">
-            {/* Left Column */}
-            <div className="bg-royal-900 rounded-[2.5rem] p-12 text-white shadow-2xl flex flex-col items-center text-center relative overflow-hidden border border-white/10 group hover:scale-[1.02] transition-transform duration-300">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full mix-blend-overlay filter blur-[80px] opacity-30 animate-pulse"></div>
-                <div className="relative z-10 w-full">
-                    <h3 className="text-3xl font-serif font-bold mb-3 text-gold-400">START WITH THE GUIDE</h3>
-                    <div className="text-xl font-bold mb-4 opacity-80">$99 One-Time</div>
-                    <p className="text-blue-100 mb-10 font-light text-lg">Get instant access to the complete roadmap. Start TODAY.</p>
-                    <button className="px-8 py-5 bg-white text-royal-900 font-bold rounded-xl shadow-xl hover:bg-blue-50 transition-colors w-full uppercase tracking-widest flex items-center justify-center gap-3 text-sm">
-                        Purchase Now <ArrowRightIcon />
-                    </button>
-                    <div className="mt-8 flex flex-col gap-3 text-xs text-blue-200/60 uppercase tracking-wider font-bold">
-                        <span className="flex items-center justify-center gap-2"><ShieldCheckIcon /> 30-day money-back guarantee</span>
-                        <span className="flex items-center justify-center gap-2"><CheckCircleIcon /> All materials immediately available</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="bg-white rounded-[2.5rem] p-12 border border-slate-200 shadow-xl flex flex-col items-center text-center group hover:scale-[1.02] transition-transform duration-300">
-                <h3 className="text-3xl font-serif font-bold text-slate-900 mb-3">FREE ASSESSMENT</h3>
-                <div className="text-xl font-bold mb-4 text-slate-400">$0 Consultation</div>
-                <p className="text-slate-600 mb-10 font-light text-lg">Have questions about eligibility? Book a free consultation with our team.</p>
-                <button className="px-8 py-5 bg-slate-50 text-slate-900 font-bold rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors w-full uppercase tracking-widest flex items-center justify-center gap-3 text-sm">
-                    Book Now - Calendly <ExternalLinkIcon />
-                </button>
-                <div className="mt-8 flex flex-col gap-3 text-xs text-slate-400 uppercase tracking-wider font-bold">
-                    <span>No obligation. No pressure.</span>
-                    <span>Just honest guidance.</span>
-                </div>
-            </div>
-        </div>
-
-        {/* Hesitant Block */}
-        <div className="max-w-2xl mx-auto text-center bg-slate-50/50 rounded-3xl p-10 border border-slate-100">
-            <h3 className="text-xl font-bold text-slate-900 mb-3 font-serif">NOT READY YET?</h3>
-            <p className="text-slate-600 mb-8 font-light">Get free updates & information sent to your inbox:</p>
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-6">
-                <input 
-                    type="email" 
-                    placeholder="Your email address" 
-                    className="flex-1 px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-royal-500 outline-none bg-white transition-all shadow-sm"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="submit" className="px-8 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-colors uppercase text-xs tracking-widest shadow-md">
-                    Subscribe
-                </button>
-            </form>
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-[10px] text-slate-400 uppercase tracking-widest font-bold">
-                <span className="flex items-center gap-2">Occasional emails</span>
-                <span className="flex items-center gap-2">Unsubscribe anytime</span>
-                <span className="flex items-center gap-2">Bonus guide included</span>
-            </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Footer = () => {
+const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
     return (
-        <footer className="bg-royal-950 text-white pt-24 pb-12 border-t border-white/5 font-light">
+        <section className="py-32 bg-white border-t border-slate-100" id="pricing">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid md:grid-cols-4 gap-12 mb-20">
-                    <div>
-                        <h4 className="font-bold text-xs mb-8 text-gold-500 uppercase tracking-[0.2em]">About</h4>
-                        <ul className="space-y-4 text-slate-400 text-sm">
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">About Us</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Our Team</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Our Story</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Why We Do This</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Testimonials</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-xs mb-8 text-gold-500 uppercase tracking-[0.2em]">Resources</h4>
-                        <ul className="space-y-4 text-slate-400 text-sm">
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Visa Guide</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">FAQ</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Blog</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Video Library</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Glossary</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-xs mb-8 text-gold-500 uppercase tracking-[0.2em]">Legal</h4>
-                        <ul className="space-y-4 text-slate-400 text-sm">
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Terms of Service</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Privacy Policy</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Refund Policy</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Disclaimer</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors hover:underline decoration-gold-500 underline-offset-4">Cookie Policy</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-xs mb-8 text-gold-500 uppercase tracking-[0.2em]">Contact</h4>
-                        <ul className="space-y-4 text-slate-400 text-sm">
-                            <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-gold-500"></span> support@example.com</li>
-                            <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-gold-500"></span> Telegram: @example</li>
-                            <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-gold-500"></span> Calendly: example.com</li>
-                            <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-gold-500"></span> Office: Moscow & New York</li>
-                            <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-gold-500"></span> ☎️ +1-555-0123-456</li>
-                        </ul>
-                    </div>
+                <div className="text-center mb-20">
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">START YOUR TRANSFORMATION TODAY</h2>
+                    <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">Small investment, life-changing return.</p>
                 </div>
-                
-                <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
-                    <div className="text-slate-500 text-xs leading-relaxed">
-                        <p className="font-bold text-slate-300 uppercase tracking-wider mb-1">© 2025 Move to Russia | Shared Values Visa Guide</p>
-                        <p>All rights reserved.</p>
+
+                <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
+                    {/* Main Offer */}
+                    <div className="lg:col-span-2 bg-white rounded-[2.5rem] shadow-2xl shadow-royal-900/10 border-2 border-royal-600 overflow-hidden relative transform md:-translate-y-4">
+                        <div className="absolute top-0 right-0 bg-gradient-to-l from-royal-600 to-royal-500 text-white text-xs font-bold px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-md">MOST POPULAR</div>
+                        <div className="p-10 md:p-12">
+                            <div className="flex items-center gap-6 mb-8">
+                                <div className="w-20 h-20 bg-royal-50 text-royal-700 rounded-2xl flex items-center justify-center shrink-0 border border-royal-100">
+                                    <BookOpenIcon />
+                                </div>
+                                <div>
+                                    <h3 className="text-3xl font-serif font-bold text-slate-900">SHARED VALUES VISA GUIDE</h3>
+                                    <p className="text-slate-600 mt-1 font-light text-lg">Complete step-by-step handbook for applying to Russian residency.</p>
+                                </div>
+                            </div>
+                            
+                            <div className="grid md:grid-cols-2 gap-10 mb-10">
+                                <div>
+                                    <h4 className="font-bold text-xs text-royal-900 uppercase tracking-widest mb-6 border-b border-royal-100 pb-2">What's Included:</h4>
+                                    <ul className="space-y-4 text-sm text-slate-700">
+                                        {[
+                                            "Step-by-step handbook (PDF)",
+                                            "Downloadable checklists (documents, visa, TRP)",
+                                            "Sample letters and forms (ready to use)",
+                                            "Country-specific instructions",
+                                            "Video tutorials",
+                                            "Consulate database (contact info)",
+                                            "Translator/lawyer directory",
+                                            "Housing resources and marketplace",
+                                            "Email support (priority)",
+                                            "LIFETIME updates (FREE)"
+                                        ].map((item, i) => (
+                                            <li key={i} className="flex items-start gap-3">
+                                                <span className="text-green-500 font-bold bg-green-50 rounded-full p-0.5 mt-0.5 text-xs">✓</span> <span className="leading-snug">{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="bg-gradient-to-b from-royal-50 to-white p-8 rounded-3xl border border-royal-100 flex flex-col justify-center text-center shadow-inner">
+                                    <div className="text-slate-400 text-sm font-semibold mb-2 line-through">Consultant Fee: $500+</div>
+                                    <div className="text-6xl font-serif font-bold text-royal-900 mb-2">$99</div>
+                                    <div className="text-green-700 font-bold text-xs mb-8 bg-green-100 py-1.5 px-4 rounded-full mx-auto w-fit border border-green-200 uppercase tracking-wide">YOU SAVE 80%+</div>
+                                    
+                                    <a href="https://movetorussia.com/get-access/" className="w-full py-5 bg-royal-700 text-white font-bold rounded-xl hover:bg-royal-800 transition-all shadow-lg hover:shadow-royal-700/30 flex items-center justify-center gap-3 uppercase tracking-wider text-sm mb-4 transform hover:-translate-y-1">
+                                        Buy Now - Instant Access
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div className="bg-gold-50/50 rounded-2xl p-6 border border-gold-200 mb-8">
+                                <h4 className="font-bold text-gold-800 text-sm mb-4 uppercase tracking-wide flex items-center gap-2">🎁 Bonus Offers (Included Free):</h4>
+                                <div className="grid sm:grid-cols-2 gap-3 text-sm text-slate-700">
+                                    <div className="flex items-center gap-2"><span className="text-gold-500 font-bold">+</span> Budget Planning Template</div>
+                                    <div className="flex items-center gap-2"><span className="text-gold-500 font-bold">+</span> Email Template Library</div>
+                                    <div className="flex items-center gap-2"><span className="text-gold-500 font-bold">+</span> Housing Marketplace Access</div>
+                                    <div className="flex items-center gap-2"><span className="text-gold-500 font-bold">+</span> 3-month Priority Support</div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400 pt-6 border-t border-slate-100">
+                                <div className="flex items-center gap-2 font-medium">
+                                    <ShieldCheckIcon /> 
+                                    <span>30-Day Money-Back Guarantee. No questions asked.</span>
+                                </div>
+                                <div className="flex items-center gap-4 opacity-70 font-serif font-bold tracking-widest">
+                                    <span>VISA</span><span>MASTERCARD</span><span>PAYPAL</span><span>CRYPTO</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="text-slate-600 text-[10px] max-w-md italic border-l border-white/10 pl-4">
-                        "This site is an independent information service. We are not affiliated with the Russian government or any government agency."
-                    </div>
-                    <div className="flex gap-3 text-slate-500 text-[10px] font-bold tracking-widest uppercase">
-                        <span className="px-3 py-1.5 bg-white/5 rounded border border-white/5 hover:bg-white/10 transition-colors cursor-default">SSL Secure</span>
-                        <span className="px-3 py-1.5 bg-white/5 rounded border border-white/5 hover:bg-white/10 transition-colors cursor-default">GDPR Compliant</span>
-                        <span className="px-3 py-1.5 bg-white/5 rounded border border-white/5 hover:bg-white/10 transition-colors cursor-default">Money-Back Guarantee</span>
+
+                    {/* Alternatives */}
+                    <div className="space-y-6 lg:mt-8">
+                        <div className="bg-royal-900 text-white rounded-[2rem] p-8 shadow-2xl relative overflow-hidden border border-white/10">
+                             <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500 rounded-full mix-blend-overlay filter blur-[60px] opacity-30"></div>
+                             <div className="relative z-10">
+                                <div className="flex items-center gap-2 mb-4 text-gold-400 font-bold text-[10px] uppercase tracking-widest border border-gold-400/30 rounded-full px-3 py-1 w-fit">
+                                    <ClockIcon /> Limited Time Offer
+                                </div>
+                                <h3 className="text-2xl font-serif font-bold mb-3">Special Pricing</h3>
+                                <p className="text-blue-200 text-sm mb-6 font-light">Reduced pricing available until December 31, 2025.</p>
+                                <div className="text-xs space-y-2 text-blue-300 border-t border-white/10 pt-4">
+                                    <p className="uppercase tracking-widest font-bold text-[10px]">Why act now?</p>
+                                    <ul className="list-disc pl-4 space-y-1">
+                                        <li>Fees may change</li>
+                                        <li>Avoid processing delays</li>
+                                    </ul>
+                                </div>
+                             </div>
+                        </div>
+
+                        <div className="bg-white rounded-[2rem] shadow-soft border border-slate-100 p-8 hover:shadow-lg transition-all">
+                            <h3 className="font-serif font-bold text-slate-900 flex items-center gap-3 mb-6 text-lg">
+                                <div className="p-2 bg-royal-50 rounded-lg text-royal-600"><BriefcaseIcon /></div>
+                                Premium Consulting
+                            </h3>
+                            <div className="space-y-6">
+                                <div>
+                                    <div className="flex justify-between items-baseline mb-1">
+                                        <strong className="text-sm text-slate-800">One-on-One Consultation</strong>
+                                        <span className="font-bold text-royal-800 font-serif">$199</span>
+                                    </div>
+                                    <p className="text-xs text-slate-500">60-min video call. Document review. Personalized guidance.</p>
+                                </div>
+                                <div className="border-t border-slate-100 pt-4">
+                                    <div className="flex justify-between items-baseline mb-1">
+                                        <strong className="text-sm text-slate-800">Document Preparation</strong>
+                                        <span className="font-bold text-royal-800 font-serif">$500</span>
+                                    </div>
+                                    <p className="text-xs text-slate-500">Professional prep, translation coordination, apostille help.</p>
+                                </div>
+                                <div className="border-t border-slate-100 pt-4">
+                                    <div className="flex justify-between items-baseline mb-1">
+                                        <strong className="text-sm text-slate-800">Full Management</strong>
+                                        <span className="font-bold text-royal-800 font-serif">$2k+</span>
+                                    </div>
+                                    <p className="text-xs text-slate-500">Complete process handling. We do everything for you.</p>
+                                </div>
+                                <button 
+                                  onClick={onOpenModal}
+                                  className="w-full py-4 border border-royal-200 text-royal-700 font-bold rounded-xl hover:bg-royal-50 hover:border-royal-300 transition-all text-sm uppercase tracking-wide"
+                                >
+                                    Schedule Consultation
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </footer>
+        </section>
     );
 };
 
+const RequirementsSection = () => (
+  <section className="py-24 bg-white relative overflow-hidden" id="requirements">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6">Key Requirements</h2>
+        <p className="text-slate-600 max-w-2xl mx-auto text-lg">The Shared Values Visa simplifies the process, but you still need to prepare.</p>
+      </div>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[
+            { icon: <GlobeIcon />, title: "Eligible Citizenship", text: "Citizen of one of the 47 listed countries." },
+            { icon: <FileTextIcon />, title: "Valid Passport", text: "Must have at least 6 months validity remaining." },
+            { icon: <ShieldCheckIcon />, title: "No Criminal Record", text: "Clean police record from your home country." },
+            { icon: <HeartIcon />, title: "Medical Certificate", text: "Standard health checks (HIV, etc)." },
+            { icon: <UsersIcon />, title: "Family Members", text: "Spouse and children can be included." },
+            { icon: <ActivityIcon />, title: "Financial Proof", text: "Proof of funds to support yourself initially." }
+        ].map((item, i) => (
+            <div key={i} className="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1">
+                <div className="text-royal-600 mb-4 w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm border border-slate-100">
+                    {item.icon}
+                </div>
+                <h3 className="font-serif font-bold text-slate-900 mb-2 text-lg">{item.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{item.text}</p>
+            </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const BenefitsSection = () => (
+  <section className="py-24 bg-royal-900 text-white relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-20"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6 text-white">Life in Russia</h2>
+              <p className="text-blue-200 max-w-2xl mx-auto text-lg">Discover the advantages that await you.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                  { title: "Traditional Values", desc: "A society that respects faith, family, and tradition." },
+                  { title: "High Safety", desc: "Clean streets, low crime, and safe neighborhoods for kids." },
+                  { title: "World-Class Culture", desc: "Museums, theaters, ballet, and history at every turn." },
+                  { title: "Affordable Living", desc: "Lower cost of energy, food, and housing compared to the West." }
+              ].map((item, i) => (
+                  <div key={i} className="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
+                      <h3 className="font-serif font-bold text-gold-400 mb-3 text-xl">{item.title}</h3>
+                      <p className="text-blue-100 text-sm leading-relaxed font-light">{item.desc}</p>
+                  </div>
+              ))}
+          </div>
+      </div>
+  </section>
+);
+
+const GallerySection = () => (
+    <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-12 text-center">See Your Future</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 h-96 md:h-[600px]">
+                <div className="col-span-2 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1547448415-e9f5b28e570d?q=80&w=2070&auto=format&fit=crop" alt="Moscow Red Square" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
+                        <span className="text-white font-bold text-lg">Moscow</span>
+                    </div>
+                </div>
+                <div className="relative rounded-3xl overflow-hidden group">
+                     <img src="https://images.unsplash.com/photo-1558642084-fd1ba918f3a4?q=80&w=2070&auto=format&fit=crop" alt="St Petersburg" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                        <span className="text-white font-bold text-sm">St. Petersburg</span>
+                    </div>
+                </div>
+                <div className="relative rounded-3xl overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=2070&auto=format&fit=crop" alt="Nature" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                        <span className="text-white font-bold text-sm">Nature</span>
+                    </div>
+                </div>
+                <div className="col-span-2 relative rounded-3xl overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1622312685785-559d81d2f831?q=80&w=2070&auto=format&fit=crop" alt="Orthodox Church" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                        <span className="text-white font-bold text-sm">Spiritual Heritage</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+);
+
+const FaqSection = () => {
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+    const faqs = [
+        { q: "Do I need to speak Russian?", a: "Not for the Shared Values Visa application itself. You can learn it after you arrive. There is no language exam required for the initial visa." },
+        { q: "Can I work in Russia?", a: "Yes. Once you receive your Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit." },
+        { q: "How long does the process take?", a: "Typically 3-6 months from starting your application to receiving your residency permit." },
+        { q: "Is my family eligible?", a: "Yes, your spouse and minor children can be included in the process to move with you." },
+        { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up your passport to get a TRP." }
+    ];
+
+    return (
+        <section className="py-24 bg-slate-50" id="faq">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-16">
+                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
+                </div>
+                <div className="space-y-4">
+                    {faqs.map((item, i) => (
+                        <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                            <button 
+                                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                                className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors"
+                            >
+                                <span className="font-bold text-slate-900 text-lg pr-8">{item.q}</span>
+                                <span className="text-royal-600">
+                                    {openIndex === i ? <MinusIcon /> : <PlusIcon />}
+                                </span>
+                            </button>
+                            {openIndex === i && (
+                                <div className="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-100">
+                                    {item.a}
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+const ComparisonSection = () => (
+     <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-12 text-center">Cost of Living Comparison</h2>
+            
+            <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                    <thead>
+                        <tr className="border-b-2 border-slate-100">
+                            <th className="p-4 text-slate-400 font-medium uppercase text-xs tracking-wider">Item</th>
+                            <th className="p-4 font-bold text-royal-900 text-lg">Russia (Avg)</th>
+                            <th className="p-4 font-bold text-slate-500 text-lg">USA/Europe (Avg)</th>
+                            <th className="p-4 font-bold text-green-600 text-lg">Savings</th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-slate-700">
+                         {[
+                             { item: "Rent (1-bedroom city center)", ru: "$400 - $800", west: "$1,500 - $2,500", save: "60-80%" },
+                             { item: "Utilities (Monthly)", ru: "$50 - $100", west: "$200 - $400", save: "75%" },
+                             { item: "Public Transport Pass", ru: "$25", west: "$100+", save: "75%" },
+                             { item: "Internet (High Speed)", ru: "$5 - $10", west: "$50 - $80", save: "85%" },
+                             { item: "Restaurant Meal (for 2)", ru: "$30", west: "$80 - $100", save: "60%" }
+                         ].map((row, i) => (
+                             <tr key={i} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                                 <td className="p-4 font-bold">{row.item}</td>
+                                 <td className="p-4">{row.ru}</td>
+                                 <td className="p-4 text-slate-500">{row.west}</td>
+                                 <td className="p-4 text-green-600 font-bold">{row.save}</td>
+                             </tr>
+                         ))}
+                    </tbody>
+                </table>
+            </div>
+            <p className="text-center text-xs text-slate-400 mt-6">*Estimates based on 2024-2025 data. Exchange rates vary.</p>
+        </div>
+     </section>
+);
+
+const FinalCTASection = ({ onOpenModal }: { onOpenModal: () => void }) => (
+    <section className="py-32 bg-royal-900 text-white relative overflow-hidden text-center">
+         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
+         <div className="max-w-4xl mx-auto px-4 relative z-10">
+             <h2 className="text-4xl md:text-6xl font-serif font-bold mb-8">Ready to Start Your New Life?</h2>
+             <p className="text-blue-200 text-xl mb-12 max-w-2xl mx-auto">Don't let another year pass wishing for a better future. The Shared Values Visa is your open door.</p>
+             <div className="flex flex-col sm:flex-row justify-center gap-6">
+                 <a href="https://movetorussia.com/get-access/" className="px-10 py-5 bg-gold-400 text-royal-900 font-bold rounded-full hover:bg-gold-300 transition-all shadow-xl hover:shadow-gold-400/20 hover:-translate-y-1 text-lg">
+                     Get The Guide Now
+                 </a>
+                 <button onClick={onOpenModal} className="px-10 py-5 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-royal-900 transition-all hover:-translate-y-1 text-lg">
+                     Contact Support
+                 </button>
+             </div>
+         </div>
+    </section>
+);
+
+const Footer = () => (
+    <footer className="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-12">
+            <div className="col-span-1 md:col-span-1">
+                 <div className="flex items-center gap-2 mb-6 text-white font-serif font-bold text-xl">
+                    <div className="w-8 h-8 bg-royal-700 rounded flex items-center justify-center text-gold-400">SV</div>
+                    Shared Values
+                 </div>
+                 <p className="text-sm leading-relaxed mb-6">Helping families and individuals find stability and tradition in Russia through the Shared Values Visa program.</p>
+            </div>
+            
+            <div>
+                <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-xs">Navigation</h4>
+                <ul className="space-y-3 text-sm">
+                    <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
+                    <li><a href="#eligibility" className="hover:text-white transition-colors">Check Eligibility</a></li>
+                    <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+                    <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-xs">Contact</h4>
+                <ul className="space-y-3 text-sm">
+                    <li>support@sharedvaluesvisa.com</li>
+                    <li>Moscow, Russia</li>
+                    <li className="pt-4">
+                        <a href="https://movetorussia.com/get-access/" className="inline-block px-4 py-2 bg-royal-800 text-white rounded-lg hover:bg-royal-700 transition-colors text-xs font-bold uppercase tracking-wide">
+                            Get Official Guide
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
+            <p>&copy; {new Date().getFullYear()} Shared Values Visa Assistance. All rights reserved. Not a government agency.</p>
+        </div>
+    </footer>
+);
+
 const App = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-gold-200 selection:text-royal-900">
-      <Navbar />
-      <Hero />
+      <Navbar onOpenModal={() => setIsModalOpen(true)} />
+      <Hero onOpenModal={() => setIsModalOpen(true)} />
       <TrustSection />
       <ProblemSection />
       <SolutionSection />
@@ -2314,13 +1520,14 @@ const App = () => {
       <RequirementsSection />
       <BenefitsSection />
       <GallerySection />
-      <TestimonialsSection />
-      <EligibilitySection />
+      <TestimonialsSection onOpenModal={() => setIsModalOpen(true)} />
+      <EligibilitySection onOpenModal={() => setIsModalOpen(true)} />
       <FaqSection />
       <ComparisonSection />
-      <PricingSection />
-      <FinalCTASection />
+      <PricingSection onOpenModal={() => setIsModalOpen(true)} />
+      <FinalCTASection onOpenModal={() => setIsModalOpen(true)} />
       <Footer />
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
