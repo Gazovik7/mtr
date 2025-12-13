@@ -894,12 +894,12 @@ const ApplicationProcessSection = () => {
     ];
 
     return (
-        <section className="py-32 bg-white relative overflow-hidden">
+        <section className="py-24 bg-white relative overflow-hidden">
              {/* Background Element */}
             <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#f0f4fa_1px,transparent_1px),linear-gradient(to_bottom,#f0f4fa_1px,transparent_1px)] bg-[size:4rem_4rem] -z-10 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
             
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-20">
+                <div className="text-center mb-12">
                     <div className="inline-block px-5 py-2 bg-royal-100 text-royal-800 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border border-royal-200">
                         Step-by-Step Guide
                     </div>
@@ -913,7 +913,7 @@ const ApplicationProcessSection = () => {
                     <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-slate-200 md:-translate-x-1/2"></div>
 
                     {steps.map((step, index) => (
-                        <div key={index} className={`relative mb-24 last:mb-0 group`}>
+                        <div key={index} className={`relative mb-16 last:mb-0 group`}>
                             
                             {/* Connector Dot */}
                             <div className="absolute left-6 md:left-1/2 w-14 h-14 bg-white border-4 border-royal-600 text-royal-600 rounded-full flex items-center justify-center transform -translate-x-1/2 z-10 shadow-lg font-serif font-bold text-2xl group-hover:scale-110 group-hover:border-gold-500 group-hover:text-gold-500 transition-all duration-300">
@@ -959,7 +959,7 @@ const ApplicationProcessSection = () => {
                 </div>
                 
                 {/* Summary Footer */}
-                <div className="mt-24 text-center bg-royal-900 rounded-[2.5rem] p-12 text-white shadow-2xl relative overflow-hidden border-4 border-white/10">
+                <div className="mt-14 text-center bg-royal-900 rounded-[2.5rem] p-12 text-white shadow-2xl relative overflow-hidden border-4 border-white/10">
                      <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-30 animate-pulse"></div>
                      <div className="relative z-10">
                         <h3 className="text-xl font-bold mb-8 uppercase tracking-[0.2em] text-gold-400">Total Summary</h3>
@@ -1014,7 +1014,7 @@ const TestimonialsSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
   ];
 
   return (
-    <section className="py-32 bg-slate-50 relative overflow-hidden" id="testimonials">
+    <section className="py-24 bg-slate-50 relative overflow-hidden" id="testimonials">
       {/* Background decoration with Photo */}
       <div className="absolute inset-0 z-0">
           <img 
@@ -1139,14 +1139,14 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
   };
 
   return (
-    <section className="py-32 bg-slate-50 border-t border-slate-200" id="eligibility">
+    <section className="py-24 bg-slate-50 border-t border-slate-200" id="eligibility">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
            <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">Do You Qualify? <span className="text-royal-600">Check in 30 Seconds</span></h2>
         </div>
 
-        <div className="max-w-3xl mx-auto mb-20">
+        <div className="max-w-3xl mx-auto mb-12">
             <div className="bg-white rounded-[2rem] shadow-2xl shadow-royal-900/10 border border-slate-100 overflow-hidden">
                 <div className="bg-royal-900 p-8 text-white text-center border-b border-white/10 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
@@ -1317,9 +1317,9 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
 
 const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
     return (
-        <section className="py-32 bg-white border-t border-slate-100" id="pricing">
+        <section className="py-24 bg-white border-t border-slate-100" id="pricing">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-20">
+                <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">START YOUR TRANSFORMATION TODAY</h2>
                     <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">Small investment, life-changing return.</p>
                 </div>
@@ -1457,7 +1457,7 @@ const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
 };
 
 const RequirementsSection = () => (
-  <section className="py-24 bg-white relative overflow-hidden" id="requirements">
+  <section className="py-20 bg-white relative overflow-hidden" id="requirements">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6">Key Requirements</h2>
@@ -1487,7 +1487,7 @@ const RequirementsSection = () => (
 );
 
 const BenefitsSection = () => (
-  <section className="py-24 bg-royal-900 text-white relative overflow-hidden">
+  <section className="py-20 bg-royal-900 text-white relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 animate-pulse"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-20"></div>
 
@@ -1515,7 +1515,7 @@ const BenefitsSection = () => (
 );
 
 const GallerySection = () => (
-    <section className="py-24 bg-white">
+    <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-12 text-center">See Your Future</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 h-96 md:h-[600px]">
