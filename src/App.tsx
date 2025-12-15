@@ -2,16 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 
 // --- Data Constants ---
 const FAQS_LIST = [
-  { q: "What is Shared Values Visa?", a: "The Russia Shared Values Visa (Decree No. 702) is a government pathway to temporary residence for foreigners who align with traditional cultural and family values, giving a direct route to a Temporary Residence Permit and later permanent residency." },
-  { q: "Can Americans get a visa to Russia now?", a: "Yes. Americans can apply for the Russia Shared Values Visa if they meet eligibility rules, prepare the required documents, and complete the in-country submission after receiving the official invitation." },
-  { q: "How many people applied for a Shared Values Visa?", a: "Russian authorities report thousands of Shared Values Visa applications since 2024; slots remain open, and processing continues while quotas are available." },
-  { q: "How to apply for a Russia Shared Values Visa?", a: "Check eligibility, gather police and medical certificates, translate and apostille documents, obtain an invitation, then file the Russian Temporary Residence Permit application in Russia under Decree No. 702." },
-  { q: "What countries are covered by Russia Shared Values Visa?", a: "Citizens of 47 eligible countries can apply, including the USA, Canada, EU and UK states, Australia, New Zealand, Israel, and several Gulf and Latin American nations; always verify the latest list before applying." },
-  { q: "Do I need to speak Russian?", a: "Not for the Shared Values Visa application itself. You can learn it after you arrive. There is no language exam required for the initial visa." },
-  { q: "Can I work in Russia?", a: "Yes. Once you receive a Russian Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit." },
-  { q: "How long does the process take?", a: "Plan for 12-18 months end-to-end, including document prep, travel, and the Russian TRP processing window inside Russia." },
-  { q: "Is my family eligible?", a: "Yes, a spouse and minor children can be included in the process to move with you." },
-  { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up the passport to get a TRP." }
+  { q: "What is Shared Values Visa?", a: "The Russia Shared Values Visa (Decree No. 702) is a government pathway to temporary residence for foreigners who align with traditional cultural and family values, giving a direct route to a Temporary Residence Permit and later permanent residency. It is positioned as a relocation route to the Russian Federation (Russia) (federation)." },
+  { q: "Can Americans get a visa to Russia now?", a: "Yes. Americans can apply for the Russia Shared Values Visa if they meet eligibility rules, prepare the required documents, and complete the in-country submission after receiving the official invitation. Final steps are handled through a Russian consulate and Russian migration procedures." },
+  { q: "How many people applied for a Shared Values Visa?", a: "Russian authorities report thousands of Shared Values Visa applications since 2024; slots remain open, and processing continues while quotas are available. Availability can depend on regional quota limits in Russia." },
+  { q: "How to apply for a Russia Shared Values Visa?", a: "Check eligibility, gather police and medical certificates, translate and apostille documents, obtain an invitation, then file the Russian Temporary Residence Permit application in Russia under Decree No. 702. Make sure the name on all documents matches the passport name." },
+  { q: "What countries are covered by Russia Shared Values Visa?", a: "Citizens of 47 eligible countries can apply, including the USA, Canada, EU and UK states, Australia, New Zealand, Israel, and several Gulf and Latin American nations; always verify the latest list before applying. The list is set by the Russian Federation." },
+  { q: "Do I need to speak Russian?", a: "Not for the Shared Values Visa application itself. You can learn it after you arrive. There is no language exam required for the initial visa, and there is no mandatory Russian language test at the first step." },
+  { q: "Can I work in Russia?", a: "Yes. Once you receive a Russian Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit. Some applicants also explore Russian business options after arrival." },
+  { q: "How long does the process take?", a: "Plan for 12-18 months end-to-end, including document prep, travel, and the Russian TRP processing window inside Russia. Timelines can vary by Russian region in Russia." },
+  { q: "Is my family eligible?", a: "Yes, a spouse and minor children can be included in the process to move with you. This helps with family and social stability during the transition to Russia." },
+  { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up the passport to get a TRP. Always confirm the latest rules under Russian law." }
 ];
 
 const SITE_URL = "https://www.sharedvaluesvisa.com";
@@ -369,7 +369,7 @@ const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
       </h1>
       
       <h2 className="text-xl md:text-3xl font-medium text-slate-600 mb-10 max-w-4xl mx-auto font-serif italic">
-        "Join Thousands of Westerners Building a New Life in Russia"
+        "Join Thousands of Westerners Building a New Life in Russia, with clear steps for Russia"
       </h2>
       
       <div className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 mb-12 space-y-6 text-left md:text-center leading-relaxed font-light">
@@ -378,6 +378,9 @@ const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
         </p>
         <p>
           The Shared Values Visa (SVV) is a legally-backed pathway to Russia for citizens of 47 countries who reject "destructive neoliberal ideology" and are seeking Russian residency and an alternative way of life.
+        </p>
+        <p>
+          If researching <span className="font-semibold">moving to russia</span>, this page explains the Russia Shared Values Visa and what Russian applicants should prepare for Russia.
         </p>
         <p className="font-serif font-bold text-royal-900 border-l-4 border-gold-400 pl-4 md:pl-0 md:border-none">
           Not theory. Not politics. A real path to permanent residence, work, and family life in Russia, where those values are shared by millions.
@@ -912,7 +915,7 @@ const ApplicationProcessSection = () => {
                         <li><strong>Submit in person:</strong> Visit the nearest Russian consulate. Pay fee.</li>
                     </ol>
                     <div className="bg-amber-50 text-amber-800 text-xs p-3 rounded-lg border border-amber-100 italic">
-                        <strong>NOTE:</strong> Any non-transit visa type is acceptable, though we recommend a 3+ month visa.
+                        <strong>NOTE:</strong> Any non-transit visa type is acceptable, though we recommend a 3+ month visa. This step supports moving to Russia under the Russian Federation process.
                     </div>
                 </div>
             )
@@ -1396,7 +1399,7 @@ const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">START THE TRANSFORMATION TODAY</h2>
-                    <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">Small investment, life-changing return.</p>
+                    <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">Small investment, life-changing return for Russia.</p>
                 </div>
 
                 <div className="max-w-4xl mx-auto mb-10">
@@ -1542,7 +1545,7 @@ const RequirementsSection = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6">Key Requirements</h2>
-        <p className="text-slate-600 max-w-2xl mx-auto text-lg">The Shared Values Visa simplifies the process, but you still need to prepare.</p>
+        <p className="text-slate-600 max-w-2xl mx-auto text-lg">The Shared Values Visa simplifies the process, but you still need to prepare for Russia with the right Russian documents.</p>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -1575,7 +1578,7 @@ const BenefitsSection = () => (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
               <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6 text-white">Life in Russia</h2>
-              <p className="text-blue-200 max-w-2xl mx-auto text-lg">Discover the advantages that await you.</p>
+              <p className="text-blue-200 max-w-2xl mx-auto text-lg">Discover the advantages that await you in Russia, from Russian cities to smaller communities.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -1727,7 +1730,7 @@ const Footer = () => (
                     <div className="w-8 h-8 bg-royal-700 rounded flex items-center justify-center text-gold-400">SV</div>
                     Shared Values
                  </div>
-                 <p className="text-sm leading-relaxed mb-6">Helping families and individuals find stability and tradition in Russia through the Shared Values Visa program.</p>
+                 <p className="text-sm leading-relaxed mb-6">Helping families and individuals find stability and tradition in Russia through the Shared Values Visa program in Russia.</p>
             </div>
             
             <div>
