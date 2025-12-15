@@ -2,6 +2,7 @@ import { spawn } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import prettier from 'prettier';
 
 if (process.env.PLAYWRIGHT_SKIP_PRERENDER === '1' || process.env.SKIP_PRERENDER === '1') {
   console.log('[prerender] Skipping prerender (SKIP_PRERENDER=1)');
@@ -69,7 +70,14 @@ async function prerender() {
     throw new Error('Could not find <div id="root"></div> in dist/index.html');
   }
 
-  await writeFile(DIST_INDEX_HTML, next, 'utf8');
+  let formatted = next;
+  try {
+    formatted = await prettier.format(next, { parser: 'html' });
+  } catch (error) {
+    console.warn('[prerender] Prettier format skipped:', error?.message || error);
+  }
+
+  await writeFile(DIST_INDEX_HTML, formatted, 'utf8');
   console.log('[prerender] Done: dist/index.html now contains rendered content.');
 }
 
