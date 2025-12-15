@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const FAQS_LIST = [
   { q: "Do I need to speak Russian?", a: "Not for the Shared Values Visa application itself. You can learn it after you arrive. There is no language exam required for the initial visa." },
   { q: "Can I work in Russia?", a: "Yes. Once you receive your Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit." },
-  { q: "How long does the process take?", a: "Typically 3-6 months from starting your application to receiving your residency permit." },
+  { q: "How long does the process take?", a: "Plan for 12-18 months end-to-end, including document prep, travel, and the TRP processing window inside Russia." },
   { q: "Is my family eligible?", a: "Yes, your spouse and minor children can be included in the process to move with you." },
   { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up your passport to get a TRP." }
 ];
@@ -270,7 +270,7 @@ const Navbar = ({ onOpenModal }: { onOpenModal: () => void }) => (
           onClick={onOpenModal}
           className="bg-royal-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-royal-800 transition-all shadow-lg hover:shadow-royal-900/30 hover:-translate-y-0.5 border border-transparent hover:border-royal-700"
         >
-          Contact Us
+          Schedule Free Consultation
         </button>
       </div>
     </div>
@@ -320,16 +320,19 @@ const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
       </div>
       
       <div className="flex flex-col sm:flex-row justify-center gap-5 mb-14">
-        <a href="https://movetorussia.com/get-access/" className="px-10 py-4 bg-royal-900 text-white rounded-full font-bold hover:bg-royal-800 transition-all flex items-center justify-center gap-3 shadow-xl shadow-royal-900/20 hover:shadow-royal-900/30 hover:-translate-y-1 text-sm md:text-base tracking-wide group">
-          Get Your Visa Guide Now
-          <span className="group-hover:translate-x-1 transition-transform"><ArrowRightIcon /></span>
-        </a>
         <button 
           onClick={onOpenModal}
-          className="px-10 py-4 bg-white text-royal-900 border border-slate-200 rounded-full font-bold hover:bg-slate-50 transition-all shadow-md hover:shadow-lg hover:-translate-y-1 text-sm md:text-base"
+          className="px-10 py-4 bg-royal-900 text-white rounded-full font-bold hover:bg-royal-800 transition-all flex items-center justify-center gap-3 shadow-xl shadow-royal-900/20 hover:shadow-royal-900/30 hover:-translate-y-1 text-sm md:text-base tracking-wide group"
         >
           Schedule Free Consultation
+          <span className="group-hover:translate-x-1 transition-transform"><ArrowRightIcon /></span>
         </button>
+        <a 
+          href="https://movetorussia.com/get-access/" 
+          className="px-10 py-4 bg-white text-royal-900 border border-slate-200 rounded-full font-bold hover:bg-slate-50 transition-all shadow-md hover:shadow-lg hover:-translate-y-1 text-sm md:text-base"
+        >
+          Get Your Visa Guide
+        </a>
       </div>
       
       <div className="flex flex-col items-center gap-4 animate-float">
@@ -344,7 +347,7 @@ const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
              </span>
              <span className="flex items-center gap-2">
                <div className="text-green-600 w-5 h-5 flex-shrink-0"><CheckCircleIcon /></div> 
-               <span>Average timeline: 5.2 months</span>
+               <span>Full journey: ~18 months</span>
              </span>
          </div>
       </div>
@@ -441,7 +444,7 @@ const ProblemSection = () => {
     },
     {
       q: "What is your timeline?",
-      options: ["Immediately (ASAP)", "In 3-6 Months", "Next Year", "Just Researching"]
+      options: ["Immediately (ASAP)", "In 12-18 Months", "Next Year", "Just Researching"]
     },
     {
       q: "Do you hold a passport from:",
@@ -807,8 +810,8 @@ const ApplicationProcessSection = () => {
     const steps = [
         {
             title: "Preparation Phase",
-            duration: "Weeks 1-8",
-            cost: "$50-200",
+            duration: "Months 1-4",
+            cost: "$1,000 - $2,000",
             icon: <FileTextIcon />,
             content: (
                 <>
@@ -825,8 +828,8 @@ const ApplicationProcessSection = () => {
         },
         {
             title: "Visa Application",
-            duration: "Weeks 8-12",
-            cost: "$80-200",
+            duration: "Months 5-7",
+            cost: "$500 - $1,000",
             icon: <BriefcaseIcon />,
             content: (
                 <div className="space-y-3">
@@ -844,8 +847,8 @@ const ApplicationProcessSection = () => {
         },
         {
             title: "Travel to Russia",
-            duration: "Within visa validity",
-            cost: "$900-2,500",
+            duration: "Months 8-10",
+            cost: "$2,500 - $4,000",
             icon: <PlaneIcon />,
             content: (
                 <div className="space-y-3">
@@ -859,8 +862,8 @@ const ApplicationProcessSection = () => {
         },
         {
             title: "TRP Application",
-            duration: "Within timeframe",
-            cost: "$20 + med exam",
+            duration: "Months 11-14",
+            cost: "$1,500 - $2,500",
             icon: <FileTextIcon />,
             content: (
                 <div className="space-y-3">
@@ -875,12 +878,12 @@ const ApplicationProcessSection = () => {
         },
         {
             title: "Wait & Approval",
-            duration: "4-5 months",
-            cost: "None",
+            duration: "Months 15-18",
+            cost: "$2,000+ (living)",
             icon: <CheckCircleIcon />,
             content: (
                  <div className="space-y-3">
-                    <p className="text-sm text-slate-500 italic">Processing typically takes 4-4.5 months. You can legally stay and work while waiting.</p>
+                    <p className="text-sm text-slate-500 italic">Processing commonly takes 4-6 months inside Russia. Plan for living expenses while you wait—you can legally stay and work.</p>
                     <div className="flex flex-col gap-2 mt-4">
                         <span className="font-bold text-sm text-royal-900">When approved:</span>
                         <div className="bg-gradient-to-r from-green-50 to-green-100 text-green-900 p-4 rounded-xl text-sm font-bold border border-green-200 flex items-center gap-3 shadow-sm">
@@ -966,13 +969,13 @@ const ApplicationProcessSection = () => {
                         <div className="flex flex-col md:flex-row justify-center gap-12 md:gap-24">
                             <div className="text-center">
                                 <div className="text-blue-200 text-xs uppercase font-bold mb-2 tracking-wider">Total Timeline</div>
-                                <div className="text-5xl md:text-6xl font-serif font-bold tracking-tight">~6 <span className="text-3xl">Months</span></div>
+                                <div className="text-5xl md:text-6xl font-serif font-bold tracking-tight">~18 <span className="text-3xl">Months</span></div>
                             </div>
                             <div className="hidden md:block w-px bg-white/10"></div>
                              <div className="text-center">
                                 <div className="text-blue-200 text-xs uppercase font-bold mb-2 tracking-wider">Total Estimated Cost</div>
-                                <div className="text-5xl md:text-6xl font-serif font-bold text-green-400">$1,150+</div>
-                                <div className="text-xs text-blue-300 mt-3 font-light">*Varies by country & lifestyle choices</div>
+                                <div className="text-5xl md:text-6xl font-serif font-bold text-green-400">$10,000+</div>
+                                <div className="text-xs text-blue-300 mt-3 font-light">*Plan for extended stays, translations, travel, and living costs</div>
                             </div>
                         </div>
                      </div>
@@ -1324,6 +1327,18 @@ const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                     <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">Small investment, life-changing return.</p>
                 </div>
 
+                <div className="max-w-4xl mx-auto mb-10">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-royal-50 border border-royal-100 rounded-2xl px-6 py-4 shadow-soft">
+                        <div className="text-sm md:text-base text-royal-900 font-semibold">Not sure where to start? Talk to a specialist first—your consultation is free.</div>
+                        <button 
+                          onClick={onOpenModal}
+                          className="px-6 py-3 bg-royal-900 text-white rounded-full font-bold text-sm uppercase tracking-wide hover:bg-royal-800 transition-all shadow-md hover:-translate-y-0.5"
+                        >
+                            Schedule Free Consultation
+                        </button>
+                    </div>
+                </div>
+
                 <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
                     {/* Main Offer */}
                     <div className="lg:col-span-2 bg-white rounded-[2.5rem] shadow-2xl shadow-royal-900/10 border-2 border-royal-600 overflow-hidden relative transform md:-translate-y-4">
@@ -1419,6 +1434,7 @@ const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                                 <div className="p-2 bg-royal-50 rounded-lg text-royal-600"><BriefcaseIcon /></div>
                                 Premium Consulting
                             </h3>
+                            <div className="mb-4 text-xs font-semibold text-royal-700 bg-royal-50 border border-royal-100 rounded-full px-3 py-1 w-fit">Start with a free consultation</div>
                             <div className="space-y-6">
                                 <div>
                                     <div className="flex justify-between items-baseline mb-1">
@@ -1443,9 +1459,9 @@ const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                                 </div>
                                 <button 
                                   onClick={onOpenModal}
-                                  className="w-full py-4 border border-royal-200 text-royal-700 font-bold rounded-xl hover:bg-royal-50 hover:border-royal-300 transition-all text-sm uppercase tracking-wide"
+                                  className="w-full py-4 bg-royal-900 text-white font-bold rounded-xl hover:bg-royal-800 transition-all shadow-md hover:-translate-y-0.5 text-sm uppercase tracking-wide"
                                 >
-                                    Schedule Consultation
+                                    Schedule Free Consultation
                                 </button>
                             </div>
                         </div>
@@ -1627,12 +1643,12 @@ const FinalCTASection = ({ onOpenModal }: { onOpenModal: () => void }) => (
              <h2 className="text-4xl md:text-6xl font-serif font-bold mb-8">Ready to Start Your New Life?</h2>
              <p className="text-blue-200 text-xl mb-12 max-w-2xl mx-auto">Don't let another year pass wishing for a better future. The Shared Values Visa is your open door.</p>
              <div className="flex flex-col sm:flex-row justify-center gap-6">
-                 <a href="https://movetorussia.com/get-access/" className="px-10 py-5 bg-gold-400 text-royal-900 font-bold rounded-full hover:bg-gold-300 transition-all shadow-xl hover:shadow-gold-400/20 hover:-translate-y-1 text-lg">
-                     Get The Guide Now
-                 </a>
-                 <button onClick={onOpenModal} className="px-10 py-5 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-royal-900 transition-all hover:-translate-y-1 text-lg">
-                     Contact Support
+                 <button onClick={onOpenModal} className="px-10 py-5 bg-white text-royal-900 font-bold rounded-full hover:bg-slate-100 transition-all shadow-xl hover:-translate-y-1 text-lg border border-white">
+                     Schedule Free Consultation
                  </button>
+                 <a href="https://movetorussia.com/get-access/" className="px-10 py-5 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-royal-900 transition-all hover:-translate-y-1 text-lg">
+                     Get The Guide
+                 </a>
              </div>
          </div>
     </section>
