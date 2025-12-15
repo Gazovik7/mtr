@@ -77,10 +77,16 @@ export default async function handler(req, res) {
       telegramResult = await sendTelegram({ name, email, phone, message, source });
     }
 
+    const delivered = !!emailResult?.id || !!telegramResult?.ok;
+    if (!delivered) {
+      return res.status(500).json({ error: 'No delivery destination configured or delivery failed' });
+    }
+
     return res.status(200).json({
       ok: true,
       emailed: !!emailResult?.id,
       telegram: !!telegramResult?.ok,
+      delivered,
       to: recipients,
     });
   } catch (error) {

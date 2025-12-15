@@ -109,7 +109,11 @@ const submitLead = async (payload: Record<string, unknown>) => {
   if (!res.ok) {
     throw new Error('Lead submission failed');
   }
-  return res.json();
+  const data = await res.json();
+  if (!data?.ok || data?.delivered === false) {
+    throw new Error('Lead delivery not configured or failed');
+  }
+  return data;
 };
 
 // --- Components ---
