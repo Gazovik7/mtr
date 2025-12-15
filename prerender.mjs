@@ -4,6 +4,12 @@ import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// Skip prerendering in environments without system deps (e.g., Vercel build)
+if (process.env.VERCEL || process.env.PLAYWRIGHT_SKIP_PRERENDER === '1') {
+  console.log('[prerender] Skipping prerender (CI/VERCEL detected)');
+  process.exit(0);
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.join(__dirname, 'dist');
 const INDEX_HTML_PATH = path.join(DIST_DIR, 'index.html');
@@ -81,4 +87,3 @@ prerender().catch((error) => {
   console.error('[prerender] Failed:', error);
   process.exit(1);
 });
-
