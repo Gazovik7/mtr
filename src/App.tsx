@@ -99,6 +99,19 @@ const scrollToSection = (e: React.MouseEvent, id: string) => {
   }
 };
 
+// Shared helper to send lead data to the Vercel API
+const submitLead = async (payload: Record<string, unknown>) => {
+  const res = await fetch('/api/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    throw new Error('Lead submission failed');
+  }
+  return res.json();
+};
+
 // --- Components ---
 
 const SchemaMarkup = () => {
@@ -169,14 +182,25 @@ const SchemaMarkup = () => {
 
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for your inquiry. A specialist will contact you shortly.");
-    setFormData({ name: '', email: '', phone: '', message: '' });
-    onClose();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      await submitLead({ source: 'consultation-modal', ...formData });
+      alert("Thank you for your inquiry. A specialist will contact you shortly.");
+      setFormData({ name: '', email: '', phone: '', message: '' });
+      onClose();
+    } catch (error) {
+      console.error(error);
+      alert("We couldn't send your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -236,8 +260,8 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
               onChange={e => setFormData({...formData, message: e.target.value})}
             ></textarea>
           </div>
-          <button type="submit" className="w-full py-4 bg-royal-800 text-white font-bold rounded-xl hover:bg-royal-900 transition-all shadow-lg hover:shadow-royal-900/20 uppercase tracking-widest text-sm flex items-center justify-center gap-2">
-            Request Consultation <ArrowRightIcon />
+          <button type="submit" className="w-full py-4 bg-royal-800 text-white font-bold rounded-xl hover:bg-royal-900 transition-all shadow-lg hover:shadow-royal-900/20 uppercase tracking-widest text-sm flex items-center justify-center gap-2" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Request Consultation'} <ArrowRightIcon />
           </button>
         </form>
       </div>
@@ -452,9 +476,16 @@ const ProblemSection = () => {
     }
   ];
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) setViewState('quiz');
+    if (!email) return;
+    try {
+      await submitLead({ source: 'quiz-email', email });
+      setViewState('quiz');
+    } catch (error) {
+      console.error(error);
+      alert("We couldn't send your email. Please try again.");
+    }
   };
 
   const handleOptionClick = () => {
