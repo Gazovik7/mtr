@@ -4,9 +4,9 @@ import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Skip prerendering in environments without system deps (e.g., Vercel build)
-if (process.env.VERCEL || process.env.PLAYWRIGHT_SKIP_PRERENDER === '1') {
-  console.log('[prerender] Skipping prerender (CI/VERCEL detected)');
+// Skip prerendering only when explicitly requested
+if (process.env.PLAYWRIGHT_SKIP_PRERENDER === '1') {
+  console.log('[prerender] Skipping prerender (PLAYWRIGHT_SKIP_PRERENDER=1)');
   process.exit(0);
 }
 
