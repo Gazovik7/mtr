@@ -2,6 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 
 // --- Data Constants ---
 const FAQS_LIST = [
+  { q: "What is Shared Values Visa?", a: "The Russia Shared Values Visa (Decree No. 702) is a government pathway to temporary residence for foreigners who align with traditional cultural and family values, giving a direct route to a Temporary Residence Permit and later permanent residency." },
+  { q: "Can Americans get a visa to Russia now?", a: "Yes. Americans can apply for the Russia Shared Values Visa if they meet eligibility rules, prepare the required documents, and complete the in-country submission after receiving the official invitation." },
+  { q: "How many people applied for a Shared Values Visa?", a: "Russian authorities report thousands of Shared Values Visa applications since 2024; slots remain open, and processing continues while quotas are available." },
+  { q: "How to apply for a Russia Shared Values Visa?", a: "Check eligibility, gather police and medical certificates, translate and apostille documents, obtain an invitation, then file the Temporary Residence Permit application in Russia under Decree No. 702." },
+  { q: "What countries are covered by Russia Shared Values Visa?", a: "Citizens of 47 eligible countries can apply, including the USA, Canada, EU and UK states, Australia, New Zealand, Israel, and several Gulf and Latin American nations; always verify the latest list before applying." },
   { q: "Do I need to speak Russian?", a: "Not for the Shared Values Visa application itself. You can learn it after you arrive. There is no language exam required for the initial visa." },
   { q: "Can I work in Russia?", a: "Yes. Once you receive your Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit." },
   { q: "How long does the process take?", a: "Plan for 12-18 months end-to-end, including document prep, travel, and the TRP processing window inside Russia." },
@@ -1506,21 +1511,14 @@ const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                                 <div>
                                     <div className="flex justify-between items-baseline mb-1">
                                         <strong className="text-sm text-slate-800">One-on-One Consultation</strong>
-                                        <span className="font-bold text-royal-800 font-serif">$199</span>
+                                        <span className="font-bold text-royal-800 font-serif">Free · 30 minutes</span>
                                     </div>
-                                    <p className="text-xs text-slate-500">60-min video call. Document review. Personalized guidance.</p>
-                                </div>
-                                <div className="border-t border-slate-100 pt-4">
-                                    <div className="flex justify-between items-baseline mb-1">
-                                        <strong className="text-sm text-slate-800">Document Preparation</strong>
-                                        <span className="font-bold text-royal-800 font-serif">$500</span>
-                                    </div>
-                                    <p className="text-xs text-slate-500">Professional prep, translation coordination, apostille help.</p>
+                                    <p className="text-xs text-slate-500">30-min video call. Document review. Personalized guidance.</p>
                                 </div>
                                 <div className="border-t border-slate-100 pt-4">
                                     <div className="flex justify-between items-baseline mb-1">
                                         <strong className="text-sm text-slate-800">Full Management</strong>
-                                        <span className="font-bold text-royal-800 font-serif">$2k+</span>
+                                        <span className="font-bold text-royal-800 font-serif">$5,000+</span>
                                     </div>
                                     <p className="text-xs text-slate-500">Complete process handling. We do everything for you.</p>
                                 </div>
