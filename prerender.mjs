@@ -2,7 +2,8 @@ import { spawn } from 'node:child_process';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import puppeteer from 'puppeteer';
+import chromium from '@sparticuz/chromium-min';
+import puppeteer from 'puppeteer-core';
 
 // Skip prerendering only when explicitly requested
 if (process.env.PLAYWRIGHT_SKIP_PRERENDER === '1') {
@@ -64,9 +65,12 @@ async function prerender() {
     await waitForServer(URL, previewProcess);
 
     console.log('[prerender] Rendering in headless browser...');
+    const executablePath = await chromium.executablePath();
     const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      headless: chromium.headless,
+      executablePath,
+      args: chromium.args,
+      defaultViewport: { width: 1280, height: 720 },
     });
     const page = await browser.newPage();
 
