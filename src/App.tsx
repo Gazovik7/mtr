@@ -1642,24 +1642,30 @@ const FaqSection = () => {
                      <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
                 </div>
                 <div className="space-y-4">
-                    {FAQS_LIST.map((item, i) => (
-                        <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-                            <button 
-                                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors"
-                            >
-                                <span className="font-bold text-slate-900 text-lg pr-8">{item.q}</span>
-                                <span className="text-royal-600">
-                                    {openIndex === i ? <MinusIcon /> : <PlusIcon />}
-                                </span>
-                            </button>
-                            {openIndex === i && (
-                                <div className="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-100">
+                    {FAQS_LIST.map((item, i) => {
+                        const isOpen = openIndex === i;
+                        const answerId = `faq-answer-${i}`;
+                        return (
+                            <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                                <button
+                                    onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                                    aria-expanded={isOpen}
+                                    aria-controls={answerId}
+                                    className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors"
+                                >
+                                    <span className="font-bold text-slate-900 text-lg pr-8">{item.q}</span>
+                                    <span className="text-royal-600">{isOpen ? <MinusIcon /> : <PlusIcon />}</span>
+                                </button>
+                                <div
+                                    id={answerId}
+                                    hidden={!isOpen}
+                                    className="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-100"
+                                >
                                     {item.a}
                                 </div>
-                            )}
-                        </div>
-                    ))}
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </section>
