@@ -12,16 +12,18 @@ const getRecipients = () =>
     .filter(Boolean);
 
 const canSendTelegram = () => process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID;
+const normalizeHeaderValue = (value) => (Array.isArray(value) ? value[0] : value);
 
 const sendTelegram = async (payload) => {
   if (!canSendTelegram()) return null;
-  const { name, email, phone, message, source } = payload;
+  const { name, email, phone, message, source, site } = payload;
   const textLines = [
     `New lead (${source || 'form'})`,
-    `Name: ${name || '—'}`,
-    `Email: ${email || '—'}`,
-    `Phone: ${phone || '—'}`,
-    `Message: ${message || '—'}`,
+    `Site: ${site || 'unknown'}`,
+    `Name: ${name || '¢?"'}`,
+    `Email: ${email || '¢?"'}`,
+    `Phone: ${phone || '¢?"'}`,
+    `Message: ${message || '¢?"'}`,
   ];
   const url = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
   const body = {
@@ -48,6 +50,9 @@ export default async function handler(req, res) {
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
   const { name, email, phone, message, source } = body;
+  const headerOrigin = normalizeHeaderValue(req.headers.origin);
+  const headerReferrer = normalizeHeaderValue(req.headers.referer || req.headers.referrer);
+  const site = headerOrigin || headerReferrer || process.env.SITE_URL || 'unknown';
 
   if (!email && !phone) {
     return res.status(400).json({ error: 'Email or phone is required' });
@@ -64,17 +69,17 @@ export default async function handler(req, res) {
         subject: `New lead (${source || 'form'}) - ${name || email || phone || 'No name'}`,
         text: [
           `Source: ${source || 'form'}`,
-          `Name: ${name || '—'}`,
-          `Email: ${email || '—'}`,
-          `Phone: ${phone || '—'}`,
-          `Message: ${message || '—'}`,
+          `Name: ${name || '¢?"'}`,
+          `Email: ${email || '¢?"'}`,
+          `Phone: ${phone || '¢?"'}`,
+          `Message: ${message || '¢?"'}`,
         ].join('\n'),
       });
     }
 
     let telegramResult = null;
     if (canSendTelegram()) {
-      telegramResult = await sendTelegram({ name, email, phone, message, source });
+      telegramResult = await sendTelegram({ name, email, phone, message, source, site });
     }
 
     const delivered = !!emailResult?.id || !!telegramResult?.ok;

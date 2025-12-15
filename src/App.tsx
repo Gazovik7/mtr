@@ -9,8 +9,10 @@ const FAQS_LIST = [
   { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up your passport to get a TRP." }
 ];
 
+const SITE_URL = "https://www.sharedvaluesvisa.com";
 const PLACEHOLDER_IMAGE = "/images/placeholder.jpg";
-const PLACEHOLDER_IMAGE_ABS = "https://sharedvaluesvisa.com/images/placeholder.jpg";
+const PLACEHOLDER_IMAGE_ABS = `${SITE_URL}/images/placeholder.jpg`;
+const MAIN_IMAGE_ABS = `${SITE_URL}/images/moscow.jpeg`;
 const HERO_IMAGE = "/images/moscow.jpeg";
 const PEOPLE_IMAGE = "/images/people-in-russia.jpeg";
 const MOSCOW_2_IMAGE = "/images/moscow_2.jpeg";
@@ -124,27 +126,46 @@ const SchemaMarkup = () => {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://sharedvaluesvisa.com/#organization",
+        "@id": `${SITE_URL}/#organization`,
         "name": "Shared Values Visa Assistance",
-        "url": "https://sharedvaluesvisa.com",
+        "url": SITE_URL,
         "logo": {
           "@type": "ImageObject",
           "url": PLACEHOLDER_IMAGE_ABS
         },
-        "description": "Helping families and individuals find stability and tradition in Russia through the Shared Values Visa program."
+        "description": "Helping families and individuals find stability and tradition in Russia through the Shared Values Visa program.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@sharedvaluesvisa.com",
+          "availableLanguage": ["en"]
+        }
       },
       {
         "@type": "WebSite",
-        "@id": "https://sharedvaluesvisa.com/#website",
-        "url": "https://sharedvaluesvisa.com",
+        "@id": `${SITE_URL}/#website`,
+        "url": SITE_URL,
         "name": "Shared Values Visa",
         "publisher": {
-          "@id": "https://sharedvaluesvisa.com/#organization"
+          "@id": `${SITE_URL}/#organization`
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/#webpage`,
+        "url": SITE_URL,
+        "name": "Shared Values Visa - Official Pathway to Russia",
+        "inLanguage": "en-US",
+        "description": "Official pathway to Russian residency via the Shared Values Visa (Decree No. 702).",
+        "isPartOf": { "@id": `${SITE_URL}/#website` },
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": MAIN_IMAGE_ABS
         }
       },
       {
         "@type": "FAQPage",
-        "@id": "https://sharedvaluesvisa.com/#faq",
+        "@id": `${SITE_URL}/#faq`,
         "mainEntity": FAQS_LIST.map(item => ({
           "@type": "Question",
           "name": item.q,
@@ -172,6 +193,17 @@ const SchemaMarkup = () => {
           "ratingValue": "4.9",
           "reviewCount": "3500"
         }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": SITE_URL
+          }
+        ]
       }
     ]
   };
