@@ -5,13 +5,13 @@ const FAQS_LIST = [
   { q: "What is Shared Values Visa?", a: "The Russia Shared Values Visa (Decree No. 702) is a government pathway to temporary residence for foreigners who align with traditional cultural and family values, giving a direct route to a Temporary Residence Permit and later permanent residency." },
   { q: "Can Americans get a visa to Russia now?", a: "Yes. Americans can apply for the Russia Shared Values Visa if they meet eligibility rules, prepare the required documents, and complete the in-country submission after receiving the official invitation." },
   { q: "How many people applied for a Shared Values Visa?", a: "Russian authorities report thousands of Shared Values Visa applications since 2024; slots remain open, and processing continues while quotas are available." },
-  { q: "How to apply for a Russia Shared Values Visa?", a: "Check eligibility, gather police and medical certificates, translate and apostille documents, obtain an invitation, then file the Temporary Residence Permit application in Russia under Decree No. 702." },
+  { q: "How to apply for a Russia Shared Values Visa?", a: "Check eligibility, gather police and medical certificates, translate and apostille documents, obtain an invitation, then file the Russian Temporary Residence Permit application in Russia under Decree No. 702." },
   { q: "What countries are covered by Russia Shared Values Visa?", a: "Citizens of 47 eligible countries can apply, including the USA, Canada, EU and UK states, Australia, New Zealand, Israel, and several Gulf and Latin American nations; always verify the latest list before applying." },
   { q: "Do I need to speak Russian?", a: "Not for the Shared Values Visa application itself. You can learn it after you arrive. There is no language exam required for the initial visa." },
-  { q: "Can I work in Russia?", a: "Yes. Once you receive your Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit." },
-  { q: "How long does the process take?", a: "Plan for 12-18 months end-to-end, including document prep, travel, and the TRP processing window inside Russia." },
-  { q: "Is my family eligible?", a: "Yes, your spouse and minor children can be included in the process to move with you." },
-  { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up your passport to get a TRP." }
+  { q: "Can I work in Russia?", a: "Yes. Once you receive a Russian Temporary Residence Permit (TRP), you have the full right to work in Russia without needing a separate work permit." },
+  { q: "How long does the process take?", a: "Plan for 12-18 months end-to-end, including document prep, travel, and the Russian TRP processing window inside Russia." },
+  { q: "Is my family eligible?", a: "Yes, a spouse and minor children can be included in the process to move with you." },
+  { q: "Do I have to renounce my current citizenship?", a: "No, Russia allows dual citizenship in many cases, and you do not need to give up the passport to get a TRP." }
 ];
 
 const SITE_URL = "https://www.sharedvaluesvisa.com";
@@ -233,12 +233,12 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     setIsSubmitting(true);
     try {
       await submitLead({ source: 'consultation-modal', ...formData });
-      alert("Thank you for your inquiry. A specialist will contact you shortly.");
+      alert("Thank you. A specialist will contact you shortly.");
       setFormData({ name: '', email: '', phone: '', message: '' });
       onClose();
     } catch (error) {
       console.error(error);
-      alert("We couldn't send your request. Please try again.");
+      alert("We couldn't send the request. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -374,13 +374,13 @@ const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
       
       <div className="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 mb-12 space-y-6 text-left md:text-center leading-relaxed font-light">
         <p>
-          You're looking for a place where traditional values still matter. Where family is sacred, faith flourishes, and moral principles aren't mocked. Where your children can grow up with clear values instead of confusion.
+          Looking for a place where traditional values still matter. Where family is sacred, faith flourishes, and moral principles aren't mocked. Where children can grow up with clear values instead of confusion.
         </p>
         <p>
-          The Shared Values Visa (SVV) is a legally-backed pathway to Russia for citizens of 47 countries who reject "destructive neoliberal ideology" and are seeking an alternative way of life.
+          The Shared Values Visa (SVV) is a legally-backed pathway to Russia for citizens of 47 countries who reject "destructive neoliberal ideology" and are seeking Russian residency and an alternative way of life.
         </p>
         <p className="font-serif font-bold text-royal-900 border-l-4 border-gold-400 pl-4 md:pl-0 md:border-none">
-          Not theory. Not politics. A real path to permanent residence, work, and family life in a country where your values are shared by millions.
+          Not theory. Not politics. A real path to permanent residence, work, and family life in Russia, where those values are shared by millions.
         </p>
       </div>
       
@@ -396,7 +396,7 @@ const Hero = ({ onOpenModal }: { onOpenModal: () => void }) => (
           href="https://movetorussia.com/get-access/" 
           className="px-10 py-4 bg-white text-royal-900 border border-slate-200 rounded-full font-bold hover:bg-slate-50 transition-all shadow-md hover:shadow-lg hover:-translate-y-1 text-sm md:text-base"
         >
-          Get Your Visa Guide
+          Get the Russia Visa Guide
         </a>
       </div>
       
@@ -424,7 +424,7 @@ const TrustSection = () => (
   <section className="py-24 bg-white relative z-20 -mt-10 rounded-t-[40px] shadow-[0_-20px_40px_-15px_rgba(0,0,0,0.05)]" id="trust">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-900">Why Trust Us with Your Most Important Decision?</h2>
+        <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-900">Why Trust Us with the Most Important Decision?</h2>
         <div className="w-24 h-1 bg-gold-400 mx-auto mt-6 rounded-full"></div>
       </div>
 
@@ -500,7 +500,7 @@ const ProblemSection = () => {
 
   const questions = [
     {
-      q: "What is your primary motivation?",
+      q: "What is the main motivation for moving to Russia?",
       options: ["Seeking Traditional Values", "Better Future for Children", "Economic Opportunities", "Safety & Security"]
     },
     {
@@ -508,7 +508,7 @@ const ProblemSection = () => {
       options: ["Just myself", "With Spouse", "Whole Family (with kids)", "Retiring Couple"]
     },
     {
-      q: "What is your timeline?",
+      q: "What is the timeline for moving to Russia?",
       options: ["Immediately (ASAP)", "In 12-18 Months", "Next Year", "Just Researching"]
     },
     {
@@ -525,7 +525,7 @@ const ProblemSection = () => {
       setViewState('quiz');
     } catch (error) {
       console.error(error);
-      alert("We couldn't send your email. Please try again.");
+      alert("We couldn't send the email. Please try again.");
     }
   };
 
@@ -546,20 +546,20 @@ const ProblemSection = () => {
 
   const painPoints = [
     {
-      title: "Your government no longer represents your values.",
-      desc: "Political decisions contradict what you believe in. You watch the news and realize: this is no longer your country."
+      title: "The government no longer represents core values.",
+      desc: "Political decisions contradict personal beliefs. Watching the news makes it clear: the country no longer feels like home."
     },
     {
       title: "You're afraid to raise children in this environment.",
-      desc: "Schools teach ideas you reject. Neighbors and friends pressure you with views you disagree with. You want your children to grow up with clear values instead of confusion."
+      desc: "Schools teach ideas you reject. Neighbors and friends pressure you with views you disagree with. Children deserve to grow up with clear values instead of confusion."
     },
     {
-      title: "You're exhausted by the restrictions on your faith.",
+      title: "You're exhausted by the restrictions on faith.",
       desc: "Speaking about traditional values has become dangerous. You're labeled \"backward\" or a \"fanatic\" for believing in God, family, and tradition."
     },
     {
       title: "You desperately seek a society where faith, family & stability still matter.",
-      desc: "You need a place where most people share your beliefs—not mock them."
+      desc: "You need a place where most people share those beliefs—not mock them."
     },
     {
       title: "You feel profoundly alone.",
@@ -625,10 +625,10 @@ const ProblemSection = () => {
                         </h3>
                         <form onSubmit={handleEmailSubmit} className="space-y-5">
                             <p className="text-blue-100 font-light text-sm">
-                                Answer 4 simple questions to receive your personalized eligibility report and relocation roadmap.
+                                Answer 4 simple questions to receive a personalized eligibility report and relocation roadmap for Russia.
                             </p>
                             <div>
-                                <label className="block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">Enter your email to start</label>
+                                <label className="block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">Enter an email to start</label>
                                 <input 
                                 type="email" 
                                 required
@@ -645,7 +645,7 @@ const ProblemSection = () => {
                                 Start Assessment <ArrowRightIcon />
                             </button>
                             <p className="text-[10px] text-blue-300/60 text-center uppercase tracking-wider">
-                                Your privacy is protected. No spam.
+                                Privacy is protected. No spam.
                             </p>
                         </form>
                     </div>
@@ -684,8 +684,8 @@ const ProblemSection = () => {
                   {viewState === 'analyzing' && (
                       <div className="animate-fade-in my-auto text-center">
                           <div className="w-16 h-16 border-4 border-white/10 border-t-gold-400 rounded-full animate-spin mx-auto mb-6"></div>
-                          <h3 className="text-xl font-bold mb-2">Analyzing your profile...</h3>
-                          <p className="text-blue-200 text-sm">Comparing your answers with Decree No. 702 requirements.</p>
+                          <h3 className="text-xl font-bold mb-2">Analyzing the details...</h3>
+                          <p className="text-blue-200 text-sm">Comparing responses with Decree No. 702 requirements.</p>
                       </div>
                   )}
 
@@ -698,10 +698,10 @@ const ProblemSection = () => {
                        <h4 className="text-2xl font-serif font-bold mb-2">Excellent Match!</h4>
                        <div className="bg-white/10 rounded-xl p-4 mb-6 border border-white/10 backdrop-blur-sm text-left">
                            <p className="text-blue-100 text-sm mb-3">
-                             Based on your answers, you appear to be a <strong className="text-white">High Potential Candidate</strong> for the Shared Values Visa program.
+                             Based on the answers, you appear to be a <strong className="text-white">High Potential Candidate</strong> for the Shared Values Visa program.
                            </p>
                            <p className="text-blue-100 text-sm">
-                             We've sent your personalized report and next steps to <span className="text-white font-semibold border-b border-white/20">{email}</span>.
+                             We've sent the personalized report and next steps to <span className="text-white font-semibold border-b border-white/20">{email}</span>.
                            </p>
                        </div>
                        
@@ -710,7 +710,7 @@ const ProblemSection = () => {
                          target="_blank"
                          className="block w-full py-4 bg-gold-400 text-royal-900 font-bold rounded-xl hover:bg-gold-300 transition-all shadow-lg mb-4"
                        >
-                         Get Your Visa Guide Now
+                         Get the Visa Guide Now
                        </a>
 
                        <button 
@@ -782,8 +782,8 @@ const SolutionSection = () => {
             {activeTab === 'basics' && (
               <div className="animate-fade-in space-y-8">
                 <div className="max-w-3xl mx-auto text-center mb-12">
-                   <h3 className="text-3xl font-serif font-bold text-slate-900 mb-6">This isn't just a visa. This is your ticket to a stable future.</h3>
-                   <p className="text-slate-600 text-lg leading-relaxed">When you complete the process, you'll receive an <span className="font-bold text-royal-800 bg-royal-50 px-2 py-0.5 rounded">Entry Visa</span> (to travel) and a <span className="font-bold text-royal-800 bg-royal-50 px-2 py-0.5 rounded">Temporary Residence Permit (3 years)</span> to live, work, and build your life.</p>
+                   <h3 className="text-3xl font-serif font-bold text-slate-900 mb-6">This isn't just a visa. It's a ticket to a stable future in Russia.</h3>
+                   <p className="text-slate-600 text-lg leading-relaxed">When you complete the process, you'll receive an <span className="font-bold text-royal-800 bg-royal-50 px-2 py-0.5 rounded">Entry Visa</span> (to travel) and a <span className="font-bold text-royal-800 bg-royal-50 px-2 py-0.5 rounded">Temporary Residence Permit (3 years)</span> to live, work, and build a life.</p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8">
@@ -907,9 +907,9 @@ const ApplicationProcessSection = () => {
                 <div className="space-y-3">
                     <ol className="list-decimal list-inside space-y-2 text-sm text-slate-600 marker:text-royal-600 marker:font-bold">
                         <li><strong>Fill out form:</strong> Visit visa.kdmid.ru. Specify "private" purpose. Print & sign with pen.</li>
-                        <li><strong>Write letter to Consulate:</strong> Request visa for temporary residence application. Include full details.</li>
+                        <li><strong>Write letter to Russian Consulate:</strong> Request visa for temporary residence application. Include full details.</li>
                         <li><strong>Assemble package:</strong> Passport, form, letter, background check, photos, insurance.</li>
-                        <li><strong>Submit in person:</strong> Visit your nearest Russian Consulate. Pay fee.</li>
+                        <li><strong>Submit in person:</strong> Visit the nearest Russian consulate. Pay fee.</li>
                     </ol>
                     <div className="bg-amber-50 text-amber-800 text-xs p-3 rounded-lg border border-amber-100 italic">
                         <strong>NOTE:</strong> Any non-transit visa type is acceptable, though we recommend a 3+ month visa.
@@ -979,7 +979,7 @@ const ApplicationProcessSection = () => {
                         Step-by-Step Guide
                     </div>
                     <h2 className="text-4xl md:text-6xl font-serif font-bold text-slate-900 tracking-tight leading-tight">
-                        Your 5-Step Roadmap <br className="hidden md:block" /> to Russian Residency
+                        5-Step Roadmap <br className="hidden md:block" /> to Russian Residency
                     </h2>
                 </div>
 
@@ -1084,7 +1084,7 @@ const TestimonialsSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
       flag: "🇦🇺",
       date: "February 2025",
       type: "Retirees",
-      quote: "We were tired of the West. We wanted a place where family values still meant something. Your guide anticipated every question. We moved to Kazan and found a community of faithful, wise, kind people.",
+      quote: "We were tired of the West. We wanted a place where family values still meant something. The guide anticipated every question. We moved to Kazan and found a community of faithful, wise, kind people.",
     }
   ];
 
@@ -1169,13 +1169,13 @@ const TestimonialsSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                     <svg width="250" height="250" viewBox="0 0 24 24" fill="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2-2z"/></svg>
                  </div>
                  <div className="relative z-10">
-                   <h3 className="text-3xl font-serif font-bold mb-4">Share Your Story</h3>
+                   <h3 className="text-3xl font-serif font-bold mb-4">Share a Story</h3>
                    <p className="text-blue-100 mb-8 font-light text-lg">If you've been approved, inspire others! You'll receive a 10% discount on future services.</p>
                    <button 
                      onClick={onOpenModal}
                      className="px-8 py-4 bg-white text-blue-700 font-bold rounded-xl shadow-lg hover:bg-blue-50 transition-colors flex items-center justify-center w-fit uppercase tracking-wide text-sm transform hover:-translate-y-1"
                    >
-                      Submit Your Story
+                      Submit a Story
                    </button>
                 </div>
              </div>
@@ -1233,14 +1233,14 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                         <>
                             {/* Q1 */}
                             <div>
-                                <label className="block text-slate-800 font-bold mb-4 text-lg font-serif">1. Where is your passport issued?</label>
+                                <label className="block text-slate-800 font-bold mb-4 text-lg font-serif">1. Where is the passport issued?</label>
                                 <div className="relative">
                                     <select 
                                         className="w-full p-5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:ring-2 focus:ring-royal-500 focus:bg-white outline-none transition-all appearance-none cursor-pointer font-medium"
                                         value={country}
                                         onChange={(e) => setCountry(e.target.value)}
                                     >
-                                        <option value="" disabled>Select your country...</option>
+                                        <option value="" disabled>Select a country...</option>
                                         {eligibleList.map(c => <option key={c} value={c}>{c}</option>)}
                                         <option value="Other / Not Listed">Other / Not Listed</option>
                                     </select>
@@ -1269,7 +1269,7 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
 
                             {/* Q3 */}
                             <div>
-                                <label className="block text-slate-800 font-bold mb-4 text-lg font-serif">3. Does your passport have 4+ years of validity remaining?</label>
+                                <label className="block text-slate-800 font-bold mb-4 text-lg font-serif">3. Does the passport have 4+ years of validity remaining?</label>
                                 <div className="flex gap-6">
                                     <button 
                                         onClick={() => setValidPassport('yes')}
@@ -1291,7 +1291,7 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                                 disabled={!country || !sharesValues || !validPassport}
                                 className="w-full py-5 bg-royal-700 text-white font-bold rounded-xl hover:bg-royal-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-royal-700/30 text-lg uppercase tracking-widest transform hover:-translate-y-0.5"
                             >
-                                Check Your Eligibility
+                                Check Eligibility
                             </button>
                         </>
                     ) : (
@@ -1302,9 +1302,9 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                                         <CheckCircleIcon />
                                     </div>
                                     <h3 className="text-3xl font-serif font-bold text-green-800 mb-4">YOU QUALIFY!</h3>
-                                    <p className="text-green-700 mb-10 max-w-md mx-auto text-lg leading-relaxed">Great news! You are likely eligible for the Shared Values Visa based on your responses. We recommend confirming with your local consulate.</p>
+                                    <p className="text-green-700 mb-10 max-w-md mx-auto text-lg leading-relaxed">Great news! You are likely eligible for the Shared Values Visa based on the responses. We recommend confirming with a local Russian consulate.</p>
                                     <a href="https://movetorussia.com/get-access/" className="px-10 py-5 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/20 w-full md:w-auto uppercase tracking-wide hover:-translate-y-1 inline-block">
-                                        GET YOUR FULL GUIDE ($99)
+                                        GET THE FULL GUIDE ($99)
                                     </a>
                                     <button onClick={() => setResult(null)} className="block mt-6 text-sm text-green-600 hover:text-green-800 hover:underline w-full font-medium">Check again</button>
                                 </div>
@@ -1314,7 +1314,7 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                                         <span className="text-5xl font-serif font-bold">?</span>
                                     </div>
                                     <h3 className="text-3xl font-serif font-bold text-amber-800 mb-4">CHECK WITH CONSULATE</h3>
-                                    <p className="text-amber-700 mb-10 max-w-md mx-auto text-lg leading-relaxed">Your situation requires official verification. Your country might have specific requirements or exceptions.</p>
+                                    <p className="text-amber-700 mb-10 max-w-md mx-auto text-lg leading-relaxed">This situation requires official verification. The country of citizenship might have specific requirements or exceptions.</p>
                                     <button 
                                       onClick={onOpenModal}
                                       className="px-10 py-5 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition-all shadow-lg w-full md:w-auto uppercase tracking-wide hover:-translate-y-1"
@@ -1368,20 +1368,20 @@ const EligibilitySection = ({ onOpenModal }: { onOpenModal: () => void }) => {
                         <li className="flex items-center gap-2">✓ Singapore</li>
                         <li className="flex items-center gap-2">✓ South Korea</li>
                         <li className="flex items-center gap-2">✓ Taiwan (China)</li>
-                        <li className="mt-6 italic text-slate-400 text-xs">And others (check with your consulate)</li>
+                        <li className="mt-6 italic text-slate-400 text-xs">And others (check with the consulate)</li>
                     </ul>
                 </div>
 
              </div>
              <p className="text-center text-xs text-slate-400 mt-6 max-w-3xl mx-auto leading-relaxed">
-                 IMPORTANT NOTE: The list of eligible countries is determined by Russian authorities (Decree No. 702) and coincides with the list of foreign states implementing unfriendly policies. This list may change. Eligibility must always be confirmed with your nearest Russian consulate.
+                 IMPORTANT NOTE: The list of eligible countries is determined by Russian authorities (Decree No. 702) and coincides with the list of foreign states implementing unfriendly policies. This list may change. Eligibility must always be confirmed with the nearest Russian consulate.
              </p>
              <div className="text-center mt-4">
                  <button 
                    onClick={onOpenModal}
                    className="text-royal-600 font-bold text-xs uppercase border-b-2 border-royal-200 hover:border-royal-600 transition-all pb-1 hover:text-royal-800 tracking-wider"
                  >
-                   Ask Us About Your Country
+                   Ask Us About a Country
                  </button>
              </div>
         </div>
@@ -1395,13 +1395,13 @@ const PricingSection = ({ onOpenModal }: { onOpenModal: () => void }) => {
         <section className="py-24 bg-white border-t border-slate-100" id="pricing">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">START YOUR TRANSFORMATION TODAY</h2>
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 uppercase tracking-tight">START THE TRANSFORMATION TODAY</h2>
                     <p className="mt-6 text-slate-600 max-w-2xl mx-auto text-lg font-light">Small investment, life-changing return.</p>
                 </div>
 
                 <div className="max-w-4xl mx-auto mb-10">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-royal-50 border border-royal-100 rounded-2xl px-6 py-4 shadow-soft">
-                        <div className="text-sm md:text-base text-royal-900 font-semibold">Not sure where to start? Talk to a specialist first—your consultation is free.</div>
+                        <div className="text-sm md:text-base text-royal-900 font-semibold">Not sure where to start? Talk to a specialist first—consultation is free.</div>
                         <button 
                           onClick={onOpenModal}
                           className="px-6 py-3 bg-royal-900 text-white rounded-full font-bold text-sm uppercase tracking-wide hover:bg-royal-800 transition-all shadow-md hover:-translate-y-0.5"
@@ -1549,7 +1549,7 @@ const RequirementsSection = () => (
         {[
             { icon: <GlobeIcon />, title: "Eligible Citizenship", text: "Citizen of one of the 47 listed countries." },
             { icon: <FileTextIcon />, title: "Valid Passport", text: "Must have at least 6 months validity remaining." },
-            { icon: <ShieldCheckIcon />, title: "No Criminal Record", text: "Clean police record from your home country." },
+            { icon: <ShieldCheckIcon />, title: "No Criminal Record", text: "Clean police record from the country of citizenship." },
             { icon: <HeartIcon />, title: "Medical Certificate", text: "Standard health checks (HIV, etc)." },
             { icon: <UsersIcon />, title: "Family Members", text: "Spouse and children can be included." },
             { icon: <ActivityIcon />, title: "Financial Proof", text: "Proof of funds to support yourself initially." }
@@ -1598,7 +1598,7 @@ const BenefitsSection = () => (
 const GallerySection = () => (
     <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-12 text-center">See Your Future</h2>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-12 text-center">See the Future</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 h-96 md:h-[600px]">
                 <div className="col-span-2 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group">
                     <img src={MOSCOW_2_IMAGE} alt="Moscow Red Square" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -1705,8 +1705,8 @@ const FinalCTASection = ({ onOpenModal }: { onOpenModal: () => void }) => (
     <section className="py-32 bg-royal-900 text-white relative overflow-hidden text-center">
          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
          <div className="max-w-4xl mx-auto px-4 relative z-10">
-             <h2 className="text-4xl md:text-6xl font-serif font-bold mb-8">Ready to Start Your New Life?</h2>
-             <p className="text-blue-200 text-xl mb-12 max-w-2xl mx-auto">Don't let another year pass wishing for a better future. The Shared Values Visa is your open door.</p>
+             <h2 className="text-4xl md:text-6xl font-serif font-bold mb-8">Ready to Start a New Life?</h2>
+             <p className="text-blue-200 text-xl mb-12 max-w-2xl mx-auto">Don't let another year pass wishing for a better future. The Shared Values Visa is an open door.</p>
              <div className="flex flex-col sm:flex-row justify-center gap-6">
                  <button onClick={onOpenModal} className="px-10 py-5 bg-white text-royal-900 font-bold rounded-full hover:bg-slate-100 transition-all shadow-xl hover:-translate-y-1 text-lg border border-white">
                      Schedule Free Consultation
