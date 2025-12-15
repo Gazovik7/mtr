@@ -65,7 +65,7 @@ async function prerender() {
     await waitForServer(URL, previewProcess);
 
     console.log('[prerender] Rendering in headless browser...');
-    const executablePath = await chromium.executablePath;
+    const executablePath = await chromium.executablePath();
     const browser = await puppeteer.launch({
       headless: chromium.headless,
       executablePath,
