@@ -1,8 +1,8 @@
-import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import puppeteer from 'puppeteer';
 
 // Skip prerendering only when explicitly requested
 if (process.env.PLAYWRIGHT_SKIP_PRERENDER === '1') {
@@ -64,10 +64,13 @@ async function prerender() {
     await waitForServer(URL, previewProcess);
 
     console.log('[prerender] Rendering in headless browser...');
-    const browser = await chromium.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      headless: 'new',
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
     const page = await browser.newPage();
 
-    await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+    await page.goto(URL, { waitUntil: 'networkidle0', timeout: 60_000 });
     await page.waitForFunction(() => {
       const root = document.getElementById('root');
       return !!root && !!root.textContent && root.textContent.trim().length > 0;
