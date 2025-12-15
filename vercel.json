@@ -1,0 +1,4 @@
+{
+  "buildCommand": "npx playwright install --with-deps chromium && npm run build",
+  "outputDirectory": "dist"
+}
