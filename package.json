@@ -8,7 +8,7 @@
     "build": "vite build && node prerender.mjs",
     "preview": "vite preview --port 4173 --strictPort",
     "auto:push": "node scripts/auto-push.js",
-    "postinstall": "npx playwright install --with-deps chromium"
+    "postinstall": "npx playwright install chromium"
   },
   "dependencies": {
     "react": "^18.3.1",
