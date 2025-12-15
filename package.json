@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node prerender.mjs",
-    "preview": "vite preview --port 4173 --strictPort"
+    "preview": "vite preview --port 4173 --strictPort",
+    "auto:push": "node scripts/auto-push.js"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -17,6 +18,7 @@
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.2.1",
+    "chokidar": "^5.0.0",
     "playwright": "^1.55.0",
     "prettier": "^3.2.5",
     "typescript": "^5.2.2",
