@@ -1,97 +1,76 @@
 import { spawn } from 'node:child_process';
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import chromium from 'chrome-aws-lambda';
-import puppeteer from 'puppeteer-core';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
-// Skip prerendering only when explicitly requested
-if (process.env.PLAYWRIGHT_SKIP_PRERENDER === '1') {
-  console.log('[prerender] Skipping prerender (PLAYWRIGHT_SKIP_PRERENDER=1)');
+if (process.env.PLAYWRIGHT_SKIP_PRERENDER === '1' || process.env.SKIP_PRERENDER === '1') {
+  console.log('[prerender] Skipping prerender (SKIP_PRERENDER=1)');
   process.exit(0);
 }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.join(__dirname, 'dist');
-const INDEX_HTML_PATH = path.join(DIST_DIR, 'index.html');
-const PORT = 4173;
-const URL = `http://localhost:${PORT}/`;
+const DIST_INDEX_HTML = path.join(DIST_DIR, 'index.html');
+const SSR_OUT_DIR = path.join(__dirname, 'dist-ssr');
+const SSR_ENTRY = path.join(__dirname, 'src', 'entry-server.tsx');
+const SSR_BUNDLE = path.join(SSR_OUT_DIR, 'entry-server.js');
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const spawnResult = (command, args) =>
+  new Promise((resolve, reject) => {
+    const child = spawn(command, args, { stdio: 'inherit', shell: process.platform === 'win32' });
+    child.on('error', reject);
+    child.on('exit', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`${command} ${args.join(' ')} exited with code ${code}`));
+    });
+  });
 
-async function waitForServer(url, processHandle, timeoutMs = 60_000) {
-  const start = Date.now();
-  while (Date.now() - start < timeoutMs) {
-    if (processHandle.exitCode !== null) {
-      throw new Error(`Preview server exited (code ${processHandle.exitCode}).`);
-    }
-    try {
-      const res = await fetch(url, { redirect: 'manual' });
-      if (res.ok) return;
-    } catch {
-      // server not ready yet
-    }
-    await sleep(250);
-  }
-  throw new Error(`Timed out waiting for preview server at ${url}`);
-}
-
-async function terminate(processHandle) {
-  if (!processHandle || processHandle.killed) return;
-  processHandle.kill('SIGTERM');
-
-  const exited = new Promise((resolve) => processHandle.once('exit', resolve));
-  const timeout = sleep(5000).then(() => null);
-  const result = await Promise.race([exited, timeout]);
-  if (result !== null) return;
-
+async function buildSsrBundle() {
+  console.log('[prerender] Building SSR bundle...');
   if (process.platform === 'win32') {
-    spawn('taskkill', ['/pid', String(processHandle.pid), '/t', '/f'], { stdio: 'ignore' });
-  } else {
-    processHandle.kill('SIGKILL');
+    await spawnResult('npx', [
+      'vite',
+      'build',
+      '--ssr',
+      SSR_ENTRY,
+      '--outDir',
+      SSR_OUT_DIR,
+      '--emptyOutDir',
+    ]);
+    return;
   }
+
+  await spawnResult('npx', [
+    'vite',
+    'build',
+    '--ssr',
+    SSR_ENTRY,
+    '--outDir',
+    SSR_OUT_DIR,
+    '--emptyOutDir',
+  ]);
 }
 
 async function prerender() {
-  console.log('[prerender] Starting `vite preview`...');
-  const previewProcess =
-    process.platform === 'win32'
-      ? spawn(`npx vite preview --port ${PORT} --strictPort`, { stdio: 'inherit', shell: true })
-      : spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], {
-          stdio: 'inherit',
-        });
+  await buildSsrBundle();
 
-  try {
-    await waitForServer(URL, previewProcess);
-
-    console.log('[prerender] Rendering in headless browser...');
-    const executablePathSource = chromium.executablePath;
-    const executablePath =
-      typeof executablePathSource === 'function'
-        ? await executablePathSource()
-        : await executablePathSource;
-    const browser = await puppeteer.launch({
-      headless: chromium.headless,
-      executablePath,
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport || { width: 1280, height: 720 },
-    });
-    const page = await browser.newPage();
-
-    await page.goto(URL, { waitUntil: 'networkidle0', timeout: 60_000 });
-    await page.waitForFunction(() => {
-      const root = document.getElementById('root');
-      return !!root && !!root.textContent && root.textContent.trim().length > 0;
-    });
-
-    const html = await page.content();
-    await writeFile(INDEX_HTML_PATH, html, 'utf8');
-
-    await browser.close();
-    console.log('[prerender] Done: dist/index.html now contains rendered content.');
-  } finally {
-    await terminate(previewProcess);
+  console.log('[prerender] Rendering via ReactDOMServer...');
+  const entry = await import(pathToFileURL(SSR_BUNDLE).href);
+  if (typeof entry?.render !== 'function') {
+    throw new Error('SSR bundle does not export a render() function');
   }
+
+  const appHtml = entry.render();
+
+  console.log('[prerender] Injecting rendered HTML into dist/index.html...');
+  const template = await readFile(DIST_INDEX_HTML, 'utf8');
+  const next = template.replace(/<div id="root">\s*<\/div>/, `<div id="root">${appHtml}</div>`);
+  if (next === template) {
+    throw new Error('Could not find <div id="root"></div> in dist/index.html');
+  }
+
+  await writeFile(DIST_INDEX_HTML, next, 'utf8');
+  console.log('[prerender] Done: dist/index.html now contains rendered content.');
 }
 
 prerender().catch((error) => {
