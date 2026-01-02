@@ -6,7 +6,7 @@ export const COPY = {
   site: {
     url: 'https://www.sharedvaluesvisa.com',
     links: {
-      guideUrl: 'https://movetorussia.com/get-access/',
+      guideUrl: 'https://movetorussia.com/shared-values-visa/',
     },
     brand: {
       mark: 'SV',
@@ -121,13 +121,13 @@ export const COPY = {
       },
       {
         title: 'Thousands of Success Stories',
-        bullets: ['Real people, real approvals', 'Families, retirees, freelancers', 'Highest satisfaction ratings'],
+        bullets: ['Real people, real approvals in Russia', 'Families, retirees, freelancers', 'Highest satisfaction ratings'],
         cta: 'View testimonials',
       },
       {
         title: 'Expert-Led Guidance',
         bullets: [
-          'Immigration lawyers on staff',
+          'Russian immigration lawyers on staff',
           'Updated regularly with changes',
           'Years of experience',
           'Consulate trained experts',
@@ -145,7 +145,7 @@ export const COPY = {
       prefix: 'Does Western Culture No Longer Feel Like ',
       italic: 'Home?',
     },
-    intro: "You've felt it coming for years. Maybe longer. The frustration grows with each passing day:",
+    intro: "You've felt it coming for years. Maybe longer. The thought of moving to Russia grows with each passing day:",
     painPoints: [
       {
         title: 'The government no longer represents core values.',
@@ -174,8 +174,12 @@ export const COPY = {
         title: 'Take our 2-minute Quiz:',
         highlight: 'Is Russia Right for You?',
         desc: 'Answer 4 simple questions to receive a personalized eligibility report and relocation roadmap for Russia.',
-        emailLabel: 'Enter an email to start',
+        nameLabel: 'Full Name',
+        namePlaceholder: 'John Doe',
+        emailLabel: 'Email Address',
         emailPlaceholder: 'name@example.com',
+        phoneLabel: 'Phone Number',
+        phonePlaceholder: '+1 (555) 000-0000',
         submit: 'Start Assessment',
         privacy: 'Privacy is protected. No spam.',
       },
@@ -237,7 +241,7 @@ export const COPY = {
       whyMatters: {
         title: 'Why this matters',
         bullets: [
-          'Issued by Presidential Decree (Legal & Official)',
+          'Issued by Russian Presidential Decree (Legal & Official)',
           'For eligible citizens (EU, USA, Canada, Japan, etc.)',
           'Fast-track to residency (Bypasses quotas)',
           'Work rights included immediately',
@@ -263,7 +267,7 @@ export const COPY = {
       rightTitle: 'Shared Values Visa',
       rightBullets: [
         'NO quota needed',
-        'NO language exam initially',
+        'NO Russian language exam initially',
         'Streamlined documents',
         '~6 months typical timeline',
         'More predictable process',
@@ -289,7 +293,7 @@ export const COPY = {
             'Valid passport (4+ years remaining)',
             'Criminal background check (with apostille)',
             'Marriage/Birth/Divorce certificates (apostille)',
-            'Medical insurance document ($30,000+ coverage)',
+            'Medical insurance document ($30,000+ coverage in Russia)',
             'Photographs (3.5×4.5 cm, 4-5 copies)',
           ],
         },
@@ -362,7 +366,7 @@ export const COPY = {
         content: {
           type: 'approval',
           intro:
-            'Processing commonly takes 4-6 months inside Russia. Plan for living expenses while you wait—you can legally stay and work.',
+            'Processing commonly takes 4-6 months inside Russia. Plan for living expenses while you wait—you can legally stay and start a business in Russia.',
           whenApprovedLabel: 'When approved:',
           badge: 'YOU ARE NOW OFFICIALLY A RESIDENT FOR 3 YEARS!',
         },
@@ -375,7 +379,7 @@ export const COPY = {
       timelineUnit: 'Months',
       costLabel: 'Total Estimated Cost',
       costValue: '$10,000+',
-      costFootnote: '*Plan for extended stays, translations, travel, and living costs',
+      costFootnote: '*Plan for extended stays, Russian translations, travel, and living costs',
     },
   },
   testimonials: {
@@ -514,7 +518,7 @@ export const COPY = {
       apac: ['Australia', 'Japan', 'New Zealand', 'Singapore', 'South Korea', 'Taiwan (China)'],
       apacFooter: 'And others (check with the consulate)',
       note:
-        'IMPORTANT NOTE: The list of eligible countries is determined by Russian authorities (Decree No. 702) and coincides with the list of foreign states implementing unfriendly policies. This list may change. Eligibility must always be confirmed with the nearest Russian consulate.',
+        'IMPORTANT NOTE: The list of eligible countries is determined by Russian authorities (Decree No. 702) and coincides with the list of foreign states implementing unfriendly policies towards Russia. This list may change. Eligibility must always be confirmed with the nearest Russian consulate.',
       ask: 'Ask Us About a Country',
       fullEligibleList: [
         'Albania',
@@ -578,7 +582,7 @@ export const COPY = {
     mainOffer: {
       badge: 'MOST POPULAR',
       title: 'SHARED VALUES VISA GUIDE',
-      desc: 'Complete step-by-step handbook for applying to Russian residency.',
+      desc: 'Complete step-by-step handbook for applying to residency in Russia.',
       includedTitle: "What's Included:",
       included: [
         'Step-by-step handbook (PDF)',
@@ -621,7 +625,7 @@ export const COPY = {
         {
           title: 'One-on-One Consultation',
           price: 'Free – 30 minutes',
-          desc: '30-min video call. Document review. Personalized guidance.',
+          desc: '30-min video call. Document review. Personalized Russian guidance.',
         },
         {
           title: 'Full Management',
@@ -650,8 +654,8 @@ export const COPY = {
     subtitle: 'Discover the advantages that await you in Russia, from Russian cities to smaller communities.',
     items: [
       { title: 'Traditional Values', desc: 'A society that respects faith, family, and tradition.' },
-      { title: 'High Safety', desc: 'Clean streets, low crime, and safe neighborhoods for kids.' },
-      { title: 'World-Class Culture', desc: 'Museums, theaters, ballet, and history at every turn.' },
+      { title: 'High Safety', desc: 'Clean streets, low crime, and safe neighborhoods for kids in Russia.' },
+      { title: 'World-Class Russian Culture', desc: 'Museums, theaters, ballet, and history at every turn.' },
       { title: 'Affordable Living', desc: 'Lower cost of energy, food, and housing compared to the West.' },
     ],
   },
@@ -697,7 +701,7 @@ export const COPY = {
     contactTitle: 'Contact',
     guideCta: 'Get Official Guide',
     copyright: {
-      prefix: 'Shared Values Visa Assistance. All rights reserved. Not a government agency.',
+      prefix: 'Shared Values Visa Assistance. All rights reserved. Not a government agency of the Russian Federation.',
     },
   },
 } as const;

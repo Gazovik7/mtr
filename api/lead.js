@@ -20,10 +20,10 @@ const sendTelegram = async (payload) => {
   const textLines = [
     `New lead (${source || 'form'})`,
     `Site: ${site || 'unknown'}`,
-    `Name: ${name || '¢?"'}`,
-    `Email: ${email || '¢?"'}`,
-    `Phone: ${phone || '¢?"'}`,
-    `Message: ${message || '¢?"'}`,
+    `Name: ${name || 'N/A'}`,
+    `Email: ${email || 'N/A'}`,
+    `Phone: ${phone || 'N/A'}`,
+    `Message: ${message || 'N/A'}`,
   ];
   const url = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
   const body = {
@@ -54,8 +54,14 @@ export default async function handler(req, res) {
   const headerReferrer = normalizeHeaderValue(req.headers.referer || req.headers.referrer);
   const site = headerOrigin || headerReferrer || process.env.SITE_URL || 'unknown';
 
-  if (!email && !phone) {
-    return res.status(400).json({ error: 'Email or phone is required' });
+  if (!name) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
+  if (!phone) {
+    return res.status(400).json({ error: 'Phone is required' });
+  }
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
   }
 
   const recipients = getRecipients();
@@ -69,10 +75,10 @@ export default async function handler(req, res) {
         subject: `New lead (${source || 'form'}) - ${name || email || phone || 'No name'}`,
         text: [
           `Source: ${source || 'form'}`,
-          `Name: ${name || '¢?"'}`,
-          `Email: ${email || '¢?"'}`,
-          `Phone: ${phone || '¢?"'}`,
-          `Message: ${message || '¢?"'}`,
+          `Name: ${name || 'N/A'}`,
+          `Email: ${email || 'N/A'}`,
+          `Phone: ${phone || 'N/A'}`,
+          `Message: ${message || 'N/A'}`,
         ].join('\n'),
       });
     }

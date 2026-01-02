@@ -513,7 +513,9 @@ const TrustSection = () => (
 );
 
 const ProblemSection = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [viewState, setViewState] = useState<'email' | 'quiz' | 'analyzing' | 'result'>('email');
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
@@ -521,9 +523,9 @@ const ProblemSection = () => {
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!name || !email || !phone) return;
     try {
-      await submitLead({ source: 'quiz-email', email });
+      await submitLead({ source: 'quiz-email', name, email, phone });
       setViewState('quiz');
     } catch (error) {
       console.error(error);
@@ -543,7 +545,9 @@ const ProblemSection = () => {
   const restart = () => {
     setViewState('email');
     setCurrentQuestion(0);
+    setName('');
     setEmail('');
+    setPhone('');
   };
 
   const painPoints = COPY.problem.painPoints;
@@ -609,13 +613,35 @@ const ProblemSection = () => {
                                 {COPY.problem.quiz.emailView.desc}
                              </p>
                              <div>
+                                <label className="block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">{COPY.problem.quiz.emailView.nameLabel}</label>
+                                <input
+                                type="text"
+                                required
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder={COPY.problem.quiz.emailView.namePlaceholder}
+                                className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-300/50 focus:ring-2 focus:ring-gold-500 focus:bg-white/10 outline-none transition-all backdrop-blur-sm"
+                                />
+                             </div>
+                             <div>
                                 <label className="block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">{COPY.problem.quiz.emailView.emailLabel}</label>
-                                <input 
-                                type="email" 
+                                <input
+                                type="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder={COPY.problem.quiz.emailView.emailPlaceholder}
+                                className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-300/50 focus:ring-2 focus:ring-gold-500 focus:bg-white/10 outline-none transition-all backdrop-blur-sm"
+                                />
+                             </div>
+                             <div>
+                                <label className="block text-xs font-bold text-blue-200 uppercase tracking-wider mb-2">{COPY.problem.quiz.emailView.phoneLabel}</label>
+                                <input
+                                type="tel"
+                                required
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                placeholder={COPY.problem.quiz.emailView.phonePlaceholder}
                                 className="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-300/50 focus:ring-2 focus:ring-gold-500 focus:bg-white/10 outline-none transition-all backdrop-blur-sm"
                                 />
                              </div>
