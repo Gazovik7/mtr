@@ -113,6 +113,31 @@ const submitLead = async (payload: Record<string, unknown>) => {
   return data;
 };
 
+// Honeypot field — invisible to real users; bots auto-fill every input.
+const honeypotStyle: React.CSSProperties = {
+  position: 'absolute',
+  left: '-9999px',
+  width: '1px',
+  height: '1px',
+  opacity: 0,
+  pointerEvents: 'none',
+};
+const HoneypotField = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
+  <div style={honeypotStyle} aria-hidden="true">
+    <label>
+      Website
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </label>
+  </div>
+);
+
 // --- Components ---
 
 const SchemaMarkup = () => {
@@ -214,6 +239,12 @@ const SchemaMarkup = () => {
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [website, setWebsite] = useState('');
+  const formStartedAtRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (isOpen) formStartedAtRef.current = Date.now();
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -222,9 +253,15 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     if (isSubmitting) return;
     setIsSubmitting(true);
     try {
-      await submitLead({ source: 'consultation-modal', ...formData });
+      await submitLead({
+        source: 'consultation-modal',
+        ...formData,
+        website,
+        formStartedAt: formStartedAtRef.current,
+      });
       alert(COPY.contactModal.alerts.success);
       setFormData({ name: '', email: '', phone: '', message: '' });
+      setWebsite('');
       onClose();
     } catch (error) {
       console.error(error);
@@ -250,6 +287,7 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-4">
+          <HoneypotField value={website} onChange={setWebsite} />
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">{COPY.contactModal.labels.name}</label>
             <input 
@@ -516,8 +554,10 @@ const ProblemSection = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [website, setWebsite] = useState('');
   const [viewState, setViewState] = useState<'email' | 'quiz' | 'analyzing' | 'result'>('email');
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const formStartedAtRef = useRef<number>(Date.now());
 
   const questions = COPY.problem.quiz.questions;
 
@@ -525,7 +565,14 @@ const ProblemSection = () => {
     e.preventDefault();
     if (!name || !email || !phone) return;
     try {
-      await submitLead({ source: 'quiz-email', name, email, phone });
+      await submitLead({
+        source: 'quiz-email',
+        name,
+        email,
+        phone,
+        website,
+        formStartedAt: formStartedAtRef.current,
+      });
       setViewState('quiz');
     } catch (error) {
       console.error(error);
@@ -548,6 +595,8 @@ const ProblemSection = () => {
     setName('');
     setEmail('');
     setPhone('');
+    setWebsite('');
+    formStartedAtRef.current = Date.now();
   };
 
   const painPoints = COPY.problem.painPoints;
@@ -609,6 +658,7 @@ const ProblemSection = () => {
                             {COPY.problem.quiz.emailView.title} <br/><span className="text-gold-400">{COPY.problem.quiz.emailView.highlight}</span>
                          </h3>
                          <form onSubmit={handleEmailSubmit} className="space-y-5">
+                             <HoneypotField value={website} onChange={setWebsite} />
                              <p className="text-blue-100 font-light text-sm">
                                 {COPY.problem.quiz.emailView.desc}
                              </p>

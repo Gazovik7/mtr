@@ -14,6 +14,45 @@ const getRecipients = () =>
 const canSendTelegram = () => process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID;
 const normalizeHeaderValue = (value) => (Array.isArray(value) ? value[0] : value);
 
+const ALLOWED_HOSTS = (process.env.ALLOWED_ORIGINS || 'sharedvaluesvisa.com,www.sharedvaluesvisa.com')
+  .split(',')
+  .map((s) => s.trim().toLowerCase())
+  .filter(Boolean);
+
+const MIN_FORM_FILL_MS = 3000;
+
+const isAllowedHost = (rawUrl) => {
+  if (!rawUrl) return false;
+  try {
+    const host = new URL(rawUrl).hostname.toLowerCase();
+    return ALLOWED_HOSTS.includes(host);
+  } catch {
+    return false;
+  }
+};
+
+const isValidPhone = (raw) => {
+  if (typeof raw !== 'string') return false;
+  const trimmed = raw.trim();
+  if (!/^[\d\s+()\-.]{7,25}$/.test(trimmed)) return false;
+  const digits = trimmed.replace(/\D/g, '');
+  return digits.length >= 7 && digits.length <= 15;
+};
+
+const isValidName = (raw) => {
+  if (typeof raw !== 'string') return false;
+  const trimmed = raw.trim();
+  if (trimmed.length < 2 || trimmed.length > 80) return false;
+  // Reject strings that look like random gibberish: a single long run of letters
+  // with no spaces and mixed-case noise (e.g. "BaTdAqSMgMzEtiAHRCAMOBqQ").
+  if (!/\s/.test(trimmed) && trimmed.length > 18) {
+    const upper = (trimmed.match(/[A-Z]/g) || []).length;
+    const lower = (trimmed.match(/[a-z]/g) || []).length;
+    if (upper >= 4 && lower >= 4) return false;
+  }
+  return true;
+};
+
 const sendTelegram = async (payload) => {
   if (!canSendTelegram()) return null;
   const { name, email, phone, message, source, site } = payload;
@@ -49,18 +88,39 @@ export default async function handler(req, res) {
   }
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
-  const { name, email, phone, message, source } = body;
+  const { name, email, phone, message, source, website, formStartedAt } = body;
   const headerOrigin = normalizeHeaderValue(req.headers.origin);
   const headerReferrer = normalizeHeaderValue(req.headers.referer || req.headers.referrer);
   const site = headerOrigin || headerReferrer || process.env.SITE_URL || 'unknown';
 
-  if (!name) {
+  // Layer: honeypot — bots typically auto-fill every field.
+  if (typeof website === 'string' && website.trim() !== '') {
+    return res.status(200).json({ ok: true, delivered: true });
+  }
+
+  // Layer: origin check — only accept submissions from the site itself.
+  if (!isAllowedHost(headerOrigin) && !isAllowedHost(headerReferrer)) {
+    return res.status(200).json({ ok: true, delivered: true });
+  }
+
+  // Layer: minimum fill time — bots submit near-instantly.
+  if (typeof formStartedAt === 'number' && Number.isFinite(formStartedAt)) {
+    const elapsed = Date.now() - formStartedAt;
+    if (elapsed < MIN_FORM_FILL_MS) {
+      return res.status(200).json({ ok: true, delivered: true });
+    }
+  } else {
+    // No timestamp at all => not from our React form.
+    return res.status(200).json({ ok: true, delivered: true });
+  }
+
+  if (!name || !isValidName(name)) {
     return res.status(400).json({ error: 'Name is required' });
   }
-  if (!phone) {
+  if (!phone || !isValidPhone(phone)) {
     return res.status(400).json({ error: 'Phone is required' });
   }
-  if (!email) {
+  if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     return res.status(400).json({ error: 'Email is required' });
   }
 
